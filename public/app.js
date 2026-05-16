@@ -69,6 +69,10 @@ const labels = {
     "news.company": "公司新闻",
     "news.industry": "行业资讯",
     "news.read": "阅读详情",
+    "news.more": "查看更多新闻",
+    "news.pageTitle": "新闻版块",
+    "news.pageCopy": "集中查看公司新闻与行业资讯，保留旧网站新闻内容，并以更清晰的阅读方式呈现。",
+    "news.allTitle": "全部新闻资讯",
     "contact.title": "联系我们",
     "contact.copy": "欢迎围绕有机尾气治理、溶剂回收、液相分离和精馏节能改造需求进行项目咨询。",
     "contact.phone": "电话",
@@ -134,6 +138,10 @@ const labels = {
     "news.company": "Company",
     "news.industry": "Industry",
     "news.read": "Read More",
+    "news.more": "More News",
+    "news.pageTitle": "News Center",
+    "news.pageCopy": "Browse company updates and industry articles preserved from the previous website in a cleaner reading layout.",
+    "news.allTitle": "All News and Articles",
     "contact.title": "Contact",
     "contact.copy": "Contact us for organic waste gas treatment, solvent recovery, liquid separation and energy-saving distillation projects.",
     "contact.phone": "Tel",
@@ -168,7 +176,7 @@ function renderI18n() {
 }
 
 function articleImage(item) {
-  return assetPath(item.coverImage || item.images?.[0] || "assets/brochure/brochure-02.jpg");
+  return assetPath(item.coverImage || item.images?.[0] || "assets/hero/factory-realistic.png");
 }
 
 function allNews() {
@@ -183,7 +191,10 @@ function filteredNews() {
 
 function renderNews() {
   const grid = $("[data-news-grid]");
-  grid.innerHTML = filteredNews().map((item) => {
+  if (!grid) return;
+  const limit = Number(grid.dataset.newsLimit || 0);
+  const list = limit ? filteredNews().slice(0, limit) : filteredNews();
+  grid.innerHTML = list.map((item) => {
     const title = escapeHtml(localField(item, "title"));
     const summary = escapeHtml(localField(item, "summary", localField(item, "content", [])[0] || ""));
     const tag = item.sourceType === "company" ? t("news.company") : t("news.industry");
