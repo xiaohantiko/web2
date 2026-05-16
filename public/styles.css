@@ -369,7 +369,6 @@ a {
 
 .flip-card {
   padding: 0;
-  perspective: 1200px;
   background: transparent;
   box-shadow: none;
 }
@@ -378,27 +377,20 @@ a {
   position: relative;
   width: 100%;
   min-height: 260px;
-  transition: transform 0.76s cubic-bezier(0.2, 0.72, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-.flip-card:hover .flip-card-inner,
-.flip-card:focus-within .flip-card-inner,
-.flip-card:focus .flip-card-inner,
-.gallery-flip:hover .flip-card-inner,
-.gallery-flip:focus .flip-card-inner {
-  transform: rotateY(180deg);
 }
 
 .flip-face {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  backface-visibility: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.86);
   box-shadow: 0 12px 34px rgba(5, 39, 34, 0.06);
+  opacity: 0;
+  transform: translateY(10px) scale(0.985);
+  animation: autoFaceFront 8s ease-in-out infinite;
+  animation-fill-mode: both;
 }
 
 .flip-card .flip-face {
@@ -408,7 +400,7 @@ a {
 }
 
 .flip-back {
-  transform: rotateY(180deg);
+  animation-name: autoFaceBack;
 }
 
 .flip-card .flip-back {
@@ -429,6 +421,61 @@ a {
   color: var(--white);
   font-weight: 900;
   line-height: 1.55;
+}
+
+.qualification-summary .flip-card:nth-child(2) .flip-face,
+.gallery-grid .gallery-flip:nth-child(2) .flip-face {
+  animation-delay: 1.15s;
+}
+
+.qualification-summary .flip-card:nth-child(3) .flip-face,
+.gallery-grid .gallery-flip:nth-child(3) .flip-face {
+  animation-delay: 2.3s;
+}
+
+@keyframes autoFaceFront {
+  0%,
+  42%,
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  50%,
+  92% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.985);
+  }
+}
+
+@keyframes autoFaceBack {
+  0%,
+  42%,
+  100% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  50%,
+  92% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-face {
+    animation: none;
+  }
+
+  .flip-front {
+    opacity: 1;
+    transform: none;
+  }
+
+  .flip-back {
+    display: none;
+  }
 }
 
 .feature-card h3,
@@ -527,7 +574,6 @@ a {
 .gallery-flip {
   margin: 0;
   min-height: 360px;
-  perspective: 1200px;
   outline: none;
 }
 
