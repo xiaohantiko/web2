@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>石家庄辰泰环境科技有限公司</title>
-    <link rel="stylesheet" href="styles.css?v=20260517c" />
+    <link rel="stylesheet" href="styles.css?v=20260517d" />
   </head>
   <body>
     <header class="site-header">
@@ -93,17 +93,41 @@
           <h2 data-i18n="qual.title">资质能力</h2>
         </div>
         <div class="qualification-summary">
-          <article class="feature-card">
-            <h3 data-i18n="qual.card1Title">企业资质</h3>
-            <p data-i18n="qual.card1Text">公司通过 ISO9001 质量体系认证，并取得有机尾气治理回收设备相关防爆认证资质，拥有多项自主知识产权、商标知识产权及专利成果。</p>
+          <article class="feature-card flip-card" tabindex="0" aria-label="企业资质，翻转查看证书">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <h3 data-i18n="qual.card1Title">企业资质</h3>
+                <p data-i18n="qual.card1Text">公司通过 ISO9001 质量体系认证，并取得有机尾气治理回收设备相关防爆认证资质，拥有多项自主知识产权、商标知识产权及专利成果。</p>
+              </div>
+              <div class="flip-face flip-back">
+                <img src="assets/qualifications/iso9001.jpg" alt="ISO9001质量体系认证" loading="lazy" />
+                <span>ISO9001 / 防爆合格证 / 特种设备生产许可</span>
+              </div>
+            </div>
           </article>
-          <article class="feature-card">
-            <h3 data-i18n="qual.card2Title">企业认定</h3>
-            <p data-i18n="qual.card2Text">公司先后获评河北省科技型中小企业、高新技术企业、规模以上企业、国家级科技型中小企业、河北省专精特新中小企业。</p>
+          <article class="feature-card flip-card" tabindex="0" aria-label="企业认定，翻转查看证书">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <h3 data-i18n="qual.card2Title">企业认定</h3>
+                <p data-i18n="qual.card2Text">公司先后获评河北省科技型中小企业、高新技术企业、规模以上企业、国家级科技型中小企业、河北省专精特新中小企业。</p>
+              </div>
+              <div class="flip-face flip-back">
+                <img src="assets/qualifications/high-tech-enterprise.jpg" alt="高新技术企业证书" loading="lazy" />
+                <span>高新技术企业 / 科技型中小企业 / 专精特新</span>
+              </div>
+            </div>
           </article>
-          <article class="feature-card">
-            <h3 data-i18n="qual.card3Title">实验室与研发</h3>
-            <p data-i18n="qual.card3Text">公司建有市级实验室及专业化研发中心，可围绕气相回收、液相分离、精馏萃取等工况进行工艺模拟、参数分析和工程验证。</p>
+          <article class="feature-card flip-card" tabindex="0" aria-label="实验室与研发，翻转查看实验室">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <h3 data-i18n="qual.card3Title">实验室与研发</h3>
+                <p data-i18n="qual.card3Text">公司建有市级实验室及专业化研发中心，可围绕气相回收、液相分离、精馏萃取等工况进行工艺模拟、参数分析和工程验证。</p>
+              </div>
+              <div class="flip-face flip-back">
+                <img src="assets/qualifications/laboratory-overview.png" alt="公司实验室" loading="lazy" />
+                <span>实验验证 / 参数分析 / 工程放大</span>
+              </div>
+            </div>
           </article>
         </div>
         <a class="section-more" href="qualifications.html" data-i18n="qual.more">查看资质与实验室</a>
@@ -177,9 +201,24 @@
           <h2 data-i18n="gallery.title">工厂与工程现场</h2>
         </div>
         <div class="gallery-grid">
-          <img src="assets/hero/factory-realistic.png" alt="辰泰环保厂区" />
-          <img src="assets/products/gac.jpg" alt="有机尾气治理设备" />
-          <img src="assets/products/distillation.jpg" alt="精馏萃取设备" />
+          <figure class="gallery-flip" tabindex="0" aria-label="厂区图片，翻转查看更多现场">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front"><img src="assets/hero/factory-realistic.png" alt="辰泰环保厂区" /></div>
+              <div class="flip-face flip-back"><img src="assets/cases/anhui-industrial.jpg" alt="工程项目现场" /></div>
+            </div>
+          </figure>
+          <figure class="gallery-flip" tabindex="0" aria-label="设备现场图片，翻转查看更多现场">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front"><img src="assets/products/gac.jpg" alt="有机尾气治理设备" /></div>
+              <div class="flip-face flip-back"><img src="assets/qualifications/laboratory-overview.png" alt="公司实验室" /></div>
+            </div>
+          </figure>
+          <figure class="gallery-flip" tabindex="0" aria-label="精馏设备图片，翻转查看更多现场">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front"><img src="assets/products/distillation.jpg" alt="精馏萃取设备" /></div>
+              <div class="flip-face flip-back"><img src="assets/cases/shandong-solvent.jpg" alt="溶剂回收项目现场" /></div>
+            </div>
+          </figure>
         </div>
       </section>
 
@@ -223,6 +262,6 @@
       <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
     </footer>
 
-    <script src="app.js?v=20260517c"></script>
+    <script src="app.js?v=20260517d"></script>
   </body>
 </html>
