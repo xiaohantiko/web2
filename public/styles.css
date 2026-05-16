@@ -186,7 +186,7 @@ img {
   color: var(--white);
   background:
     linear-gradient(90deg, rgba(3, 23, 19, 0.84), rgba(6, 56, 47, 0.48) 42%, rgba(6, 56, 47, 0.12)),
-    url("/assets/hero/factory-realistic.png") center/cover no-repeat;
+    url("assets/hero/factory-realistic.png") center/cover no-repeat;
 }
 
 .hero-industrial,
@@ -724,7 +724,7 @@ img {
   padding: clamp(26px, 4vw, 42px);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(236, 247, 235, 0.9)),
-    url("/assets/products/gac.jpg") right bottom / 48% auto no-repeat;
+    url("assets/products/gac.jpg") right bottom / 48% auto no-repeat;
 }
 
 .about-copy h3 {
