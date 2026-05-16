@@ -263,6 +263,10 @@ function t(key) {
   return labels[currentLang][key] || labels.zh[key] || key;
 }
 
+function translatedValue(key) {
+  return labels[currentLang]?.[key] || labels.zh?.[key] || "";
+}
+
 function localField(item, key, fallback = "") {
   return currentLang === "en" ? item[`${key}En`] || item[key] || fallback : item[key] || fallback;
 }
@@ -277,9 +281,11 @@ function escapeHtml(value) {
 
 function renderI18n() {
   $$("[data-i18n]").forEach((node) => {
-    node.textContent = t(node.dataset.i18n);
+    const value = translatedValue(node.dataset.i18n);
+    if (value) node.textContent = value;
   });
-  $("[data-lang-toggle]").textContent = currentLang === "zh" ? "EN" : "中";
+  const toggle = $("[data-lang-toggle]");
+  if (toggle) toggle.textContent = currentLang === "zh" ? "EN" : "中";
   document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
 }
 
@@ -349,14 +355,21 @@ function closeModal() {
 }
 
 function bind() {
-  $("[data-menu-button]").addEventListener("click", () => {
-    $("[data-nav]").classList.toggle("is-open");
-  });
-  $("[data-lang-toggle]").addEventListener("click", () => {
-    currentLang = currentLang === "zh" ? "en" : "zh";
-    renderI18n();
-    renderNews();
-  });
+  const menuButton = $("[data-menu-button]");
+  const nav = $("[data-nav]");
+  const langToggle = $("[data-lang-toggle]");
+  if (menuButton && nav) {
+    menuButton.addEventListener("click", () => {
+      nav.classList.toggle("is-open");
+    });
+  }
+  if (langToggle) {
+    langToggle.addEventListener("click", () => {
+      currentLang = currentLang === "zh" ? "en" : "zh";
+      renderI18n();
+      renderNews();
+    });
+  }
   document.addEventListener("click", (event) => {
     const card = event.target.closest("[data-news-id]");
     if (card) openNews(card.dataset.newsId, card.dataset.newsType);
