@@ -172,15 +172,24 @@ a {
 
 .hero h1 {
   margin: 0;
-  max-width: 900px;
-  font-size: clamp(54px, 8.8vw, 130px);
-  line-height: 0.98;
+  max-width: 980px;
+  font-size: clamp(42px, 6.4vw, 96px);
+  line-height: 1.06;
   letter-spacing: 0;
+}
+
+.hero-subtitle {
+  max-width: 780px;
+  margin: 18px 0 0;
+  color: rgba(222, 255, 236, 0.86);
+  font-size: clamp(18px, 2.1vw, 31px);
+  line-height: 1.35;
+  font-weight: 800;
 }
 
 .hero-content > p:not(.eyebrow) {
   max-width: 760px;
-  margin: 28px 0 0;
+  margin: 24px 0 0;
   color: rgba(245, 255, 250, 0.84);
   font-size: clamp(17px, 1.5vw, 24px);
   line-height: 1.8;
@@ -213,6 +222,12 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.34);
   color: var(--white);
   background: rgba(255, 255, 255, 0.08);
+}
+
+.button.ghost.dark {
+  border-color: rgba(20, 52, 47, 0.22);
+  color: var(--forest);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .hero-panel {
@@ -325,6 +340,18 @@ a {
 
 .qualification-layout {
   grid-template-columns: repeat(2, minmax(0, 0.72fr)) minmax(340px, 1.25fr);
+}
+
+.qualification-summary,
+.cert-grid,
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.qualification-summary + .section-more {
+  margin-top: 26px;
 }
 
 .feature-card,
@@ -547,11 +574,15 @@ a {
   padding-top: 0;
 }
 
-.news-page {
+.news-page,
+.inquiry-page,
+.qual-page {
   background: #f4faf6;
 }
 
-.news-hero {
+.news-hero,
+.inquiry-hero,
+.qual-hero {
   padding: 150px clamp(22px, 7vw, 120px) 80px;
   color: var(--white);
   background:
@@ -559,19 +590,215 @@ a {
     url("assets/hero/factory-realistic.png") center/cover no-repeat;
 }
 
-.news-hero h1 {
+.news-hero h1,
+.inquiry-hero h1,
+.qual-hero h1 {
   margin: 0;
   font-size: clamp(48px, 7vw, 104px);
   line-height: 1;
 }
 
-.news-hero p:not(.eyebrow) {
+.news-hero p:not(.eyebrow),
+.inquiry-hero p:not(.eyebrow),
+.qual-hero p:not(.eyebrow) {
   max-width: 760px;
   margin: 22px 0 0;
   color: rgba(255, 255, 255, 0.8);
   font-size: 20px;
   line-height: 1.8;
   font-weight: 700;
+}
+
+.inquiry-section {
+  padding-top: 42px;
+}
+
+.inquiry-form {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 46px);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.inquiry-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--forest);
+  font-weight: 900;
+}
+
+.inquiry-form em {
+  margin-left: 4px;
+  color: #d84f3a;
+  font-style: normal;
+}
+
+.inquiry-form input,
+.inquiry-form textarea {
+  width: 100%;
+  border: 1px solid rgba(20, 52, 47, 0.18);
+  border-radius: 6px;
+  padding: 14px 15px;
+  color: var(--ink);
+  background: #fbfdfb;
+  outline: 0;
+}
+
+.inquiry-form textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.inquiry-form input:focus,
+.inquiry-form textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(22, 133, 104, 0.12);
+}
+
+.full-field {
+  margin-top: 18px;
+}
+
+.required-note,
+.form-status {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.form-actions button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.cert-section {
+  padding-bottom: 48px;
+}
+
+.cert-card,
+.capability-grid article,
+.lab-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 14px 34px rgba(5, 39, 34, 0.07);
+}
+
+.cert-card {
+  min-height: 250px;
+  padding: clamp(24px, 3vw, 34px);
+}
+
+.cert-card span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--forest);
+  background: rgba(200, 240, 90, 0.42);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.cert-card h3,
+.lab-panel h3,
+.capability-grid h3 {
+  margin: 18px 0 12px;
+  color: var(--forest);
+  font-size: clamp(22px, 2vw, 30px);
+}
+
+.cert-card p,
+.lab-panel p,
+.capability-grid p,
+.lab-panel li {
+  margin: 0;
+  color: #4c625d;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.lab-section {
+  padding-top: 48px;
+  background:
+    linear-gradient(135deg, rgba(6, 31, 27, 0.94), rgba(12, 85, 69, 0.86)),
+    url("assets/hero/factory-realistic.png") center/cover no-repeat;
+}
+
+.lab-section .section-head h2 {
+  color: var(--white);
+}
+
+.lab-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(28px, 5vw, 70px);
+  align-items: center;
+}
+
+.lab-image {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.lab-image img {
+  width: 100%;
+  min-height: 420px;
+  object-fit: cover;
+}
+
+.lab-panel {
+  padding: clamp(26px, 4vw, 46px);
+}
+
+.lab-panel ul {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-panel li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.lab-panel li::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.capability-grid article {
+  min-height: 190px;
+  padding: clamp(24px, 3vw, 34px);
 }
 
 .contact-card {
@@ -593,6 +820,10 @@ a {
 .contact-card p {
   color: rgba(255, 255, 255, 0.78);
   line-height: 1.8;
+}
+
+.contact-card .button {
+  margin-top: 18px;
 }
 
 .contact-card ul {
@@ -734,12 +965,17 @@ a {
   .profile-grid,
   .qualification-layout,
   .product-layout,
-  .contact-card {
+  .lab-layout,
+  .contact-card,
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
   .business-grid,
   .product-cards,
+  .qualification-summary,
+  .cert-grid,
+  .capability-grid,
   .news-grid,
   .home-news-grid,
   .stats-band,
@@ -778,6 +1014,9 @@ a {
 
   .business-grid,
   .product-cards,
+  .qualification-summary,
+  .cert-grid,
+  .capability-grid,
   .news-grid,
   .home-news-grid,
   .stats-band,

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>客户咨询表 - 石家庄辰泰环境科技有限公司</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="inquiry-page">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="返回首页">
+        <img src="assets/logo/chentai-logo-full.jpg" alt="石家庄辰泰环境科技有限公司" />
+        <span>
+          <strong>石家庄辰泰环境科技有限公司</strong>
+          <small>Shijiazhuang Chentai Environmental Technology Co., Ltd.</small>
+        </span>
+      </a>
+      <button class="menu-button" type="button" data-menu-button>☰</button>
+      <nav class="nav" data-nav>
+        <a href="index.html#profile" data-i18n="nav.profile">公司简介</a>
+        <a href="qualifications.html" data-i18n="nav.qualifications">资质能力</a>
+        <a href="index.html#business" data-i18n="nav.business">主营业务</a>
+        <a href="index.html#products" data-i18n="nav.products">产品体系</a>
+        <a href="news.html" data-i18n="nav.news">新闻版块</a>
+        <a href="inquiry.html" data-i18n="nav.inquiry">客户咨询</a>
+        <a href="index.html#contact" data-i18n="nav.contact">联系我们</a>
+        <button class="lang-toggle" type="button" data-lang-toggle>EN</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="inquiry-hero">
+        <p class="eyebrow">Project Inquiry</p>
+        <h1 data-i18n="inquiry.title">客户咨询表</h1>
+        <p data-i18n="inquiry.copy">请填写项目基础信息，便于我们判断工艺路线、设备规模和后续沟通重点。带 * 的项目为必填项。</p>
+      </section>
+
+      <section class="section inquiry-section">
+        <form class="inquiry-form" data-inquiry-form>
+          <div class="form-grid">
+            <label>
+              <span data-i18n="form.name">姓名</span><em>*</em>
+              <input name="name" autocomplete="name" required />
+            </label>
+            <label>
+              <span data-i18n="form.company">单位名称</span>
+              <input name="company" autocomplete="organization" />
+            </label>
+            <label>
+              <span data-i18n="form.phone">联系电话</span><em>*</em>
+              <input name="phone" autocomplete="tel" required />
+            </label>
+            <label>
+              <span data-i18n="form.email">邮箱</span>
+              <input name="email" type="email" autocomplete="email" />
+            </label>
+            <label>
+              <span data-i18n="form.industry">所属行业</span>
+              <input name="industry" placeholder="化工 / 医药 / 涂布 / 新材料" />
+            </label>
+            <label>
+              <span data-i18n="form.medium">废气或溶剂类型</span>
+              <input name="medium" placeholder="如丙酮、乙酸乙酯、DMF、VOCs等" />
+            </label>
+            <label>
+              <span data-i18n="form.flowRate">处理风量/产能</span>
+              <input name="flowRate" placeholder="如 10000 Nm3/h" />
+            </label>
+            <label>
+              <span data-i18n="form.fileHint">资料说明</span>
+              <input name="attachmentNote" placeholder="可备注已有检测报告、流程图或现场照片" />
+            </label>
+          </div>
+          <label class="full-field">
+            <span data-i18n="form.need">需求说明</span><em>*</em>
+            <textarea name="need" rows="7" required placeholder="请描述项目现状、治理目标、回收介质、现场限制或希望咨询的问题"></textarea>
+          </label>
+          <p class="required-note" data-i18n="form.requiredNote">备注：* 号为必填项。</p>
+          <div class="form-actions">
+            <button class="button primary" type="submit" data-i18n="form.submit">提交咨询</button>
+            <a class="button ghost dark" href="downloads/customer-consultation-form.doc" download data-i18n="form.download">下载咨询表</a>
+          </div>
+          <p class="form-status" data-form-status></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>石家庄辰泰环境科技有限公司</span>
+      <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

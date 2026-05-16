@@ -1,11 +1,13 @@
 const http = require("http");
 const fs = require("fs/promises");
 const path = require("path");
+const nodemailer = require("nodemailer");
 
 const root = __dirname;
 const publicDir = path.join(root, "public");
 const dataFile = path.join(root, "data", "site.json");
 const port = Number(process.env.PORT || 3000);
+const host = process.env.HOST || "0.0.0.0";
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -52,6 +54,62 @@ async function writeSiteData(data) {
   await fs.writeFile(dataFile, `${JSON.stringify(data, null, 2)}\n`);
 }
 
+function mailEnabled() {
+  return Boolean(process.env.SMTP_HOST && process.env.MAIL_TO);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+async function sendInquiryMail(inquiry) {
+  if (!mailEnabled()) return { sent: false, reason: "SMTP_NOT_CONFIGURED" };
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT || 465),
+    secure: String(process.env.SMTP_SECURE || "true") !== "false",
+    auth: process.env.SMTP_USER
+      ? {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS || ""
+        }
+      : undefined
+  });
+
+  const rows = [
+    ["姓名", inquiry.name],
+    ["单位", inquiry.company],
+    ["电话", inquiry.phone],
+    ["邮箱", inquiry.email],
+    ["行业", inquiry.industry],
+    ["废气/溶剂", inquiry.medium],
+    ["处理风量", inquiry.flowRate],
+    ["资料说明", inquiry.attachmentNote],
+    ["需求说明", inquiry.need],
+    ["提交时间", inquiry.createdAt]
+  ];
+
+  await transporter.sendMail({
+    from: process.env.MAIL_FROM || process.env.SMTP_USER || "website@chentai.local",
+    to: process.env.MAIL_TO,
+    subject: `网站客户咨询表 - ${inquiry.name}`,
+    text: rows.map(([label, value]) => `${label}: ${value || "-"}`).join("\n"),
+    html: `
+      <h2>网站客户咨询表</h2>
+      <table cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse;">
+        ${rows.map(([label, value]) => `<tr><th align="left">${escapeHtml(label)}</th><td>${escapeHtml(value || "-")}</td></tr>`).join("")}
+      </table>
+    `
+  });
+
+  return { sent: true };
+}
+
 function safePublicPath(urlPath) {
   const normalized = path.normalize(decodeURIComponent(urlPath)).replace(/^(\.\.[/\\])+/, "");
   const filePath = path.join(publicDir, normalized === "/" ? "index.html" : normalized);
@@ -71,19 +129,33 @@ async function handleApi(req, res, url) {
       id: `INQ-${Date.now()}`,
       name: String(body.name || "").trim(),
       company: String(body.company || "").trim(),
-      contact: String(body.contact || "").trim(),
+      phone: String(body.phone || body.contact || "").trim(),
+      email: String(body.email || "").trim(),
+      industry: String(body.industry || "").trim(),
+      medium: String(body.medium || "").trim(),
+      flowRate: String(body.flowRate || "").trim(),
+      attachmentNote: String(body.attachmentNote || "").trim(),
       need: String(body.need || "").trim(),
       createdAt: new Date().toISOString()
     };
 
-    if (!inquiry.name || !inquiry.contact || !inquiry.need) {
-      send(res, 400, JSON.stringify({ error: "请填写姓名、联系方式和需求。" }));
+    if (!inquiry.name || !inquiry.phone || !inquiry.need) {
+      send(res, 400, JSON.stringify({ error: "请填写姓名、电话和需求说明。" }));
       return true;
     }
 
     data.inquiries.unshift(inquiry);
     await writeSiteData(data);
-    send(res, 201, JSON.stringify({ ok: true, inquiry }));
+
+    let mail = { sent: false, reason: "SMTP_NOT_CONFIGURED" };
+    try {
+      mail = await sendInquiryMail(inquiry);
+    } catch (error) {
+      console.error("Inquiry email failed:", error);
+      mail = { sent: false, reason: "SMTP_SEND_FAILED" };
+    }
+
+    send(res, 201, JSON.stringify({ ok: true, inquiry, mail }));
     return true;
   }
 
@@ -167,6 +239,6 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.log(`Chentai modern site running at http://127.0.0.1:${port}`);
+server.listen(port, host, () => {
+  console.log(`Chentai modern site running at http://${host}:${port}`);
 });

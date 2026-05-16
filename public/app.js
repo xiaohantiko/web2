@@ -17,12 +17,14 @@ const labels = {
     "nav.business": "主营业务",
     "nav.products": "产品体系",
     "nav.news": "新闻版块",
+    "nav.inquiry": "客户咨询",
     "nav.contact": "联系我们",
     "hero.eyebrow": "有机溶媒回收治理科技型企业",
-    "hero.title": "辰起蓝天，泰然自若",
+    "hero.title": "石家庄辰泰环境科技有限公司",
+    "hero.subtitle": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
     "hero.copy": "聚焦工业有机尾气治理、液相萃取及精馏分离工艺设备，为化工、医药、涂布、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。",
     "hero.primary": "查看业务能力",
-    "hero.secondary": "浏览新闻动态",
+    "hero.secondary": "提交项目咨询",
     "hero.land": "占地面积",
     "hero.plant": "建筑厂房",
     "hero.iso": "质量体系认证",
@@ -41,6 +43,40 @@ const labels = {
     "qual.card1Text": "公司通过 ISO9001 质量体系认证，并取得有机尾气治理回收设备相关防爆认证资质，拥有多项自主知识产权、商标知识产权及专利成果。",
     "qual.card2Title": "企业认定",
     "qual.card2Text": "公司先后获评河北省科技型中小企业、高新技术企业、规模以上企业、国家级科技型中小企业、河北省专精特新中小企业。",
+    "qual.card3Title": "实验室与研发",
+    "qual.card3Text": "公司建有市级实验室及专业化研发中心，可围绕气相回收、液相分离、精馏萃取等工况进行工艺模拟、参数分析和工程验证。",
+    "qual.more": "查看资质与实验室",
+    "qual.pageTitle": "资质证书与实验室能力",
+    "qual.pageCopy": "把资质、研发、实验验证和工程交付能力独立呈现，首页保持简洁，详细资料在本页集中查看。",
+    "qual.certTitle": "资质证书",
+    "qual.labTitle": "实验室与研发中心",
+    "qual.teamTitle": "研发与工程服务能力",
+    "cert.isoTitle": "ISO9001质量体系认证",
+    "cert.isoText": "以质量管理体系约束设计、制造、安装、调试和售后流程。",
+    "cert.exTitle": "防爆认证资质",
+    "cert.exText": "具备有机尾气治理回收设备相关防爆认证资质，适配化工、医药等安全要求较高的现场。",
+    "cert.highTitle": "高新技术企业",
+    "cert.highText": "围绕有机溶媒回收、精馏萃取与尾气治理持续进行技术研发和工程转化。",
+    "cert.smeTitle": "科技型中小企业",
+    "cert.smeText": "获评河北省科技型中小企业、国家级科技型中小企业等企业认定。",
+    "cert.specialTitle": "专精特新中小企业",
+    "cert.specialText": "在有机溶媒回收治理细分方向形成专业化产品与工程服务能力。",
+    "cert.ipTitle": "知识产权与专利成果",
+    "cert.ipText": "拥有多项自主知识产权、商标知识产权及专利成果，支撑工艺设备持续迭代。",
+    "lab.mainTitle": "面向工程落地的工艺验证平台",
+    "lab.mainText": "公司建立市级实验室及专业化研发中心，可模拟多种溶媒回收过程，形成完整的模拟参数分析，为项目工艺路线、设备选型、能耗评估和现场调试提供依据。",
+    "lab.item1": "气相有机尾气吸附、脱附、冷凝、回收流程验证",
+    "lab.item2": "液相溶剂萃取、精馏、分离与节能方案模拟",
+    "lab.item3": "气相回收系统与液相分离系统协同设计评估",
+    "lab.item4": "项目工况参数、设备规格、运行能耗与安全边界分析",
+    "team.item1Title": "技术咨询",
+    "team.item1Text": "根据废气组分、浓度、风量、回收目标和排放要求，判断适用工艺路线。",
+    "team.item2Title": "工程设计",
+    "team.item2Text": "完成工艺、设备、管线、自控和安全配置的综合设计。",
+    "team.item3Title": "制造交付",
+    "team.item3Text": "依托现代化厂房和数控设备，完成核心设备制造、组装与出厂检验。",
+    "team.item4Title": "安装调试",
+    "team.item4Text": "提供现场安装、系统调试、技术培训和后续维护支持。",
     "business.title": "主营业务",
     "business.item1Title": "工业有机尾气治理",
     "business.item1Text": "面向化工、医药、印刷、涂布、新材料等行业，提供吸附、脱附、冷凝、回收、达标排放一体化解决方案。",
@@ -75,10 +111,28 @@ const labels = {
     "news.allTitle": "全部新闻资讯",
     "contact.title": "联系我们",
     "contact.copy": "欢迎围绕有机尾气治理、溶剂回收、液相分离和精馏节能改造需求进行项目咨询。",
+    "contact.inquiry": "填写客户咨询表",
     "contact.phone": "电话",
     "contact.email": "邮箱",
     "contact.address": "地址",
-    "contact.addressValue": "河北省石家庄市灵寿县工业园区二区"
+    "contact.addressValue": "河北省石家庄市灵寿县工业园区二区",
+    "inquiry.title": "客户咨询表",
+    "inquiry.copy": "请填写项目基础信息，便于我们判断工艺路线、设备规模和后续沟通重点。带 * 的项目为必填项。",
+    "form.name": "姓名",
+    "form.company": "单位名称",
+    "form.phone": "联系电话",
+    "form.email": "邮箱",
+    "form.industry": "所属行业",
+    "form.medium": "废气或溶剂类型",
+    "form.flowRate": "处理风量/产能",
+    "form.fileHint": "资料说明",
+    "form.need": "需求说明",
+    "form.requiredNote": "备注：* 号为必填项。",
+    "form.submit": "提交咨询",
+    "form.download": "下载咨询表",
+    "form.success": "咨询已提交，我们会尽快联系您。",
+    "form.savedNoEmail": "咨询已提交并保存。当前后台邮件尚未配置，请部署时设置 SMTP 邮箱参数。",
+    "form.staticError": "当前 GitHub Pages 为静态演示，无法直接提交表单。请部署 Node 后台后使用，或下载咨询表发送至邮箱。"
   },
   en: {
     "nav.profile": "Profile",
@@ -86,12 +140,14 @@ const labels = {
     "nav.business": "Business",
     "nav.products": "Products",
     "nav.news": "News",
+    "nav.inquiry": "Inquiry",
     "nav.contact": "Contact",
     "hero.eyebrow": "Technology Company for Organic Solvent Recovery",
-    "hero.title": "Cleaner Air, Reliable Engineering",
+    "hero.title": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+    "hero.subtitle": "Organic solvent recovery and VOCs treatment systems provider",
     "hero.copy": "Chentai focuses on industrial organic waste gas treatment, liquid extraction and distillation separation equipment, providing technical consulting, engineering design, equipment manufacturing, installation, commissioning and after-sales service.",
     "hero.primary": "Business Capability",
-    "hero.secondary": "News Center",
+    "hero.secondary": "Project Inquiry",
     "hero.land": "Land area",
     "hero.plant": "Plant area",
     "hero.iso": "Quality system certification",
@@ -110,6 +166,40 @@ const labels = {
     "qual.card1Text": "The company has passed ISO9001 quality system certification, obtained explosion-proof certification for organic waste gas recovery equipment, and owns patents, trademarks and other intellectual property achievements.",
     "qual.card2Title": "Recognitions",
     "qual.card2Text": "Chentai has been recognized as a Hebei technology-based SME, high-tech enterprise, above-scale enterprise, national technology-based SME and Hebei Specialized and Innovative SME.",
+    "qual.card3Title": "Laboratory and R&D",
+    "qual.card3Text": "The company operates a municipal laboratory and dedicated R&D center for process simulation, parameter analysis and engineering validation of gas recovery, liquid separation and distillation systems.",
+    "qual.more": "View Qualifications and Laboratory",
+    "qual.pageTitle": "Qualifications and Laboratory Capability",
+    "qual.pageCopy": "Certificates, R&D, testing and engineering delivery capabilities are presented on this dedicated page so the homepage stays focused.",
+    "qual.certTitle": "Certificates",
+    "qual.labTitle": "Laboratory and R&D Center",
+    "qual.teamTitle": "R&D and Engineering Services",
+    "cert.isoTitle": "ISO9001 Quality System Certification",
+    "cert.isoText": "Quality management covers design, manufacturing, installation, commissioning and after-sales service.",
+    "cert.exTitle": "Explosion-Proof Certification",
+    "cert.exText": "Certification for organic waste gas recovery equipment supports projects in chemical and pharmaceutical sites with strict safety requirements.",
+    "cert.highTitle": "High-Tech Enterprise",
+    "cert.highText": "Continuous R&D and engineering application in organic solvent recovery, distillation extraction and tail gas treatment.",
+    "cert.smeTitle": "Technology-Based SME",
+    "cert.smeText": "Recognized as a Hebei technology-based SME and a national technology-based SME.",
+    "cert.specialTitle": "Specialized and Innovative SME",
+    "cert.specialText": "Focused product and engineering capabilities in the organic solvent recovery and treatment segment.",
+    "cert.ipTitle": "Intellectual Property and Patents",
+    "cert.ipText": "Patents, trademarks and proprietary technologies support continuous process and equipment iteration.",
+    "lab.mainTitle": "Process Validation for Real Projects",
+    "lab.mainText": "The municipal laboratory and professional R&D center can simulate multiple solvent recovery processes and generate complete parameter analysis for process selection, equipment sizing, energy evaluation and commissioning.",
+    "lab.item1": "Validation of adsorption, desorption, condensation and recovery for gas-phase organic exhaust",
+    "lab.item2": "Simulation of liquid solvent extraction, distillation, separation and energy-saving routes",
+    "lab.item3": "Integrated assessment of gas recovery and liquid separation systems",
+    "lab.item4": "Analysis of operating parameters, equipment scale, energy use and safety boundaries",
+    "team.item1Title": "Technical Consulting",
+    "team.item1Text": "Assess process routes based on gas composition, concentration, airflow, recovery target and emission requirements.",
+    "team.item2Title": "Engineering Design",
+    "team.item2Text": "Integrated design of process, equipment, piping, automation and safety configuration.",
+    "team.item3Title": "Manufacturing",
+    "team.item3Text": "Modern workshops and CNC equipment support fabrication, assembly and factory inspection.",
+    "team.item4Title": "Installation and Commissioning",
+    "team.item4Text": "On-site installation, system commissioning, technical training and maintenance support.",
     "business.title": "Core Business",
     "business.item1Title": "Industrial Organic Waste Gas Treatment",
     "business.item1Text": "Integrated solutions for adsorption, desorption, condensation, recovery and compliant emission in chemical, pharmaceutical, printing, coating and new-material industries.",
@@ -144,10 +234,28 @@ const labels = {
     "news.allTitle": "All News and Articles",
     "contact.title": "Contact",
     "contact.copy": "Contact us for organic waste gas treatment, solvent recovery, liquid separation and energy-saving distillation projects.",
+    "contact.inquiry": "Fill Inquiry Form",
     "contact.phone": "Tel",
     "contact.email": "Email",
     "contact.address": "Address",
-    "contact.addressValue": "Zone 2, Lingshou County Industrial Park, Shijiazhuang City, Hebei Province"
+    "contact.addressValue": "Zone 2, Lingshou County Industrial Park, Shijiazhuang City, Hebei Province",
+    "inquiry.title": "Project Inquiry",
+    "inquiry.copy": "Please provide basic project information so we can assess the process route, equipment scale and follow-up priorities. Fields marked with * are required.",
+    "form.name": "Name",
+    "form.company": "Company",
+    "form.phone": "Phone",
+    "form.email": "Email",
+    "form.industry": "Industry",
+    "form.medium": "Gas or Solvent",
+    "form.flowRate": "Air Flow / Capacity",
+    "form.fileHint": "Document Notes",
+    "form.need": "Requirement",
+    "form.requiredNote": "Note: * fields are required.",
+    "form.submit": "Submit Inquiry",
+    "form.download": "Download Form",
+    "form.success": "Your inquiry has been submitted. We will contact you soon.",
+    "form.savedNoEmail": "Your inquiry has been saved. Email delivery is not configured on the backend yet.",
+    "form.staticError": "GitHub Pages is a static demo and cannot submit forms directly. Deploy the Node backend or download the form and email it to us."
   }
 };
 
@@ -234,7 +342,9 @@ function openNews(id, type) {
 }
 
 function closeModal() {
-  $("[data-modal]").setAttribute("aria-hidden", "true");
+  const modal = $("[data-modal]");
+  if (!modal) return;
+  modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
 }
 
@@ -261,6 +371,34 @@ function bind() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeModal();
   });
+
+  const inquiryForm = $("[data-inquiry-form]");
+  if (inquiryForm) {
+    inquiryForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = $("[data-form-status]");
+      const button = inquiryForm.querySelector("button[type='submit']");
+      status.textContent = "";
+      button.disabled = true;
+      try {
+        const response = await fetch("api/inquiries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(new FormData(inquiryForm)))
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "提交失败");
+        inquiryForm.reset();
+        status.textContent = data.mail?.sent ? t("form.success") : t("form.savedNoEmail");
+      } catch (error) {
+        status.textContent = location.protocol === "file:" || location.hostname.endsWith("github.io")
+          ? t("form.staticError")
+          : error.message;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
 }
 
 async function boot() {
