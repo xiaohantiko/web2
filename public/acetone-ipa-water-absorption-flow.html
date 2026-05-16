@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>丙酮、异丙醇尾气水吸收流程图</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17342f;
+      --muted: #5f726c;
+      --green: #12a66d;
+      --blue: #1783d3;
+      --orange: #f28a21;
+      --purple: #a646d4;
+      --cyan: #20bfd0;
+      --line: #9db0aa;
+      --paper: #f8fbf8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(18, 166, 109, 0.13), transparent 34%),
+        linear-gradient(180deg, #eef7f1 0%, #f9fbfa 42%, #eef5f1 100%);
+    }
+
+    .page {
+      width: min(1480px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 34px;
+    }
+
+    header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      color: #0d3d32;
+      font-size: clamp(28px, 3.2vw, 48px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      padding: 10px 16px;
+      border: 1px solid rgba(18, 166, 109, 0.22);
+      border-radius: 999px;
+      color: #0d604b;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 12px 26px rgba(9, 72, 56, 0.08);
+    }
+
+    .sheet {
+      overflow: auto;
+      border: 1px solid rgba(16, 78, 61, 0.16);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 24px 70px rgba(7, 57, 45, 0.12);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      min-width: 1180px;
+      height: auto;
+      background: var(--paper);
+    }
+
+    .frame {
+      fill: #ffffff;
+      stroke: #cbd8d3;
+      stroke-width: 1.4;
+    }
+
+    .title-box {
+      fill: #eef9f3;
+      stroke: rgba(18, 166, 109, 0.4);
+      stroke-width: 1.2;
+    }
+
+    .label {
+      fill: var(--ink);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .small {
+      fill: #45615a;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .tag {
+      fill: #ffffff;
+      stroke: #aebdb8;
+      stroke-width: 1.2;
+    }
+
+    .tag-text {
+      fill: #174038;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .equipment {
+      fill: url(#steel);
+      stroke: #718680;
+      stroke-width: 1.5;
+    }
+
+    .tower-body {
+      fill: url(#tower);
+      stroke: #607b74;
+      stroke-width: 1.8;
+    }
+
+    .packing {
+      fill: url(#packing);
+      opacity: 0.86;
+    }
+
+    .support {
+      stroke: #70847e;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .pipe {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 4;
+    }
+
+    .pipe-thin {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2.4;
+    }
+
+    .gas {
+      stroke: var(--orange);
+    }
+
+    .clean {
+      stroke: var(--green);
+    }
+
+    .water {
+      stroke: var(--blue);
+    }
+
+    .rich {
+      stroke: var(--purple);
+    }
+
+    .control {
+      stroke: #4364d8;
+      stroke-width: 2.2;
+      stroke-dasharray: 7 7;
+    }
+
+    .arrow {
+      marker-end: url(#arrow);
+    }
+
+    .arrow-green {
+      marker-end: url(#arrowGreen);
+    }
+
+    .arrow-blue {
+      marker-end: url(#arrowBlue);
+    }
+
+    .arrow-purple {
+      marker-end: url(#arrowPurple);
+    }
+
+    .flow-dash {
+      stroke-dasharray: 14 12;
+      animation: dash 1.9s linear infinite;
+    }
+
+    @keyframes dash {
+      to { stroke-dashoffset: -52; }
+    }
+
+    .legend-card {
+      fill: #ffffff;
+      stroke: #c8d6d1;
+      stroke-width: 1.2;
+      filter: url(#softShadow);
+    }
+
+    .note-card {
+      fill: #f2faf5;
+      stroke: rgba(18, 166, 109, 0.32);
+      stroke-width: 1.2;
+    }
+
+    .footer-note {
+      margin: 14px 4px 0;
+      color: #60746e;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>丙酮、异丙醇尾气水吸收流程图</h1>
+        <p class="subtitle">根据 DWG/PDF 工艺图重绘：尾气收集、两级水吸收、循环液冷却、净化排放与吸收液外送。</p>
+      </div>
+      <div class="badge">Water Absorption · VOCs</div>
+    </header>
+
+    <section class="sheet" aria-label="丙酮异丙醇尾气水吸收流程图">
+      <svg viewBox="0 0 1480 860" role="img" aria-labelledby="chartTitle chartDesc">
+        <title id="chartTitle">丙酮、异丙醇尾气水吸收流程图</title>
+        <desc id="chartDesc">有机尾气进入一级和二级水吸收塔，循环吸收液经循环泵和冷却器回塔，净化气排放，富集吸收液外送。</desc>
+        <defs>
+          <linearGradient id="steel" x1="0" x2="1">
+            <stop offset="0" stop-color="#dce5e2" />
+            <stop offset="0.24" stop-color="#ffffff" />
+            <stop offset="0.48" stop-color="#b9c9c5" />
+            <stop offset="0.74" stop-color="#eff5f3" />
+            <stop offset="1" stop-color="#aabbb6" />
+          </linearGradient>
+          <linearGradient id="tower" x1="0" x2="1">
+            <stop offset="0" stop-color="#c8d6d2" />
+            <stop offset="0.2" stop-color="#f7fbfa" />
+            <stop offset="0.5" stop-color="#aec2bc" />
+            <stop offset="0.78" stop-color="#f5faf8" />
+            <stop offset="1" stop-color="#9fb4ae" />
+          </linearGradient>
+          <pattern id="packing" width="18" height="18" patternUnits="userSpaceOnUse">
+            <path d="M0 18 18 0M-5 5 5-5M13 23 23 13" stroke="#8da09b" stroke-width="1.2" />
+            <circle cx="9" cy="9" r="2.2" fill="#c7d5d1" />
+          </pattern>
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#0b4033" flood-opacity="0.12" />
+          </filter>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M2 2 10 6 2 10z" fill="#f28a21" />
+          </marker>
+          <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M2 2 10 6 2 10z" fill="#12a66d" />
+          </marker>
+          <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M2 2 10 6 2 10z" fill="#1783d3" />
+          </marker>
+          <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M2 2 10 6 2 10z" fill="#a646d4" />
+          </marker>
+        </defs>
+
+        <rect class="frame" x="24" y="24" width="1432" height="812" rx="16" />
+        <rect class="title-box" x="430" y="46" width="620" height="58" rx="14" />
+        <text class="label" x="740" y="82" text-anchor="middle">两级水吸收 + 循环冷却 + 富液外送</text>
+
+        <!-- Legend -->
+        <rect class="legend-card" x="54" y="570" width="260" height="210" rx="14" />
+        <text class="label" x="84" y="612">图例说明</text>
+        <path class="pipe gas arrow flow-dash" d="M84 642h74" />
+        <text class="small" x="180" y="647">有机尾气</text>
+        <path class="pipe clean arrow-green flow-dash" d="M84 676h74" />
+        <text class="small" x="180" y="681">净化排放气</text>
+        <path class="pipe water arrow-blue flow-dash" d="M84 710h74" />
+        <text class="small" x="180" y="715">循环吸收水</text>
+        <path class="pipe rich arrow-purple flow-dash" d="M84 744h74" />
+        <text class="small" x="180" y="749">富集吸收液</text>
+
+        <!-- Main gas line -->
+        <rect class="tag" x="56" y="238" width="122" height="46" rx="12" />
+        <text class="tag-text" x="117" y="267" text-anchor="middle">有机尾气</text>
+        <path class="pipe gas arrow flow-dash" d="M178 260h170" />
+        <rect class="equipment" x="245" y="216" width="70" height="88" rx="8" />
+        <line class="support" x1="257" y1="236" x2="303" y2="236" />
+        <line class="support" x1="257" y1="254" x2="303" y2="254" />
+        <line class="support" x1="257" y1="272" x2="303" y2="272" />
+        <text class="label" x="280" y="330" text-anchor="middle">预处理</text>
+        <text class="small" x="280" y="352" text-anchor="middle">过滤 / 除雾</text>
+
+        <path class="pipe gas arrow flow-dash" d="M315 260h130" />
+
+        <!-- Absorption tower 1 -->
+        <g transform="translate(445 176)">
+          <ellipse class="tower-body" cx="86" cy="38" rx="72" ry="24" />
+          <rect class="tower-body" x="14" y="38" width="144" height="270" />
+          <ellipse class="tower-body" cx="86" cy="308" rx="72" ry="24" />
+          <rect class="packing" x="31" y="114" width="110" height="126" rx="6" />
+          <line class="support" x1="27" y1="114" x2="145" y2="240" />
+          <line class="support" x1="145" y1="114" x2="27" y2="240" />
+          <rect class="tag" x="25" y="68" width="122" height="40" rx="10" />
+          <text class="tag-text" x="86" y="94" text-anchor="middle">一级吸收塔</text>
+          <text class="small" x="86" y="266" text-anchor="middle">填料吸收段</text>
+          <line class="support" x1="42" y1="332" x2="42" y2="378" />
+          <line class="support" x1="130" y1="332" x2="130" y2="378" />
+          <line class="support" x1="20" y1="378" x2="152" y2="378" />
+        </g>
+
+        <!-- Absorption tower 2 -->
+        <g transform="translate(770 176)">
+          <ellipse class="tower-body" cx="86" cy="38" rx="72" ry="24" />
+          <rect class="tower-body" x="14" y="38" width="144" height="270" />
+          <ellipse class="tower-body" cx="86" cy="308" rx="72" ry="24" />
+          <rect class="packing" x="31" y="114" width="110" height="126" rx="6" />
+          <line class="support" x1="27" y1="114" x2="145" y2="240" />
+          <line class="support" x1="145" y1="114" x2="27" y2="240" />
+          <rect class="tag" x="25" y="68" width="122" height="40" rx="10" />
+          <text class="tag-text" x="86" y="94" text-anchor="middle">二级吸收塔</text>
+          <text class="small" x="86" y="266" text-anchor="middle">精吸收段</text>
+          <line class="support" x1="42" y1="332" x2="42" y2="378" />
+          <line class="support" x1="130" y1="332" x2="130" y2="378" />
+          <line class="support" x1="20" y1="378" x2="152" y2="378" />
+        </g>
+
+        <!-- Gas connection through towers -->
+        <path class="pipe gas arrow flow-dash" d="M445 260h-30v245h116v-132" />
+        <path class="pipe gas arrow flow-dash" d="M531 214v-62h325v62" />
+        <path class="pipe gas arrow flow-dash" d="M856 214v-58h214" />
+
+        <!-- Clean gas outlet and stack -->
+        <path class="pipe clean arrow-green flow-dash" d="M930 214h300" />
+        <rect class="tag" x="1190" y="132" width="118" height="46" rx="12" />
+        <text class="tag-text" x="1249" y="161" text-anchor="middle">净化气</text>
+        <g transform="translate(1324 98)">
+          <rect class="equipment" x="24" y="24" width="44" height="154" rx="16" />
+          <rect x="19" y="24" width="54" height="14" fill="#e34242" />
+          <rect x="19" y="68" width="54" height="10" fill="#e34242" />
+          <line class="support" x1="46" y1="178" x2="24" y2="224" />
+          <line class="support" x1="46" y1="178" x2="68" y2="224" />
+          <text class="label" x="46" y="250" text-anchor="middle">排气筒</text>
+        </g>
+        <path class="pipe clean arrow-green flow-dash" d="M1230 214h132" />
+        <rect class="tag" x="1344" y="184" width="98" height="42" rx="10" />
+        <text class="tag-text" x="1393" y="210" text-anchor="middle">达标排放</text>
+
+        <!-- Circulation water system -->
+        <g transform="translate(430 612)">
+          <rect class="equipment" x="0" y="24" width="118" height="50" rx="20" />
+          <circle cx="24" cy="49" r="20" fill="#8cb4c2" stroke="#607b74" stroke-width="1.5" />
+          <text class="label" x="59" y="112" text-anchor="middle">循环泵 P-101</text>
+        </g>
+        <g transform="translate(750 612)">
+          <rect class="equipment" x="0" y="24" width="118" height="50" rx="20" />
+          <circle cx="24" cy="49" r="20" fill="#8cb4c2" stroke="#607b74" stroke-width="1.5" />
+          <text class="label" x="59" y="112" text-anchor="middle">循环泵 P-102</text>
+        </g>
+        <g transform="translate(1018 598)">
+          <rect class="equipment" x="0" y="0" width="172" height="86" rx="30" />
+          <line class="support" x1="30" y1="22" x2="142" y2="22" />
+          <line class="support" x1="30" y1="42" x2="142" y2="42" />
+          <line class="support" x1="30" y1="62" x2="142" y2="62" />
+          <text class="label" x="86" y="124" text-anchor="middle">循环液冷却器</text>
+        </g>
+
+        <path class="pipe water arrow-blue flow-dash" d="M488 636v-80h43v-72" />
+        <path class="pipe water arrow-blue flow-dash" d="M488 636h230" />
+        <path class="pipe water arrow-blue flow-dash" d="M808 636v-80h48v-72" />
+        <path class="pipe water arrow-blue flow-dash" d="M868 636h150" />
+        <path class="pipe water arrow-blue flow-dash" d="M1190 640h78v-408h-338" />
+
+        <!-- Rich liquid and tank -->
+        <path class="pipe rich arrow-purple flow-dash" d="M531 506v112h-90" />
+        <path class="pipe rich arrow-purple flow-dash" d="M856 506v118h190" />
+        <g transform="translate(1220 520)">
+          <ellipse class="equipment" cx="86" cy="32" rx="72" ry="22" />
+          <rect class="equipment" x="14" y="32" width="144" height="106" />
+          <ellipse class="equipment" cx="86" cy="138" rx="72" ry="22" />
+          <rect x="34" y="76" width="104" height="38" rx="4" fill="rgba(166, 70, 212, 0.18)" stroke="#a646d4" />
+          <text class="label" x="86" y="196" text-anchor="middle">吸收液储槽</text>
+        </g>
+        <path class="pipe rich arrow-purple flow-dash" d="M1046 624h174" />
+        <path class="pipe rich arrow-purple flow-dash" d="M1378 582h68" />
+        <rect class="tag" x="1350" y="532" width="92" height="42" rx="10" />
+        <text class="tag-text" x="1396" y="558" text-anchor="middle">外送回收</text>
+
+        <!-- Make-up water -->
+        <rect class="tag" x="1012" y="118" width="132" height="44" rx="12" />
+        <text class="tag-text" x="1078" y="146" text-anchor="middle">新鲜吸收水</text>
+        <path class="pipe water arrow-blue flow-dash" d="M1078 162v170h-150" />
+        <path class="pipe water arrow-blue flow-dash" d="M1078 332h-222" />
+
+        <!-- Instrument / control -->
+        <g transform="translate(1138 278)">
+          <rect class="equipment" x="0" y="0" width="110" height="142" rx="10" />
+          <rect x="18" y="18" width="74" height="38" rx="5" fill="#d9f4ef" stroke="#8aa5a0" />
+          <circle cx="30" cy="82" r="7" fill="#12a66d" />
+          <circle cx="55" cy="82" r="7" fill="#f28a21" />
+          <circle cx="80" cy="82" r="7" fill="#e34242" />
+          <circle cx="30" cy="110" r="6" fill="#8ea19c" />
+          <circle cx="55" cy="110" r="6" fill="#8ea19c" />
+          <circle cx="80" cy="110" r="6" fill="#8ea19c" />
+          <text class="label" x="55" y="174" text-anchor="middle">PLC 控制柜</text>
+        </g>
+        <path class="pipe-thin control" d="M1194 278v-70h-338" />
+        <path class="pipe-thin control" d="M1194 278v-34h-663" />
+        <path class="pipe-thin control" d="M1194 420v120h-338" />
+
+        <!-- Notes -->
+        <rect class="note-card" x="350" y="724" width="720" height="74" rx="14" />
+        <text class="small" x="380" y="754">工艺说明：有机尾气先经预处理后进入一级、二级吸收塔；循环吸收水逆流吸收丙酮/异丙醇，净化气进入排气筒达标排放。</text>
+        <text class="small" x="380" y="780">富集吸收液进入储槽后外送回收或进入后续精馏/废水处理系统，循环液通过冷却器控制吸收温度。</text>
+
+        <!-- Equipment numbering -->
+        <text class="small" x="531" y="574" text-anchor="middle">T-101</text>
+        <text class="small" x="856" y="574" text-anchor="middle">T-102</text>
+        <text class="small" x="1104" y="722" text-anchor="middle">E-101</text>
+        <text class="small" x="1306" y="704" text-anchor="middle">V-101</text>
+      </svg>
+    </section>
+
+    <p class="footer-note">说明：DWG 文件本机未安装 CAD 转换器，当前图依据同名 PDF 预览图和原工艺逻辑重绘为可读网页流程图。若需要完全按 CAD 图层、阀门编号和仪表位号逐项复刻，可提供导出的 PDF/SVG 或安装 DWG 转换器后继续精修。</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>油气自动回收装置立体模型</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0b1424;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+    #scene { position: fixed; inset: 0; }
+    .model-toolbar {
+      position: fixed;
+      left: 18px;
+      top: 16px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .model-label {
+      border: 1px solid rgba(164, 198, 188, 0.18);
+      border-radius: 999px;
+      color: #dceae5;
+      background: rgba(6, 17, 34, 0.78);
+      backdrop-filter: blur(8px);
+    }
+    .model-label {
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 850;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <div class="model-toolbar">
+    <div class="model-label">油气自动回收装置 · 吸附系统 + 吸收系统 / PLC自动控制</div>
+  </div>
+  <main id="scene"></main>
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/OrbitControls.global.js"></script>
+  <script>
+    const sceneEl = document.getElementById("scene");
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.78;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setClearColor(0x0b1424, 1);
+    sceneEl.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0b1424, 26, 62);
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 90);
+    camera.position.set(7.2, 4.8, 8.2);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.rotateSpeed = 0.48;
+    controls.target.set(0, 1.45, 0);
+    controls.minDistance = 10.5;
+    controls.maxDistance = 10.5;
+    controls.minPolarAngle = Math.PI * 0.18;
+    controls.maxPolarAngle = Math.PI * 0.62;
+
+    const envCanvas = document.createElement("canvas");
+    envCanvas.width = 512;
+    envCanvas.height = 256;
+    const envCtx = envCanvas.getContext("2d");
+    const envGrad = envCtx.createLinearGradient(0, 0, 0, 256);
+    envGrad.addColorStop(0, "#dce6ff");
+    envGrad.addColorStop(0.22, "#60728f");
+    envGrad.addColorStop(0.5, "#13233b");
+    envGrad.addColorStop(0.74, "#9fb0c8");
+    envGrad.addColorStop(1, "#07101f");
+    envCtx.fillStyle = envGrad;
+    envCtx.fillRect(0, 0, 512, 256);
+    envCtx.fillStyle = "rgba(255,255,255,.7)";
+    envCtx.fillRect(44, 28, 160, 28);
+    envCtx.fillRect(318, 44, 110, 22);
+    const envTexture = new THREE.CanvasTexture(envCanvas);
+    envTexture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = envTexture;
+
+    scene.add(new THREE.HemisphereLight(0xdce8ff, 0x07101f, 0.9));
+    const key = new THREE.DirectionalLight(0xffffff, 3.9);
+    key.position.set(5.2, 7.4, 6.8);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.left = -8;
+    key.shadow.camera.right = 8;
+    key.shadow.camera.top = 8;
+    key.shadow.camera.bottom = -6;
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xb9dcff, 2.3);
+    rim.position.set(-6, 4.8, -5);
+    scene.add(rim);
+    const warm = new THREE.PointLight(0xffe6b8, 0.85, 18);
+    warm.position.set(-3.2, 3.6, 4.4);
+    scene.add(warm);
+
+    function mat(options) { return new THREE.MeshStandardMaterial(options); }
+    const green = mat({ color: 0x0b6f52, metalness: 0.76, roughness: 0.24, envMapIntensity: 0.78 });
+    const darkGreen = mat({ color: 0x063829, metalness: 0.8, roughness: 0.32, envMapIntensity: 0.66 });
+    const frameGreen = mat({ color: 0x052d24, metalness: 0.82, roughness: 0.34, envMapIntensity: 0.58 });
+    const steel = mat({ color: 0x9aa7a5, metalness: 0.94, roughness: 0.2, envMapIntensity: 0.82 });
+    const bright = mat({ color: 0xd6dedb, metalness: 0.98, roughness: 0.12, envMapIntensity: 0.92 });
+    const dark = mat({ color: 0x1b2528, metalness: 0.72, roughness: 0.38, envMapIntensity: 0.45 });
+    const cream = mat({ color: 0xe8e2cf, metalness: 0.28, roughness: 0.42, envMapIntensity: 0.42 });
+    const black = mat({ color: 0x101719, metalness: 0.48, roughness: 0.48 });
+    const blue = mat({ color: 0x0a69a8, metalness: 0.48, roughness: 0.32, envMapIntensity: 0.5 });
+    const red = mat({ color: 0xb8332a, metalness: 0.4, roughness: 0.36, envMapIntensity: 0.44 });
+    const orange = mat({ color: 0xe98222, metalness: 0.34, roughness: 0.34, envMapIntensity: 0.42 });
+
+    function shadow(mesh) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      return mesh;
+    }
+    function box(group, name, pos, scale, material) {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.scale.set(...scale);
+      group.add(shadow(mesh));
+      return mesh;
+    }
+    function cylinder(group, name, pos, radius, height, material, axis = "y", radial = 72) {
+      const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, radial), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      if (axis === "x") mesh.rotation.z = Math.PI / 2;
+      if (axis === "z") mesh.rotation.x = Math.PI / 2;
+      group.add(shadow(mesh));
+      return mesh;
+    }
+    function pipe(group, name, a, b, radius = 0.035, material = steel) {
+      const start = new THREE.Vector3(...a);
+      const end = new THREE.Vector3(...b);
+      const dir = end.clone().sub(start);
+      const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, dir.length(), 24), material);
+      mesh.name = name;
+      mesh.position.copy(start.clone().add(end).multiplyScalar(0.5));
+      mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+      group.add(shadow(mesh));
+      return mesh;
+    }
+    function elbow(group, name, pos, radius = 0.045, material = steel) {
+      return sphere(group, name, pos, radius * 1.36, material);
+    }
+    function route(group, name, points, radius = 0.035, material = steel) {
+      for (let i = 0; i < points.length - 1; i += 1) {
+        pipe(group, `${name}-${i}`, points[i], points[i + 1], radius, material);
+        if (i < points.length - 2) elbow(group, `${name}-elbow-${i}`, points[i + 1], radius, material);
+      }
+    }
+    function torus(group, name, pos, major, minor, material, rotation = [0, 0, 0]) {
+      const mesh = new THREE.Mesh(new THREE.TorusGeometry(major, minor, 18, 72), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.rotation.set(...rotation);
+      group.add(shadow(mesh));
+      return mesh;
+    }
+    function flange(group, name, pos, radius = 0.075, material = bright, axis = "x") {
+      const ring = cylinder(group, name + "-ring", pos, radius, 0.035, material, axis, 48);
+      const boltAxis = axis === "x" ? "x" : axis === "z" ? "z" : "y";
+      for (let i = 0; i < 6; i += 1) {
+        const a = (Math.PI * 2 * i) / 6;
+        const bolt = boltAxis === "x"
+          ? [pos[0], pos[1] + Math.cos(a) * radius * 0.72, pos[2] + Math.sin(a) * radius * 0.72]
+          : boltAxis === "z"
+            ? [pos[0] + Math.cos(a) * radius * 0.72, pos[1] + Math.sin(a) * radius * 0.72, pos[2]]
+            : [pos[0] + Math.cos(a) * radius * 0.72, pos[1], pos[2] + Math.sin(a) * radius * 0.72];
+        sphere(group, name + "-bolt-" + i, bolt, 0.009, dark);
+      }
+      return ring;
+    }
+    function sphere(group, name, pos, radius, material, scale = [1, 1, 1]) {
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, 36, 18), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.scale.set(...scale);
+      group.add(shadow(mesh));
+      return mesh;
+    }
+    function component(name, assembled) {
+      const group = new THREE.Group();
+      group.name = name;
+      group.position.set(...assembled);
+      group.userData.assembled = new THREE.Vector3(...assembled);
+      return group;
+    }
+    function vessel(group, name, x, z, height, radius, label) {
+      cylinder(group, name + "-shell", [x, height / 2 + 0.5, z], radius, height, green, "y", 96);
+      cylinder(group, name + "-top", [x, height + 0.55, z], radius * 1.03, 0.12, darkGreen, "y", 96);
+      cylinder(group, name + "-bottom", [x, 0.48, z], radius * 1.03, 0.12, darkGreen, "y", 96);
+      cylinder(group, name + "-neck", [x, height + 0.75, z], radius * 0.34, 0.34, green, "y", 48);
+      torus(group, name + "-top-ring", [x, height + 0.62, z], radius * 0.88, 0.018, bright, [Math.PI / 2, 0, 0]);
+      const plate = box(group, name + "-nameplate", [x, height * 0.58 + 0.5, z + radius + 0.018], [0.28, 0.16, 0.018], cream);
+      plate.rotation.x = 0;
+      for (let i = 0; i < 8; i += 1) {
+        const a = (Math.PI * 2 * i) / 8;
+        sphere(group, name + "-bolt", [x + Math.cos(a) * radius * 0.82, height + 0.64, z + Math.sin(a) * radius * 0.82], 0.025, dark);
+      }
+      return label;
+    }
+    function valveWheel(group, name, pos, material = orange) {
+      cylinder(group, name + "-body", pos, 0.065, 0.1, bright, "x", 32);
+      torus(group, name + "-wheel", [pos[0], pos[1] + 0.12, pos[2]], 0.085, 0.01, material, [Math.PI / 2, 0, 0]);
+      pipe(group, name + "-stem", [pos[0], pos[1] + 0.03, pos[2]], [pos[0], pos[1] + 0.12, pos[2]], 0.012, bright);
+    }
+    function gauge(group, name, pos) {
+      cylinder(group, name + "-face", pos, 0.075, 0.018, cream, "z", 32);
+      pipe(group, name + "-needle", [pos[0], pos[1], pos[2] + 0.012], [pos[0] + 0.035, pos[1] + 0.025, pos[2] + 0.012], 0.005, red);
+    }
+
+    const root = new THREE.Group();
+    root.rotation.y = -0.26;
+    scene.add(root);
+
+    const skid = component("设备底座与PLC", [0, 0, 0]);
+    const adsorbers = component("双吸附器", [0, 0, 0]);
+    const absorption = component("吸收系统", [0, 0, 0]);
+    const pumps = component("泵组油罐", [0, 0, 0]);
+    const piping = component("油气总管与阀组", [0, 0, 0]);
+    const components = [skid, adsorbers, absorption, pumps, piping];
+    components.forEach((group) => root.add(group));
+
+    box(skid, "base-frame", [0, 0.18, 0], [4.6, 0.16, 2.0], darkGreen);
+    box(skid, "front-rail", [0, 0.45, 1.02], [4.8, 0.12, 0.08], darkGreen);
+    box(skid, "rear-rail", [0, 0.45, -1.02], [4.8, 0.12, 0.08], darkGreen);
+    [-2.1, 2.1].forEach((x) => [-0.82, 0.82].forEach((z) => {
+      cylinder(skid, "caster-yoke", [x, 0.02, z], 0.12, 0.08, steel, "y", 24);
+      cylinder(skid, "caster-wheel", [x, -0.06, z], 0.12, 0.08, black, "x", 32);
+    }));
+    box(skid, "plc-cabinet", [-2.25, 1.18, 0.35], [0.58, 1.7, 0.5], cream);
+    box(skid, "plc-screen", [-2.25, 1.42, 0.62], [0.28, 0.12, 0.018], dark);
+    [-0.12, 0, 0.12].forEach((dx, i) => sphere(skid, "plc-light", [-2.25 + dx, 1.16, 0.63], 0.035, i === 1 ? red : green));
+    cylinder(skid, "cabinet-gauge-a", [-2.38, 1.82, 0.63], 0.09, 0.018, bright, "z", 32);
+    cylinder(skid, "cabinet-gauge-b", [-2.12, 1.82, 0.63], 0.09, 0.018, bright, "z", 32);
+    box(skid, "cabinet-base-motor", [-2.25, 0.42, 0.35], [0.42, 0.28, 0.38], blue);
+
+    vessel(adsorbers, "adsorber-a", -0.62, 0, 2.55, 0.42, "A");
+    vessel(adsorbers, "adsorber-b", 0.42, 0, 2.55, 0.42, "B");
+    box(adsorbers, "adsorber-front-crossbeam", [-0.1, 1.02, 0.49], [1.55, 0.055, 0.065], frameGreen);
+    box(adsorbers, "adsorber-rear-crossbeam", [-0.1, 1.02, -0.49], [1.55, 0.05, 0.06], frameGreen);
+    box(adsorbers, "adsorber-front-upper-rail", [-0.1, 2.18, 0.49], [1.55, 0.045, 0.055], frameGreen);
+    box(adsorbers, "adsorber-rear-upper-rail", [-0.1, 2.18, -0.49], [1.55, 0.04, 0.05], frameGreen);
+    [-0.98, -0.26, 0.78].forEach((x) => {
+      pipe(adsorbers, "vertical-frame-front", [x, 0.52, 0.49], [x, 2.2, 0.49], 0.026, frameGreen);
+      pipe(adsorbers, "vertical-frame-back", [x, 0.52, -0.49], [x, 2.16, -0.49], 0.023, frameGreen);
+      box(adsorbers, "vertical-frame-foot-front", [x, 0.48, 0.49], [0.14, 0.045, 0.11], frameGreen);
+      box(adsorbers, "vertical-frame-foot-back", [x, 0.48, -0.49], [0.12, 0.04, 0.1], frameGreen);
+    });
+    [-0.62, 0.42].forEach((x, i) => {
+      torus(adsorbers, `adsorber-clamp-low-${i}`, [x, 1.05, 0], 0.428, 0.011, frameGreen, [Math.PI / 2, 0, 0]);
+      torus(adsorbers, `adsorber-clamp-high-${i}`, [x, 2.18, 0], 0.432, 0.012, frameGreen, [Math.PI / 2, 0, 0]);
+      box(adsorbers, `adsorber-clamp-front-lug-${i}`, [x, 1.05, 0.43], [0.12, 0.05, 0.035], frameGreen);
+      box(adsorbers, `adsorber-clamp-front-lug-high-${i}`, [x, 2.18, 0.43], [0.12, 0.045, 0.035], frameGreen);
+    });
+    pipe(adsorbers, "bottom-front-manifold", [-1.15, 0.52, 0.45], [0.95, 0.52, 0.45], 0.045, darkGreen);
+    pipe(adsorbers, "bottom-rear-manifold", [-1.15, 0.52, -0.42], [0.95, 0.52, -0.42], 0.04, darkGreen);
+    route(adsorbers, "adsorber-a-bottom-loop", [[-0.62, 0.55, 0], [-0.62, 0.55, 0.45], [-0.92, 0.55, 0.45]], 0.035, darkGreen);
+    route(adsorbers, "adsorber-b-bottom-loop", [[0.42, 0.55, 0], [0.42, 0.55, 0.45], [0.72, 0.55, 0.45]], 0.035, darkGreen);
+    [-0.62, 0.42].forEach((x, i) => {
+      gauge(adsorbers, `adsorber-gauge-${i}`, [x + 0.18, 2.56, 0.44]);
+      pipe(adsorbers, `adsorber-gauge-stem-${i}`, [x + 0.18, 2.54, 0.42], [x + 0.28, 2.42, 0.52], 0.012, steel);
+      valveWheel(adsorbers, `adsorber-drain-valve-${i}`, [x, 0.58, 0.52], orange);
+      route(adsorbers, `adsorber-side-pipe-${i}`, [[x + 0.28, 2.42, 0.16], [x + 0.28, 2.42, 0.52], [x + 0.55, 2.42, 0.52]], 0.022, steel);
+      flange(adsorbers, `adsorber-side-flange-${i}`, [x + 0.28, 2.42, 0.16], 0.055, bright, "z");
+    });
+
+    vessel(absorption, "absorption-tower", 1.72, 0.28, 2.15, 0.34, "T");
+    cylinder(absorption, "tower-cap", [1.72, 2.88, 0.28], 0.3, 0.12, darkGreen, "y", 72);
+    route(absorption, "tower-side-line", [[1.38, 1.9, 0.28], [1.08, 1.9, 0.28], [1.08, 1.9, -0.34], [0.42, 1.9, -0.34], [0.42, 1.35, -0.34]], 0.038, steel);
+    flange(absorption, "tower-side-flange-a", [1.38, 1.9, 0.28], 0.078, bright, "x");
+    flange(absorption, "tower-side-flange-b", [0.42, 1.35, -0.34], 0.072, bright, "y");
+    route(absorption, "tower-spray-loop", [[1.72, 2.72, 0.28], [1.72, 2.72, 0.72], [1.28, 2.72, 0.72], [1.28, 1.9, 0.72], [1.08, 1.9, 0.72], [1.08, 1.9, 0.28]], 0.032, darkGreen);
+    route(absorption, "tower-bottom-drain", [[1.72, 0.62, 0.28], [1.72, 0.62, 0.74], [1.26, 0.62, 0.74]], 0.032, steel);
+    gauge(absorption, "tower-gauge", [1.26, 1.98, 0.38]);
+    pipe(absorption, "tower-gauge-stem", [1.22, 1.96, 0.35], [1.08, 1.9, 0.28], 0.012, steel);
+    valveWheel(absorption, "tower-auto-valve", [1.08, 1.9, 0.32], orange);
+
+    cylinder(pumps, "vacuum-pump", [1.1, 0.62, -0.66], 0.26, 0.7, darkGreen, "x", 64);
+    cylinder(pumps, "lean-oil-pump", [1.1, 0.32, -0.66], 0.22, 0.62, darkGreen, "x", 64);
+    cylinder(pumps, "oil-tank-a", [1.78, 0.45, -0.55], 0.22, 0.75, green, "x", 64);
+    cylinder(pumps, "oil-tank-b", [1.78, 0.88, -0.55], 0.2, 0.65, green, "x", 64);
+    cylinder(pumps, "pump-motor", [0.66, 0.62, -0.66], 0.2, 0.34, black, "x", 48);
+    cylinder(pumps, "lean-pump-motor", [0.68, 0.32, -0.66], 0.16, 0.28, black, "x", 48);
+    route(pumps, "pump-suction-line", [[0.86, 0.62, -0.66], [0.52, 0.62, -0.66], [0.52, 0.52, -0.42]], 0.032, steel);
+    route(pumps, "pump-discharge-line", [[1.4, 0.62, -0.66], [1.78, 0.62, -0.66], [1.78, 1.0, -0.55]], 0.03, steel);
+    route(pumps, "lean-oil-loop", [[1.42, 0.32, -0.66], [1.95, 0.32, -0.66], [1.95, 0.74, -0.55]], 0.026, steel);
+
+    route(piping, "top-oil-gas-main", [[-1.42, 3.22, 0], [-0.62, 3.22, 0], [0.42, 3.22, 0], [1.72, 3.22, 0], [1.98, 3.02, 0.28]], 0.055, darkGreen);
+    route(piping, "adsorber-a-top-bridge", [[-0.62, 3.08, 0], [-0.62, 3.22, 0]], 0.045, darkGreen);
+    route(piping, "adsorber-b-top-bridge", [[0.42, 3.08, 0], [0.42, 3.22, 0]], 0.045, darkGreen);
+    route(piping, "tower-top-return", [[1.72, 2.9, 0.28], [1.72, 3.22, 0.28], [1.72, 3.22, 0]], 0.045, darkGreen);
+    route(piping, "left-inlet-riser", [[-1.54, 0.52, 0.45], [-1.54, 2.88, 0.45], [-1.42, 3.22, 0]], 0.048, darkGreen);
+    route(piping, "left-riser-to-bottom-main", [[-1.54, 0.52, 0.45], [-1.15, 0.52, 0.45]], 0.046, darkGreen);
+    route(piping, "front-oil-vapor-feed", [[-1.92, 0.82, 0.58], [-1.54, 0.82, 0.58], [-1.54, 0.52, 0.45]], 0.04, darkGreen);
+    [
+      [-1.54, 0.52, 0.45],
+      [-1.54, 0.82, 0.58],
+      [-1.54, 2.88, 0.45],
+      [-1.42, 3.22, 0],
+      [-1.15, 0.52, 0.45]
+    ].forEach((pos, i) => elbow(piping, "left-feed-joint-" + i, pos, 0.048, darkGreen));
+    route(piping, "desorb-a-to-vacuum", [[-0.62, 1.35, -0.34], [-0.62, 1.35, -0.7], [0.62, 1.35, -0.7], [0.62, 0.62, -0.66], [1.0, 0.62, -0.66]], 0.035, steel);
+    route(piping, "desorb-b-to-vacuum", [[0.42, 1.35, -0.34], [0.42, 1.35, -0.7], [0.62, 1.35, -0.7]], 0.032, steel);
+    route(piping, "vacuum-to-absorption", [[1.42, 0.62, -0.66], [1.72, 0.62, -0.66], [1.72, 1.08, 0.28]], 0.035, steel);
+    route(piping, "lean-oil-to-tower", [[1.38, 0.32, -0.66], [1.18, 0.32, -0.66], [1.18, 2.42, 0.68], [1.72, 2.42, 0.68], [1.72, 2.42, 0.28]], 0.03, steel);
+    route(piping, "rich-oil-return", [[1.72, 0.72, 0.28], [1.72, 0.72, 0.82], [2.08, 0.72, 0.82], [2.08, 0.48, -0.54], [1.82, 0.48, -0.54]], 0.03, steel);
+    route(piping, "unabsorbed-return", [[1.92, 1.82, 0.28], [2.25, 1.82, 0.28], [2.25, 3.02, 0.28], [1.98, 3.02, 0.28]], 0.032, darkGreen);
+
+    [
+      [-1.28, 3.22, 0], [-0.62, 3.22, 0], [0.42, 3.22, 0], [1.14, 3.22, 0], [1.72, 3.22, 0],
+      [-0.92, 0.52, 0.45], [0.72, 0.52, 0.45], [0.62, 1.35, -0.7], [1.18, 2.42, 0.68], [1.92, 1.82, 0.28]
+    ].forEach((pos, i) => {
+      cylinder(piping, "auto-valve-" + i, pos, 0.072, 0.11, bright, "x", 32);
+      box(piping, "valve-actuator-" + i, [pos[0], pos[1] + 0.14, pos[2] + 0.02], [0.1, 0.14, 0.09], i % 3 === 0 ? orange : darkGreen);
+    });
+    [
+      [-1.7, 2.65, 0.48], [-0.62, 3.08, 0], [0.42, 3.08, 0], [1.72, 3.02, 0.28], [1.72, 1.08, 0.28]
+    ].forEach((pos, i) => gauge(piping, "line-gauge-" + i, [pos[0] + 0.07, pos[1] + 0.12, pos[2] + 0.08]));
+
+    const baseShadow = new THREE.Mesh(
+      new THREE.CircleGeometry(4.8, 96),
+      new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.24 })
+    );
+    baseShadow.rotation.x = -Math.PI / 2;
+    baseShadow.position.y = -0.12;
+    scene.add(baseShadow);
+
+    function resize() {
+      const width = sceneEl.clientWidth || innerWidth;
+      const height = sceneEl.clientHeight || innerHeight;
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    }
+    addEventListener("resize", resize);
+    resize();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

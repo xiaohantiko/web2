@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>颗粒活性炭吸附真空脱附装置动态流程图</title>
+<style>
+  :root{
+    --red:#e53935;
+    --gray:#9aa0a6;
+    --blue:#1e88e5;
+    --yellow:#f2c94c;
+    --green:#18a957;
+    --ink:#222;
+    --bg:#f7f8fb;
+  }
+  body{margin:0;font-family:"Microsoft YaHei", "PingFang SC", Arial, sans-serif;background:var(--bg);color:var(--ink);}
+  .wrap{max-width:1400px;margin:0 auto;padding:16px 16px 28px;}
+  h1{margin:0 0 6px;font-size:34px;text-align:center;letter-spacing:1px;}
+  .sub{margin:0 0 14px;text-align:center;color:#666;font-size:15px;}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-bottom:14px;}
+  button{border:1px solid #c8d0da;background:#fff;padding:8px 14px;border-radius:8px;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+  button.active{background:#e8f2ff;border-color:#7aa7ff;color:#1c5fd4;font-weight:700;}
+  .panel{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start;}
+  .card{background:#fff;border:1px solid #dde3ea;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.05);}
+  #diagramCard{padding:8px;overflow:auto;}
+  #infoCard{padding:14px 16px;min-height:740px;}
+  #infoCard h2{font-size:22px;margin:4px 0 10px;}
+  #infoCard p{line-height:1.7;margin:8px 0;font-size:14px;color:#333;}
+  #infoCard .tag{display:inline-block;background:#eef5ff;color:#2059ba;padding:3px 10px;border-radius:999px;margin-bottom:8px;font-size:12px;}
+  .hint{font-size:12px;color:#666;padding-top:10px;border-top:1px dashed #d7dee6;margin-top:12px;}
+  svg{width:100%;height:auto;display:block;background:#fff;border-radius:10px;}
+  .equip{cursor:pointer;transition:filter .2s ease, transform .2s ease;}
+  .equip:hover{filter:drop-shadow(0 4px 10px rgba(0,0,0,.15));}
+  .equip.selected{filter:drop-shadow(0 4px 14px rgba(0,92,255,.22));}
+  .label{font-size:18px;fill:#222;font-weight:600;}
+  .small{font-size:15px;fill:#333;}
+  .titleLabel{font-size:28px;font-weight:700;fill:#111;}
+  .stream{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:6;marker-end:url(#arrowDefault);}
+  .gas{stroke:var(--red);}
+  .desorb{stroke:var(--yellow);}
+  .liq{stroke:var(--green);}
+  .manifold{stroke:var(--gray);stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .deviceStroke{stroke:#2b7bbb;stroke-width:3;fill:#eef9ff;}
+  .bed{fill:url(#bedGrad);stroke:#2b2b2b;stroke-width:1.3;}
+  .line-dim{stroke:#cad3dd;stroke-dasharray:6 6;}
+  .legendBox{fill:#fbfcfd;stroke:#b9c4d0;stroke-dasharray:8 6;stroke-width:2;}
+  .legendText{font-size:15px;fill:#333;}
+  .muted{fill:#737a83;}
+  .phase-dim .gas,
+  .phase-dim .desorb,
+  .phase-dim .liq,
+  .phase-dim .manifold,
+  .phase-dim .particle,
+  .phase-dim .phase-text{opacity:.18;transition:opacity .2s ease;}
+  .show-overview .gas,
+  .show-overview .desorb,
+  .show-overview .liq,
+  .show-overview .manifold,
+  .show-overview .particle,
+  .show-overview .phase-text{opacity:1;}
+  .show-adsorption .gas,
+  .show-adsorption .particle.gasP,
+  .show-adsorption .phase-text.gasT,
+  .show-adsorption .manifold.adsorbManifold{opacity:1;}
+  .show-desorption .desorb,
+  .show-desorption .particle.desorbP,
+  .show-desorption .phase-text.desorbT,
+  .show-desorption .manifold.desorbManifold{opacity:1;}
+  .show-recovery .liq,
+  .show-recovery .particle.liqP,
+  .show-recovery .phase-text.liqT{opacity:1;}
+  .particle{opacity:.95;}
+  .particle circle{r:6;}
+  .paused animateMotion, .paused animateTransform, .paused animate { }
+  .footerNote{font-size:12px;color:#888;text-align:center;margin-top:10px;}
+  @media (max-width: 1120px){
+    .panel{grid-template-columns:1fr;}
+    #infoCard{min-height:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>颗粒活性炭吸附真空脱附装置动态流程图</h1>
+  <p class="sub">HTML + SVG 动画版｜支持播放/暂停、工况切换、设备点击说明</p>
+  <div class="toolbar">
+    <button id="playBtn" class="active">暂停动画</button>
+    <button data-phase="overview" class="phaseBtn active">总览</button>
+    <button data-phase="adsorption" class="phaseBtn">吸附运行</button>
+    <button data-phase="desorption" class="phaseBtn">真空脱附</button>
+    <button data-phase="recovery" class="phaseBtn">冷凝回收</button>
+  </div>
+  <div class="panel">
+    <div id="diagramCard" class="card">
+      <svg id="svgRoot" viewBox="0 0 1280 820" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="vesselGrad" x1="0" x2="1">
+            <stop offset="0%" stop-color="#f8fdff"/>
+            <stop offset="48%" stop-color="#e4f4fb"/>
+            <stop offset="100%" stop-color="#f6fbff"/>
+          </linearGradient>
+          <linearGradient id="bedGrad" x1="0" x2="1">
+            <stop offset="0%" stop-color="#434343"/>
+            <stop offset="55%" stop-color="#6d6d6d"/>
+            <stop offset="100%" stop-color="#222"/>
+          </linearGradient>
+          <linearGradient id="tankGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#20b8ff"/>
+            <stop offset="100%" stop-color="#1684d8"/>
+          </linearGradient>
+          <marker id="arrowDefault" markerWidth="12" markerHeight="12" refX="9.5" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L12,6 L0,12 z" fill="currentColor"/>
+          </marker>
+          <g id="adsorberSymbol">
+            <rect x="0" y="0" width="130" height="350" rx="65" ry="65" class="deviceStroke" fill="url(#vesselGrad)"/>
+            <ellipse cx="65" cy="45" rx="55" ry="10" fill="none" stroke="#64b5f6" stroke-width="2" stroke-dasharray="4 3"/>
+            <ellipse cx="65" cy="305" rx="55" ry="10" fill="none" stroke="#64b5f6" stroke-width="2" stroke-dasharray="4 3"/>
+            <rect x="18" y="92" width="94" height="154" rx="12" class="bed"/>
+          </g>
+        </defs>
+
+        <g id="scene" class="phase-dim show-overview">
+          <!-- title within diagram -->
+          <text x="640" y="48" text-anchor="middle" class="titleLabel">颗粒活性炭吸附真空脱附装置工艺流程图</text>
+
+          <!-- Exhaust header -->
+          <path class="stream gas" d="M 215 110 L 215 40 L 360 40" style="color:var(--red)"/>
+          <path class="manifold adsorbManifold" d="M 360 110 L 360 155 L 845 155 L 845 145"/>
+          <text x="230" y="35" class="label phase-text gasT">净化尾气排空</text>
+          <polygon points="185,45 215,0 245,45" fill="#bfbfbf" opacity="0.8"/>
+
+          <!-- Adsorbers -->
+          <g id="adsA" class="equip" data-title="吸附器A" data-type="吸附器" data-desc="用于吸附有机尾气中的烃类组分。吸附阶段时，尾气自下而上穿过活性炭床层，净化后从顶部汇入尾气排空总管。">
+            <use href="#adsorberSymbol" x="295" y="155"/>
+            <text x="250" y="330" class="label">吸附器A</text>
+            <path class="stream gas" d="M 180 540 L 275 540 L 275 500 L 295 500" style="color:var(--red)"/>
+            <path class="stream gas" d="M 360 155 L 360 110" style="color:var(--red)"/>
+          </g>
+          <g id="adsB" class="equip" data-title="吸附器B" data-type="吸附器" data-desc="与吸附器A、C交替工作，可处于吸附、待机或再生阶段。通过阀门切换实现系统连续运行。">
+            <use href="#adsorberSymbol" x="500" y="155"/>
+            <text x="455" y="330" class="label">吸附器B</text>
+          </g>
+          <g id="adsC" class="equip" data-title="吸附器C" data-type="吸附器" data-desc="在真空脱附阶段，活性炭床中已吸附的油气在减压作用下解吸出来，经真空泵送入冷凝器回收。">
+            <use href="#adsorberSymbol" x="705" y="155"/>
+            <text x="660" y="330" class="label">吸附器C</text>
+          </g>
+
+          <!-- Bottom manifold -->
+          <path class="manifold adsorbManifold" d="M 360 500 L 360 585 L 830 585 L 830 540"/>
+          <path class="manifold adsorbManifold" d="M 565 500 L 565 585"/>
+          <path class="manifold adsorbManifold" d="M 770 500 L 770 585"/>
+          <path class="manifold adsorbManifold" d="M 360 540 L 845 540"/>
+
+          <!-- Filter and organic gas -->
+          <g id="filter" class="equip" data-title="过滤器" data-type="前处理" data-desc="对有机尾气进行简单过滤，去除颗粒物或夹带杂质，保护后续吸附床和真空泵。">
+            <ellipse cx="150" cy="540" rx="16" ry="28" fill="#0d67d5" stroke="#275ca8" stroke-width="2"/>
+          </g>
+          <text x="87" y="492" class="label">过滤器</text>
+          <text x="30" y="553" class="label">有机尾气</text>
+
+          <!-- Vacuum pump -->
+          <g id="vacPump" class="equip" data-title="真空泵" data-type="解吸设备" data-desc="在解吸工况下启动，降低吸附器压力，使活性炭孔隙中被吸附的油气脱附出来，并将解吸出的油气送往冷凝器。">
+            <circle cx="950" cy="605" r="34" fill="#fff" stroke="#9b9b9b" stroke-width="3"/>
+            <circle cx="950" cy="605" r="3.5" fill="#8d8d8d"/>
+            <g stroke="#a6a6a6" stroke-width="2.2">
+              <line x1="950" y1="577" x2="950" y2="592"/>
+              <line x1="950" y1="618" x2="950" y2="633"/>
+              <line x1="922" y1="605" x2="937" y2="605"/>
+              <line x1="963" y1="605" x2="978" y2="605"/>
+              <line x1="930" y1="585" x2="940" y2="594"/>
+              <line x1="960" y1="616" x2="970" y2="625"/>
+              <line x1="930" y1="625" x2="940" y2="616"/>
+              <line x1="960" y1="594" x2="970" y2="585"/>
+            </g>
+          </g>
+          <text x="885" y="610" class="label">真空泵</text>
+
+          <!-- Desorption path / condenser -->
+          <path class="stream desorb" d="M 835 500 L 835 590 L 916 590" style="color:var(--yellow)"/>
+          <path class="stream desorb" d="M 984 592 L 984 200 L 1138 200" style="color:var(--yellow)"/>
+          <path class="stream desorb" d="M 1138 200 L 1138 162 L 1080 162" style="color:var(--yellow)"/>
+          <g id="condenser" class="equip" data-title="冷凝器" data-type="冷凝回收" data-desc="来自真空泵的高浓度油气在冷凝器中被冷却，部分或大部分烃类冷凝为液体，便于后续收集回送。">
+            <rect x="1035" y="130" width="150" height="64" rx="30" fill="#fff6d7" stroke="#e0ac00" stroke-width="3"/>
+            <path d="M 1060 162 C 1088 138, 1132 186, 1160 162 C 1132 138, 1088 186, 1060 162" fill="none" stroke="#f0c419" stroke-width="6" stroke-linecap="round"/>
+          </g>
+          <text x="1188" y="155" class="label">冷凝器</text>
+
+          <!-- Liquid recovery -->
+          <path class="stream liq" d="M 1110 194 L 1110 458" style="color:var(--green)"/>
+          <g id="tank" class="equip" data-title="贮槽" data-type="液体收集" data-desc="冷凝下来的液态油品进入贮槽集中收集，随后通过回送流程返回储罐或其他回用位置。">
+            <rect x="1115" y="448" width="110" height="102" fill="#fff" stroke="#2d2d2d" stroke-width="3"/>
+            <rect x="1115" y="472" width="110" height="78" fill="url(#tankGrad)"/>
+            <line x1="1110" y1="448" x2="1230" y2="448" stroke="#2d2d2d" stroke-width="4"/>
+          </g>
+          <text x="1170" y="593" class="label">贮槽</text>
+          <path class="stream liq" d="M 1088 507 L 1035 507" style="color:var(--green)"/>
+          <text x="980" y="498" class="label phase-text liqT">回送</text>
+
+          <!-- labels under equipment -->
+          <text x="862" y="350" class="small muted phase-text desorbT">真空脱附气路</text>
+          <text x="1062" y="255" class="small muted phase-text desorbT">冷凝回收</text>
+          <text x="88" y="585" class="small muted phase-text gasT">吸附进气</text>
+
+          <!-- particles -->
+          <g class="particle gasP">
+            <circle fill="#e53935">
+              <animateMotion dur="3.2s" repeatCount="indefinite" path="M 32 540 L 180 540 L 275 540 L 275 500 L 295 500"/>
+            </circle>
+            <circle fill="#e53935">
+              <animateMotion dur="3.8s" repeatCount="indefinite" path="M 360 155 L 360 110 L 360 40 L 215 40"/>
+            </circle>
+            <circle fill="#e53935">
+              <animateMotion dur="4.2s" repeatCount="indefinite" path="M 360 155 L 845 155"/>
+            </circle>
+          </g>
+
+          <g class="particle desorbP">
+            <circle fill="#f4b400">
+              <animateMotion dur="4s" repeatCount="indefinite" path="M 835 500 L 835 590 L 916 590"/>
+            </circle>
+            <circle fill="#f4b400">
+              <animateMotion dur="5.4s" repeatCount="indefinite" path="M 984 592 L 984 200 L 1138 200 L 1138 162 L 1080 162"/>
+            </circle>
+          </g>
+
+          <g class="particle liqP">
+            <circle fill="#18a957">
+              <animateMotion dur="3.5s" repeatCount="indefinite" path="M 1110 194 L 1110 458"/>
+            </circle>
+            <circle fill="#18a957">
+              <animateMotion dur="2.8s" repeatCount="indefinite" path="M 1088 507 L 1035 507"/>
+            </circle>
+          </g>
+
+          <!-- Legend -->
+          <g transform="translate(120,690)">
+            <rect class="legendBox" x="0" y="0" width="1040" height="92" rx="12"/>
+            <line x1="38" y1="42" x2="96" y2="42" class="stream gas" style="color:var(--red)"/>
+            <text x="116" y="48" class="legendText">有机尾气 / 净化尾气</text>
+            <line x1="380" y1="42" x2="438" y2="42" class="stream desorb" style="color:var(--yellow)"/>
+            <text x="458" y="48" class="legendText">真空脱附气流</text>
+            <line x1="690" y1="42" x2="748" y2="42" class="stream liq" style="color:var(--green)"/>
+            <text x="768" y="48" class="legendText">冷凝液 / 回送液流</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div id="infoCard" class="card">
+      <div class="tag">设备说明</div>
+      <h2 id="infoTitle">总览</h2>
+      <p id="infoType"><strong>工艺对象：</strong>颗粒活性炭吸附真空脱附装置</p>
+      <p id="infoDesc">该系统由过滤器、三台吸附器、真空泵、冷凝器及贮槽组成。正常运行时，含有机物尾气经活性炭床吸附净化；再生时通过真空泵进行减压解吸，解吸出的油气经冷凝器回收后进入贮槽，并可回送利用。</p>
+      <p><strong>动态说明：</strong>点击左侧设备可查看对应说明；上方按钮可切换工况显示，并可暂停/继续动画。</p>
+      <div class="hint">
+        建议用浏览器打开本 HTML 文件进行演示。<br/>
+        工况按钮：<b>总览 / 吸附运行 / 真空脱附 / 冷凝回收</b>
+      </div>
+    </div>
+  </div>
+  <div class="footerNote">文件为纯前端 HTML + SVG，可离线打开，无需额外依赖。</div>
+</div>
+<script>
+(function(){
+  const lang = new URLSearchParams(location.search).get('lang') || 'zh';
+  const isEn = lang === 'en';
+  const svg = document.getElementById('svgRoot');
+  const scene = document.getElementById('scene');
+  const playBtn = document.getElementById('playBtn');
+  const phaseBtns = document.querySelectorAll('.phaseBtn');
+  const equipEls = document.querySelectorAll('.equip');
+  const infoTitle = document.getElementById('infoTitle');
+  const infoType = document.getElementById('infoType');
+  const infoDesc = document.getElementById('infoDesc');
+  let paused = false;
+  const textMap = {
+    '颗粒活性炭吸附真空脱附装置动态流程图':'Granular Activated Carbon Adsorption Vacuum Desorption Dynamic Flow',
+    'HTML + SVG 动画版｜支持播放/暂停、工况切换、设备点击说明':'HTML + SVG animation | play/pause, operating-mode switching and equipment notes',
+    '暂停动画':'Pause Animation',
+    '继续动画':'Resume Animation',
+    '总览':'Overview',
+    '吸附运行':'Adsorption',
+    '真空脱附':'Vacuum Desorption',
+    '冷凝回收':'Condensation Recovery',
+    '颗粒活性炭吸附真空脱附装置工艺流程图':'Granular Activated Carbon Adsorption Vacuum Desorption Process Flow',
+    '净化尾气排空':'Clean Gas Vent',
+    '吸附器A':'Adsorber A',
+    '吸附器B':'Adsorber B',
+    '吸附器C':'Adsorber C',
+    '过滤器':'Filter',
+    '有机尾气':'Organic Exhaust',
+    '真空泵':'Vacuum Pump',
+    '冷凝器':'Condenser',
+    '贮槽':'Storage Tank',
+    '回送':'Return',
+    '真空脱附气路':'Vacuum Desorption Line',
+    '吸附进气':'Adsorption Inlet',
+    '有机尾气 / 净化尾气':'Organic Exhaust / Clean Gas',
+    '真空脱附气流':'Vacuum Desorption Gas',
+    '冷凝液 / 回送液流':'Condensate / Return Liquid',
+    '设备说明':'Equipment Notes',
+    '工艺对象：':'Process Object:',
+    '动态说明：':'Animation Notes:',
+    '建议用浏览器打开本 HTML 文件进行演示。':'Open this HTML file in a browser for demonstration.',
+    '工况按钮：':'Mode Buttons:',
+    '全流程':'Full Process',
+    '吸附工况':'Adsorption Mode',
+    '再生工况':'Regeneration Mode',
+    '回收工况':'Recovery Mode',
+    '类别：':'Category:'
+  };
+  const attrMap = {
+    '吸附器':'Adsorber',
+    '前处理':'Pretreatment',
+    '解吸设备':'Desorption Equipment',
+    '冷凝回收':'Condensation Recovery',
+    '液体收集':'Liquid Collection',
+    '用于吸附有机尾气中的烃类组分。吸附阶段时，尾气自下而上穿过活性炭床层，净化后从顶部汇入尾气排空总管。':'Adsorbs hydrocarbon components from organic exhaust. During adsorption, gas passes upward through the activated carbon bed and clean gas enters the top vent header.',
+    '与吸附器A、C交替工作，可处于吸附、待机或再生阶段。通过阀门切换实现系统连续运行。':'Works alternately with Adsorbers A and C. It may be in adsorption, standby or regeneration mode, with valves switching for continuous operation.',
+    '在真空脱附阶段，活性炭床中已吸附的油气在减压作用下解吸出来，经真空泵送入冷凝器回收。':'During vacuum desorption, adsorbed oil vapor desorbs under negative pressure and is sent by the vacuum pump to the condenser for recovery.',
+    '对有机尾气进行简单过滤，去除颗粒物或夹带杂质，保护后续吸附床和真空泵。':'Filters particles and entrained impurities from organic exhaust to protect downstream adsorbers and the vacuum pump.',
+    '在解吸工况下启动，降低吸附器压力，使活性炭孔隙中被吸附的油气脱附出来，并将解吸出的油气送往冷凝器。':'Starts during desorption to lower adsorber pressure, release oil vapor from carbon pores and send it to the condenser.',
+    '来自真空泵的高浓度油气在冷凝器中被冷却，部分或大部分烃类冷凝为液体，便于后续收集回送。':'High-concentration oil vapor from the vacuum pump is cooled in the condenser so hydrocarbons condense into liquid for collection and return.',
+    '冷凝下来的液态油品进入贮槽集中收集，随后通过回送流程返回储罐或其他回用位置。':'Condensed liquid enters the storage tank and is then returned to a storage tank or reuse point.'
+  };
+  const phaseInfo = {
+    zh: {
+      overview:['总览','全流程','展示吸附、真空脱附、冷凝回收三个主要过程的整体连接关系。'],
+      adsorption:['吸附运行','吸附工况','有机尾气经过滤后进入吸附器底部，穿过活性炭床层后在顶部汇入净化尾气总管并排空。'],
+      desorption:['真空脱附','再生工况','吸附饱和后的活性炭床切换至再生状态，由真空泵抽真空，使被吸附的油气脱附并送往冷凝器。'],
+      recovery:['冷凝回收','回收工况','真空脱附出来的油气在冷凝器内冷凝成液体后进入贮槽，再通过回送流程回用或回收。']
+    },
+    en: {
+      overview:['Overview','Full Process','Shows the overall connection among adsorption, vacuum desorption and condensation recovery.'],
+      adsorption:['Adsorption','Adsorption Mode','Organic exhaust is filtered, enters the bottom of the adsorber, passes through the activated carbon bed and exits through the clean-gas vent header.'],
+      desorption:['Vacuum Desorption','Regeneration Mode','After adsorption saturation, the carbon bed switches to regeneration. The vacuum pump lowers pressure so adsorbed oil vapor desorbs and flows to the condenser.'],
+      recovery:['Condensation Recovery','Recovery Mode','Desorbed oil vapor condenses into liquid in the condenser, enters the storage tank and is returned for reuse or recovery.']
+    }
+  };
+  if (isEn) {
+    document.documentElement.lang = 'en';
+    document.title = textMap[document.title] || document.title;
+    document.querySelectorAll('h1,p,button,text,.tag,.hint,.footerNote').forEach((node)=>{
+      for (const [zh,en] of Object.entries(textMap)) {
+        if (node.childNodes.length === 1 && node.textContent.trim() === zh) node.textContent = en;
+      }
+    });
+    document.querySelectorAll('.equip').forEach((el)=>{
+      ['title','type','desc'].forEach((key)=>{
+        const val = el.dataset[key];
+        if (attrMap[val]) el.dataset[key] = attrMap[val];
+        if (textMap[val]) el.dataset[key] = textMap[val];
+      });
+    });
+    document.getElementById('infoType').innerHTML = '<strong>Process Object:</strong> Granular activated carbon adsorption vacuum desorption unit';
+    document.getElementById('infoDesc').textContent = 'The system consists of a filter, three adsorbers, a vacuum pump, a condenser and a storage tank. During normal operation, organic exhaust is purified by activated carbon adsorption. During regeneration, vacuum desorption releases oil vapor, which is condensed and collected for return or reuse.';
+    const ps = document.querySelectorAll('#infoCard p');
+    if (ps[2]) ps[2].innerHTML = '<strong>Animation Notes:</strong> Click equipment on the left for notes; use the buttons above to switch operating modes and pause or resume animation.';
+    const hint = document.querySelector('.hint');
+    if (hint) hint.innerHTML = 'Open this HTML file in a browser for demonstration.<br/>Mode Buttons: <b>Overview / Adsorption / Vacuum Desorption / Condensation Recovery</b>';
+  }
+
+  function setInfo(title, type, desc){
+    infoTitle.textContent = title;
+    infoType.innerHTML = `<strong>${isEn ? 'Category:' : '类别：'}</strong>${type}`;
+    infoDesc.textContent = desc;
+  }
+
+  playBtn.addEventListener('click', ()=>{
+    paused = !paused;
+    if(paused){
+      svg.pauseAnimations();
+      playBtn.textContent = isEn ? 'Resume Animation' : '继续动画';
+      playBtn.classList.remove('active');
+    }else{
+      svg.unpauseAnimations();
+      playBtn.textContent = isEn ? 'Pause Animation' : '暂停动画';
+      playBtn.classList.add('active');
+    }
+  });
+
+  function setPhase(phase){
+    scene.className.baseVal = 'phase-dim show-' + phase;
+    phaseBtns.forEach(btn=>btn.classList.toggle('active', btn.dataset.phase===phase));
+    const arr = phaseInfo[isEn ? 'en' : 'zh'][phase];
+    setInfo(arr[0], arr[1], arr[2]);
+    equipEls.forEach(el=>el.classList.remove('selected'));
+  }
+
+  phaseBtns.forEach(btn=>btn.addEventListener('click', ()=>setPhase(btn.dataset.phase)));
+
+  equipEls.forEach(el=>{
+    el.addEventListener('click', ()=>{
+      equipEls.forEach(e=>e.classList.remove('selected'));
+      el.classList.add('selected');
+      setInfo(el.dataset.title, el.dataset.type, el.dataset.desc);
+    });
+  });
+
+  setPhase('overview');
+})();
+</script>
+</body>
+</html>

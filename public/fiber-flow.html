@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>活性炭吸附蒸汽脱附装置动态流程图</title>
+  <style>
+    :root {
+      --red: #d71920;
+      --blue: #0f61b6;
+      --orange: #f28c00;
+      --green: #0b8f36;
+      --gray: #6b7280;
+      --dark: #111827;
+      --muted: #5c6776;
+      --panel: #ffffff;
+      --border: #d9e3ee;
+      --bg1: #f8fafc;
+      --bg2: #edf3f8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, var(--bg1), var(--bg2));
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+      color: var(--dark);
+    }
+    .page {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 18px 22px 30px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 2.4vw, 34px);
+      line-height: 1.25;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 9px;
+      max-width: 760px;
+    }
+    button {
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-weight: 780;
+      color: #1f2937;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, .06);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+      white-space: nowrap;
+    }
+    button:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(15, 23, 42, .10); }
+    button.active { background: #0f61b6; border-color: #0f61b6; color: #fff; }
+    .canvas-wrap {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 38px rgba(20, 33, 61, .10);
+    }
+    .hint {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      z-index: 4;
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1px solid #d7dee8;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(6px);
+      color: #4b5563;
+      font-size: 12px;
+      box-shadow: 0 4px 12px rgba(15,23,42,.06);
+    }
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(215,25,32,.06), transparent 27%),
+        radial-gradient(circle at 45% 15%, rgba(15,97,182,.055), transparent 28%),
+        radial-gradient(circle at 76% 21%, rgba(242,140,0,.07), transparent 28%),
+        radial-gradient(circle at 84% 68%, rgba(11,143,54,.055), transparent 30%),
+        #fff;
+    }
+    .title { font-size: 33px; font-weight: 900; letter-spacing: .04em; fill: #111827; }
+    .label { font-size: 26px; font-weight: 840; fill: #111827; }
+    .small-label { font-size: 21px; font-weight: 800; fill: #111827; }
+    .tiny-label { font-size: 16px; font-weight: 760; fill: #334155; }
+    .pipe-static {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 5.2;
+      opacity: .78;
+    }
+    .pipe-static.thin { stroke-width: 2.4; opacity: .62; }
+    .pipe-flow {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 8;
+      stroke-dasharray: 13 18;
+      animation: flowDash 1.03s linear infinite;
+      filter: drop-shadow(0 0 2px rgba(255,255,255,.95));
+    }
+    .pipe-flow.thin { stroke-width: 5.4; stroke-dasharray: 9 14; }
+    .pipe-red { stroke: var(--red); }
+    .pipe-blue { stroke: var(--blue); }
+    .pipe-orange { stroke: var(--orange); }
+    .pipe-green { stroke: var(--green); }
+    .pipe-gray { stroke: var(--gray); }
+    .flow-red { stroke: var(--red); marker-end: url(#arrowRed); }
+    .flow-blue { stroke: var(--blue); marker-end: url(#arrowBlue); }
+    .flow-orange { stroke: var(--orange); marker-end: url(#arrowOrange); }
+    .flow-green { stroke: var(--green); marker-end: url(#arrowGreen); }
+    .flow-gray { stroke: var(--gray); marker-end: url(#arrowGray); }
+    @keyframes flowDash { to { stroke-dashoffset: -31; } }
+    body.paused .pipe-flow,
+    body.paused .fanBlade,
+    body.paused .gasPulse,
+    body.paused .steamPulse,
+    body.paused .liquidWave,
+    body.paused .bedDot { animation-play-state: paused; }
+
+    .stage-bg { opacity: .055; transition: opacity .2s ease; }
+    body.mode-adsorb #adsorbBg,
+    body.mode-dry #dryBg,
+    body.mode-steam #steamBg,
+    body.mode-condense #condenseBg,
+    body.mode-return #returnBg { opacity: .16; }
+
+    body.mode-adsorb .dry-flow,
+    body.mode-adsorb .steam-flow,
+    body.mode-adsorb .condense-flow,
+    body.mode-adsorb .return-flow { opacity: .14; }
+    body.mode-dry .adsorb-flow,
+    body.mode-dry .steam-flow,
+    body.mode-dry .condense-flow,
+    body.mode-dry .return-flow { opacity: .14; }
+    body.mode-steam .adsorb-flow,
+    body.mode-steam .dry-flow,
+    body.mode-steam .condense-flow,
+    body.mode-steam .return-flow { opacity: .14; }
+    body.mode-condense .adsorb-flow,
+    body.mode-condense .dry-flow,
+    body.mode-condense .steam-flow,
+    body.mode-condense .return-flow { opacity: .14; }
+    body.mode-return .adsorb-flow,
+    body.mode-return .dry-flow,
+    body.mode-return .steam-flow,
+    body.mode-return .condense-flow { opacity: .14; }
+
+    body.mode-adsorb .steamEq,
+    body.mode-adsorb .condenseEq,
+    body.mode-adsorb .returnEq,
+    body.mode-dry .steamEq,
+    body.mode-dry .condenseEq,
+    body.mode-dry .returnEq,
+    body.mode-steam .adsorbOnly,
+    body.mode-condense .adsorbOnly,
+    body.mode-return .adsorbOnly { opacity: .48; }
+
+    .equipment { cursor: pointer; transition: opacity .2s ease; }
+    .equipment text { pointer-events: none; }
+    .outline, .vessel-shell { transition: filter .18s ease, stroke-width .18s ease; }
+    .equipment:hover .outline,
+    .equipment:hover .vessel-shell,
+    .equipment.selected .outline,
+    .equipment.selected .vessel-shell {
+      filter: drop-shadow(0 0 8px rgba(15, 97, 182, .32));
+      stroke-width: 3.6;
+    }
+
+    .fanBlade { transform-origin: 288px 825px; animation: spin 1.35s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .gasPulse { animation: risePulse 2.8s ease-in-out infinite; opacity: .55; }
+    .gasPulse.p2 { animation-delay: .6s; }
+    .gasPulse.p3 { animation-delay: 1.2s; }
+    @keyframes risePulse {
+      0% { transform: translateY(118px); opacity: 0; }
+      18% { opacity: .72; }
+      78% { opacity: .62; }
+      100% { transform: translateY(-132px); opacity: 0; }
+    }
+    .steamPulse { animation: steamPulse 2.4s ease-in-out infinite; opacity: .75; }
+    .steamPulse.p2 { animation-delay: .75s; }
+    @keyframes steamPulse {
+      0%,100% { transform: translateX(0); opacity: .25; }
+      50% { transform: translateX(-10px); opacity: .8; }
+    }
+    .bedDot { animation: twinkle 2.4s ease-in-out infinite; }
+    .bedDot:nth-child(2n) { animation-delay: .45s; }
+    .bedDot:nth-child(3n) { animation-delay: .9s; }
+    @keyframes twinkle { 0%,100% { opacity: .14; } 45% { opacity: .52; } }
+    .liquidWave { animation: wave 2.7s ease-in-out infinite; }
+    @keyframes wave { 0%,100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
+    @media (max-width: 900px) {
+      header { flex-direction: column; }
+      .controls { justify-content: flex-start; }
+      .hint { display: none; }
+    }
+  </style>
+</head>
+<body class="mode-all">
+  <div class="page">
+    <header>
+      <div>
+        <h1>活性炭吸附蒸汽脱附装置动态流程图</h1>
+        <p class="subtitle">按标准工程流程图重绘：有机尾气吸附净化、干燥风再生、蒸汽脱附、冷凝分离、回送贮槽均带动态流向。点击设备可查看说明。</p>
+      </div>
+      <div class="controls">
+        <button id="playBtn" class="active">暂停动画</button>
+        <button class="modeBtn active" data-mode="all">总览</button>
+        <button class="modeBtn" data-mode="adsorb">吸附运行</button>
+        <button class="modeBtn" data-mode="dry">干燥再生</button>
+        <button class="modeBtn" data-mode="steam">蒸汽脱附</button>
+        <button class="modeBtn" data-mode="condense">冷凝分离</button>
+        <button class="modeBtn" data-mode="return">回送贮槽</button>
+      </div>
+    </header>
+
+    <div class="canvas-wrap">
+      <div class="hint">动态图 · 管线流向已动画化 · 可点击设备</div>
+      <svg id="processSvg" viewBox="0 0 1600 1000" role="img" aria-label="活性炭吸附蒸汽脱附装置动态流程图">
+        <defs>
+          <linearGradient id="vesselGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f1fff1"/>
+            <stop offset="0.38" stop-color="#d9f2dc"/>
+            <stop offset="0.62" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#c7e7c8"/>
+          </linearGradient>
+          <linearGradient id="bedGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#8d9194"/>
+            <stop offset="0.25" stop-color="#d7d9db"/>
+            <stop offset="0.52" stop-color="#b3b6b8"/>
+            <stop offset="0.78" stop-color="#f0f2f3"/>
+            <stop offset="1" stop-color="#969b9e"/>
+          </linearGradient>
+          <linearGradient id="filterGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#053e86"/>
+            <stop offset="0.48" stop-color="#1392e6"/>
+            <stop offset="1" stop-color="#063e86"/>
+          </linearGradient>
+          <linearGradient id="tankBlueGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#30b4ff"/>
+            <stop offset="1" stop-color="#0873c9"/>
+          </linearGradient>
+          <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#1f2937" flood-opacity="0.16"/>
+          </filter>
+          <marker id="arrowRed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#d71920"/></marker>
+          <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#0f61b6"/></marker>
+          <marker id="arrowOrange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#f28c00"/></marker>
+          <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#0b8f36"/></marker>
+          <marker id="arrowGray" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M1,1 L11,6 L1,11 Z" fill="#6b7280"/></marker>
+          <clipPath id="clipA"><rect x="445" y="238" width="160" height="430" rx="78"/></clipPath>
+          <clipPath id="clipB"><rect x="695" y="238" width="160" height="430" rx="78"/></clipPath>
+          <clipPath id="clipC"><rect x="945" y="238" width="160" height="430" rx="78"/></clipPath>
+        </defs>
+
+        <!-- mode background hints -->
+        <rect id="adsorbBg" class="stage-bg" x="52" y="156" width="1045" height="570" rx="30" fill="#d71920"/>
+        <rect id="dryBg" class="stage-bg" x="210" y="92" width="730" height="780" rx="30" fill="#0f61b6"/>
+        <rect id="steamBg" class="stage-bg" x="900" y="112" width="555" height="655" rx="30" fill="#f28c00"/>
+        <rect id="condenseBg" class="stage-bg" x="1120" y="275" width="430" height="395" rx="30" fill="#0b8f36"/>
+        <rect id="returnBg" class="stage-bg" x="1185" y="640" width="400" height="210" rx="30" fill="#0b8f36"/>
+
+        <!-- static neutral manifolds -->
+        <g id="grayPiping">
+          <path class="pipe-static thin pipe-gray" d="M525 198 L525 238 M775 198 L775 238 M1025 198 L1025 238"/>
+          <path class="pipe-static thin pipe-gray" d="M525 668 L525 815 L1025 815 L1025 668"/>
+          <path class="pipe-static thin pipe-gray" d="M775 668 L775 815"/>
+          <path class="pipe-static thin pipe-gray" d="M520 720 L1025 720"/>
+          <path class="pipe-static thin pipe-gray" d="M520 188 L1025 188"/>
+          <path class="pipe-static thin pipe-gray" d="M610 174 L610 720 M860 174 L860 720 M1110 174 L1110 720" opacity=".42"/>
+        </g>
+
+        <!-- static main colored piping -->
+        <g id="staticPipes">
+          <!-- red: organic gas and clean vent -->
+          <path class="pipe-static pipe-red" d="M72 652 L235 652"/>
+          <path class="pipe-static pipe-red" d="M315 652 L445 652 L445 620"/>
+          <path class="pipe-static pipe-red" d="M445 620 L445 716 L1045 716 L1045 620" opacity=".54"/>
+          <path class="pipe-static pipe-red" d="M525 238 L525 155 L325 155 L325 72"/>
+          <path class="pipe-static pipe-red" d="M775 238 L775 180 L325 180 L325 155" opacity=".5"/>
+          <path class="pipe-static pipe-red" d="M1025 238 L1025 178 L325 178" opacity=".5"/>
+
+          <!-- blue: drying air and dry tail gas -->
+          <path class="pipe-static pipe-blue" d="M288 825 L775 825 L775 668"/>
+          <path class="pipe-static pipe-blue" d="M775 668 L775 238 L410 238 L410 78"/>
+          <path class="pipe-static pipe-blue" d="M525 238 L410 238" opacity=".4"/>
+          <path class="pipe-static pipe-blue" d="M1025 238 L1025 238 L410 238" opacity=".4"/>
+
+          <!-- orange: steam / desorption vapor -->
+          <path class="pipe-static pipe-orange" d="M1452 140 L1040 140 L1040 238"/>
+          <path class="pipe-static pipe-orange" d="M1040 140 L1040 755 L1190 755 L1190 352"/>
+          <path class="pipe-static pipe-orange" d="M1190 352 L1190 284 L1355 284 L1355 326"/>
+          <path class="pipe-static pipe-orange" d="M1040 140 L525 140 L525 238" opacity=".38"/>
+          <path class="pipe-static pipe-orange" d="M1040 140 L775 140 L775 238" opacity=".38"/>
+
+          <!-- green: condensate / recycle -->
+          <path class="pipe-static pipe-green" d="M1320 382 L1320 540 L1382 540"/>
+          <path class="pipe-static pipe-green" d="M1458 604 L1458 718 L1378 718"/>
+          <path class="pipe-static pipe-green" d="M1500 560 L1538 560 L1538 770 L1475 770"/>
+          <path class="pipe-static pipe-green" d="M1378 754 L1275 754"/>
+        </g>
+
+        <!-- animated flow layer -->
+        <g id="animatedFlows">
+          <!-- Adsorption operation -->
+          <path class="pipe-flow flow-red adsorb-flow" d="M72 652 L235 652"/>
+          <path class="pipe-flow flow-red adsorb-flow" d="M315 652 L445 652 L445 620"/>
+          <path class="pipe-flow flow-red adsorb-flow thin" d="M445 620 L445 716 L525 716 L525 668"/>
+          <path class="pipe-flow flow-red adsorb-flow thin" d="M445 620 L775 620 L775 668" opacity=".72"/>
+          <path class="pipe-flow flow-red adsorb-flow thin" d="M445 620 L1045 620 L1045 668" opacity=".72"/>
+          <path class="pipe-flow flow-red adsorb-flow" d="M525 238 L525 155 L325 155 L325 72"/>
+          <path class="pipe-flow flow-red adsorb-flow thin" d="M775 238 L775 180 L325 180 L325 155"/>
+          <path class="pipe-flow flow-red adsorb-flow thin" d="M1025 238 L1025 178 L325 178 L325 155"/>
+
+          <!-- Drying operation -->
+          <path class="pipe-flow flow-blue dry-flow" d="M288 825 L775 825 L775 668"/>
+          <path class="pipe-flow flow-blue dry-flow" d="M775 668 L775 238 L410 238 L410 78"/>
+          <path class="pipe-flow flow-blue dry-flow thin" d="M288 825 L525 825 L525 668" opacity=".58"/>
+          <path class="pipe-flow flow-blue dry-flow thin" d="M775 825 L1025 825 L1025 668" opacity=".58"/>
+
+          <!-- Steam desorption -->
+          <path class="pipe-flow flow-orange steam-flow" d="M1452 140 L1040 140 L1040 238"/>
+          <path class="pipe-flow flow-orange steam-flow thin" d="M1040 140 L775 140 L775 238"/>
+          <path class="pipe-flow flow-orange steam-flow thin" d="M1040 140 L525 140 L525 238"/>
+          <path class="pipe-flow flow-orange steam-flow" d="M1040 238 L1040 755 L1190 755 L1190 352"/>
+          <path class="pipe-flow flow-orange steam-flow condense-flow" d="M1190 352 L1190 284 L1355 284 L1355 326"/>
+
+          <!-- Condensation and separation -->
+          <path class="pipe-flow flow-green condense-flow" d="M1320 382 L1320 540 L1382 540"/>
+          <path class="pipe-flow flow-green condense-flow" d="M1458 604 L1458 718 L1378 718"/>
+          <path class="pipe-flow flow-green return-flow" d="M1500 560 L1538 560 L1538 770 L1475 770"/>
+          <path class="pipe-flow flow-green return-flow" d="M1378 754 L1275 754"/>
+        </g>
+
+        <!-- inlet and filter -->
+        <g class="equipment adsorbOnly" data-title="过滤器" data-desc="有机尾气进入吸附器前先经过过滤器，去除粉尘、液滴和夹带杂质，避免活性炭床层堵塞或污染。">
+          <text x="54" y="642" class="label"><tspan x="54" dy="0">有机</tspan><tspan x="54" dy="33">尾气</tspan></text>
+          <text x="232" y="600" class="small-label">过滤器</text>
+          <rect class="outline" x="246" y="618" width="48" height="96" rx="22" fill="url(#filterGrad)" stroke="#053e86" stroke-width="2.8" filter="url(#softShadow)"/>
+          <path d="M257 625 L283 705 M282 625 L257 705" stroke="#d7f2ff" stroke-width="1.4" opacity=".6"/>
+        </g>
+
+        <!-- clean gas vent -->
+        <g class="equipment adsorbOnly" data-title="净化尾气排空" data-desc="有机尾气经过活性炭床层吸附净化后，汇入顶部排放管线，由净化尾气排空口排出。">
+          <path class="pipe-static pipe-red" d="M325 72 L325 36" marker-end="url(#arrowRed)"/>
+          <text x="90" y="62" class="label">净化尾气排空</text>
+        </g>
+
+        <!-- dry gas vent -->
+        <g class="equipment dryOnly" data-title="干燥尾气排空" data-desc="干燥风经吸附器带走床层水分或残余气体后，由干燥尾气排空口排出。">
+          <path class="pipe-static pipe-blue" d="M410 78 L410 42" marker-end="url(#arrowBlue)"/>
+          <text x="444" y="62" class="label">干燥尾气排空</text>
+        </g>
+
+        <!-- steam inlet label -->
+        <g class="equipment steamEq" data-title="水蒸气" data-desc="水蒸气作为脱附介质进入吸附器，使吸附在活性炭上的有机物从床层中解吸并随蒸汽带出。">
+          <path class="pipe-static pipe-orange" d="M1452 140 L1515 140" marker-end="url(#arrowOrange)"/>
+          <text x="1465" y="130" class="label">水蒸气</text>
+          <circle class="steamPulse" cx="1390" cy="140" r="5" fill="#f28c00"/>
+          <circle class="steamPulse p2" cx="1360" cy="140" r="4.5" fill="#f28c00"/>
+        </g>
+
+        <!-- Adsorber A -->
+        <g class="equipment adsorbOnly" data-title="吸附器A" data-desc="吸附器A内装填活性炭，主要承担有机尾气中有机组分的吸附净化；饱和后可切换至蒸汽脱附再生。">
+          <rect class="vessel-shell" x="445" y="238" width="160" height="430" rx="80" fill="url(#vesselGrad)" stroke="#1d6d2c" stroke-width="3" filter="url(#softShadow)"/>
+          <ellipse cx="525" cy="286" rx="72" ry="13" fill="none" stroke="#1d6d2c" stroke-width="2" opacity=".8"/>
+          <ellipse cx="525" cy="620" rx="72" ry="13" fill="none" stroke="#1d6d2c" stroke-width="2" opacity=".8"/>
+          <path d="M449 354 L601 354 L601 548 L449 548 Z" fill="url(#bedGrad)" opacity=".98"/>
+          <g opacity=".65"><circle class="bedDot" cx="473" cy="388" r="2" fill="#fff"/><circle class="bedDot" cx="536" cy="408" r="2" fill="#fff"/><circle class="bedDot" cx="570" cy="468" r="2" fill="#fff"/><circle class="bedDot" cx="490" cy="520" r="2" fill="#fff"/></g>
+          <g clip-path="url(#clipA)"><circle class="gasPulse" cx="508" cy="470" r="7" fill="#d71920"/><circle class="gasPulse p2" cx="535" cy="470" r="6" fill="#d71920"/><circle class="gasPulse p3" cx="554" cy="470" r="5" fill="#d71920"/></g>
+          <text x="525" y="395" class="label" text-anchor="middle"><tspan x="525" dy="0">吸</tspan><tspan x="525" dy="34">附</tspan><tspan x="525" dy="34">器</tspan><tspan x="525" dy="39">A</tspan></text>
+        </g>
+
+        <!-- Adsorber B -->
+        <g class="equipment adsorbOnly" data-title="吸附器B" data-desc="吸附器B与A、C并联布置，便于轮换吸附、脱附和干燥，实现连续处理或分批再生。">
+          <rect class="vessel-shell" x="695" y="238" width="160" height="430" rx="80" fill="url(#vesselGrad)" stroke="#1d6d2c" stroke-width="3" filter="url(#softShadow)"/>
+          <ellipse cx="775" cy="286" rx="72" ry="13" fill="none" stroke="#1d6d2c" stroke-width="2" opacity=".8"/>
+          <ellipse cx="775" cy="620" rx="72" ry="13" fill="none" stroke="#1d6d2c" stroke-width="2" opacity=".8"/>
+          <path d="M699 354 L851 354 L851 548 L699 548 Z" fill="url(#bedGrad)" opacity=".98"/>
+          <g opacity=".65"><circle class="bedDot" cx="720" cy="382" r="2" fill="#fff"/><circle class="bedDot" cx="790" cy="407" r="2" fill="#fff"/><circle class="bedDot" cx="824" cy="462" r="2" fill="#fff"/><circle class="bedDot" cx="740" cy="522" r="2" fill="#fff"/></g>
+          <g clip-path="url(#clipB)"><circle class="gasPulse" cx="755" cy="470" r="7" fill="#0f61b6"/><circle class="gasPulse p2" cx="782" cy="470" r="6" fill="#0f61b6"/><circle class="gasPulse p3" cx="804" cy="470" r="5" fill="#0f61b6"/></g>
+          <text x="775" y="395" class="label" text-anchor="middle"><tspan x="775" dy="0">吸</tspan><tspan x="775" dy="34">附</tspan><tspan x="775" dy="34">器</tspan><tspan x="775" dy="39">B</tspan></text>
+        </g>
+
+        <!-- Adsorber C -->
+        <g class="equipment adsorbOnly steamEq" data-title="吸附器C" data-desc="吸附器C可参与吸附，也可切换为蒸汽脱附工况。图中橙色蒸汽线用于再生脱附，绿色线进入后续冷凝分离。">
+          <rect class="vessel-shell" x="945" y="238" width="160" height="430" rx="80" fill="url(#vesselGrad)" stroke="#1d6d2c" stroke-width="3" filter="url(#softShadow)"/>
+          <ellipse cx="1025" cy="286" rx="72" ry="13" fill="none" stroke="#1d6d2c" stroke-width="2" opacity=".8"/>
+          <ellipse cx="1025" cy="620" rx="72" ry="13" fill="none" stroke="#1d6d2c" stroke-width="2" opacity=".8"/>
+          <path d="M949 354 L1101 354 L1101 548 L949 548 Z" fill="url(#bedGrad)" opacity=".98"/>
+          <g opacity=".65"><circle class="bedDot" cx="970" cy="388" r="2" fill="#fff"/><circle class="bedDot" cx="1038" cy="408" r="2" fill="#fff"/><circle class="bedDot" cx="1070" cy="462" r="2" fill="#fff"/><circle class="bedDot" cx="990" cy="522" r="2" fill="#fff"/></g>
+          <g clip-path="url(#clipC)"><circle class="gasPulse" cx="1004" cy="470" r="7" fill="#f28c00"/><circle class="gasPulse p2" cx="1032" cy="470" r="6" fill="#f28c00"/><circle class="gasPulse p3" cx="1052" cy="470" r="5" fill="#f28c00"/></g>
+          <text x="1025" y="395" class="label" text-anchor="middle"><tspan x="1025" dy="0">吸</tspan><tspan x="1025" dy="34">附</tspan><tspan x="1025" dy="34">器</tspan><tspan x="1025" dy="39">C</tspan></text>
+        </g>
+
+        <!-- Drying fan -->
+        <g class="equipment dryOnly" data-title="干燥风" data-desc="干燥风由风机送入吸附器，用于吹扫/干燥床层，降低脱附后水分或残余气体对后续吸附的影响。">
+          <circle class="outline" cx="288" cy="825" r="48" fill="#f2f7ff" stroke="#283548" stroke-width="3" filter="url(#softShadow)"/>
+          <g class="fanBlade">
+            <path d="M288 825 L286 792 C314 795 323 812 288 825 Z" fill="#0f61b6"/>
+            <path d="M288 825 L323 840 C306 862 282 858 288 825 Z" fill="#0f61b6"/>
+            <path d="M288 825 L259 846 C249 822 259 802 288 825 Z" fill="#0f61b6"/>
+          </g>
+          <circle cx="288" cy="825" r="10" fill="#d71920" stroke="#283548" stroke-width="2"/>
+          <text x="270" y="913" class="label">干燥风</text>
+        </g>
+
+        <!-- Condenser -->
+        <g class="equipment condenseEq steamEq" data-title="冷凝器" data-desc="脱附出来的蒸汽/有机物混合气进入冷凝器，冷却后形成冷凝液并进入分离槽。">
+          <rect class="outline" x="1208" y="310" width="210" height="86" rx="43" fill="#42aee8" stroke="#0c4a8a" stroke-width="3" filter="url(#softShadow)"/>
+          <path d="M1230 352 C1270 322, 1310 322, 1395 352 C1356 382, 1300 382, 1230 352 Z" fill="none" stroke="#f28c00" stroke-width="7" stroke-linejoin="round"/>
+          <text x="1444" y="361" class="label">冷凝器</text>
+        </g>
+
+        <!-- Separator tank -->
+        <g class="equipment condenseEq returnEq" data-title="分离槽" data-desc="冷凝液进入分离槽后进行液液分层或气液分离，便于回收有机相、水相或按工艺要求回送处理。">
+          <text x="1395" y="512" class="label">分离槽</text>
+          <rect class="outline" x="1382" y="540" width="190" height="126" rx="8" fill="#ffffff" stroke="#4b5563" stroke-width="3" filter="url(#softShadow)"/>
+          <rect x="1386" y="586" width="182" height="28" fill="#f03283" opacity=".96"/>
+          <rect x="1386" y="614" width="182" height="60" fill="url(#tankBlueGrad)" opacity=".94"/>
+          <path class="liquidWave" d="M1386 614 C1416 604, 1443 623, 1475 613 C1505 603, 1535 622, 1568 613" fill="none" stroke="#fff" stroke-width="2" opacity=".45"/>
+        </g>
+
+        <!-- Storage tank -->
+        <g class="equipment returnEq" data-title="贮槽" data-desc="贮槽用于暂存分离后的液相，可根据现场工艺进行回送、回收利用或进一步处理。">
+          <rect class="outline" x="1378" y="718" width="190" height="126" rx="8" fill="#ffffff" stroke="#4b5563" stroke-width="3" filter="url(#softShadow)"/>
+          <rect x="1382" y="766" width="182" height="74" fill="url(#tankBlueGrad)" opacity=".92"/>
+          <path class="liquidWave" d="M1382 766 C1410 756, 1435 776, 1466 765 C1498 754, 1530 776, 1564 764" fill="none" stroke="#0f61b6" stroke-width="3" opacity=".8"/>
+          <text x="1450" y="885" class="label" text-anchor="middle">贮槽</text>
+          <text x="1230" y="760" class="label">回送</text>
+        </g>
+
+        <!-- Legend -->
+        <g transform="translate(78 890)">
+          <rect x="0" y="0" width="1108" height="62" rx="15" fill="#fff" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="8 7"/>
+          <path d="M34 31 L100 31" class="pipe-static pipe-red" marker-end="url(#arrowRed)"/>
+          <text x="118" y="38" class="tiny-label">有机尾气 / 净化尾气</text>
+          <path d="M300 31 L366 31" class="pipe-static pipe-blue" marker-end="url(#arrowBlue)"/>
+          <text x="384" y="38" class="tiny-label">干燥风 / 干燥尾气</text>
+          <path d="M572 31 L638 31" class="pipe-static pipe-orange" marker-end="url(#arrowOrange)"/>
+          <text x="656" y="38" class="tiny-label">水蒸气 / 脱附气</text>
+          <path d="M815 31 L881 31" class="pipe-static pipe-green" marker-end="url(#arrowGreen)"/>
+          <text x="899" y="38" class="tiny-label">冷凝液 / 回送</text>
+        </g>
+
+        <text x="800" y="972" class="title" text-anchor="middle">活性炭吸附蒸汽脱附装置工艺流程图</text>
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const playBtn = document.getElementById('playBtn');
+    const modeButtons = Array.from(document.querySelectorAll('.modeBtn'));
+    const equipments = Array.from(document.querySelectorAll('.equipment'));
+
+    function setMode(mode) {
+      body.classList.remove('mode-all', 'mode-adsorb', 'mode-dry', 'mode-steam', 'mode-condense', 'mode-return');
+      body.classList.add('mode-' + mode);
+      modeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+      equipments.forEach(eq => eq.classList.remove('selected'));
+    }
+
+    playBtn.addEventListener('click', () => {
+      const paused = body.classList.toggle('paused');
+      playBtn.textContent = paused ? '播放动画' : '暂停动画';
+      playBtn.classList.toggle('active', !paused);
+    });
+
+    modeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+
+    equipments.forEach(eq => {
+      eq.addEventListener('click', () => {
+        equipments.forEach(item => item.classList.remove('selected'));
+        eq.classList.add('selected');
+      });
+    });
+  </script>
+</body>
+</html>

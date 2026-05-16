@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>高真空挡板阀立体模型</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0b1424;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+    }
+
+    .model-toolbar {
+      position: fixed;
+      left: 18px;
+      top: 16px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .model-label {
+      padding: 8px 12px;
+      border: 1px solid rgba(16, 78, 61, 0.16);
+      border-radius: 999px;
+      color: #dceae5;
+      font-size: 13px;
+      font-weight: 800;
+      background: rgba(6, 17, 34, 0.78);
+      backdrop-filter: blur(8px);
+    }
+
+    .mode-buttons {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid rgba(164, 198, 188, 0.18);
+      border-radius: 999px;
+      background: rgba(6, 17, 34, 0.78);
+      backdrop-filter: blur(8px);
+    }
+
+    .mode-buttons button {
+      min-width: 58px;
+      border: 0;
+      border-radius: 999px;
+      padding: 7px 12px;
+      color: #dceae5;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 850;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .mode-buttons button.is-active {
+      color: #fff;
+      background: #0f7b5c;
+      box-shadow: 0 8px 18px rgba(15, 123, 92, 0.18);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="model-toolbar">
+    <div class="model-label">高真空挡板阀 · GD-J / GD-J(b) / GD-S</div>
+    <div class="mode-buttons">
+      <button class="is-active" type="button" data-mode="assembled">整体</button>
+      <button type="button" data-mode="exploded">拆解</button>
+    </div>
+  </div>
+  <main id="scene"></main>
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/OrbitControls.global.js"></script>
+  <script>
+    const sceneEl = document.getElementById("scene");
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.72;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setClearColor(0x0b1424, 1);
+    sceneEl.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0b1424, 20, 52);
+
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 80);
+    camera.position.set(6.9, 4.8, 7.8);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.rotateSpeed = 0.48;
+    controls.target.set(0, 1.25, 0);
+    controls.minDistance = 9.8;
+    controls.maxDistance = 9.8;
+    controls.minPolarAngle = Math.PI * 0.18;
+    controls.maxPolarAngle = Math.PI * 0.62;
+
+    const envCanvas = document.createElement("canvas");
+    envCanvas.width = 512;
+    envCanvas.height = 256;
+    const envCtx = envCanvas.getContext("2d");
+    const envGrad = envCtx.createLinearGradient(0, 0, 0, 256);
+    envGrad.addColorStop(0, "#dce6e2");
+    envGrad.addColorStop(0.22, "#60728f");
+    envGrad.addColorStop(0.5, "#13233b");
+    envGrad.addColorStop(0.74, "#9fb0c8");
+    envGrad.addColorStop(1, "#07101f");
+    envCtx.fillStyle = envGrad;
+    envCtx.fillRect(0, 0, 512, 256);
+    envCtx.fillStyle = "rgba(255,255,255,.72)";
+    envCtx.fillRect(52, 28, 150, 28);
+    envCtx.fillRect(312, 40, 120, 22);
+    const envTexture = new THREE.CanvasTexture(envCanvas);
+    envTexture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = envTexture;
+
+    const hemi = new THREE.HemisphereLight(0xdce8ff, 0x07101f, 0.86);
+    scene.add(hemi);
+
+    const key = new THREE.DirectionalLight(0xffffff, 3.9);
+    key.position.set(4.5, 7.2, 6.8);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.left = -7;
+    key.shadow.camera.right = 7;
+    key.shadow.camera.top = 7;
+    key.shadow.camera.bottom = -5;
+    scene.add(key);
+
+    const rim = new THREE.DirectionalLight(0xb9dcff, 2.45);
+    rim.position.set(-6, 4.2, -5);
+    scene.add(rim);
+
+    const warm = new THREE.PointLight(0xfff0cf, 1.15, 16);
+    warm.position.set(-2.8, 3.5, 4.6);
+    scene.add(warm);
+
+    const root = new THREE.Group();
+    root.rotation.y = -0.28;
+    scene.add(root);
+
+    function mat(options) {
+      return new THREE.MeshStandardMaterial(options);
+    }
+
+    const steel = mat({ color: 0x8f9996, metalness: 0.98, roughness: 0.18, envMapIntensity: 0.82 });
+    const bright = mat({ color: 0xd7ddd8, metalness: 1, roughness: 0.11, envMapIntensity: 0.95 });
+    const dark = mat({ color: 0x1b2528, metalness: 0.88, roughness: 0.28, envMapIntensity: 0.5 });
+    const brushed = mat({ color: 0x707a78, metalness: 0.98, roughness: 0.22, envMapIntensity: 0.76 });
+    const rubber = mat({ color: 0x111719, metalness: 0.28, roughness: 0.54 });
+    const brass = mat({ color: 0xc58b32, metalness: 0.7, roughness: 0.25, envMapIntensity: 0.48 });
+    const actuator = mat({ color: 0xaeb7b4, metalness: 0.92, roughness: 0.2, envMapIntensity: 0.76 });
+    const blackBox = mat({ color: 0x1b2224, metalness: 0.52, roughness: 0.42 });
+    const amber = mat({ color: 0xffb000, metalness: 0.25, roughness: 0.28, emissive: 0x7d4400, emissiveIntensity: 0.28 });
+
+    function shadow(mesh) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      return mesh;
+    }
+
+    function cylinder(group, name, pos, radius, height, material, axis = "y", radial = 72) {
+      const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, radial), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      if (axis === "x") mesh.rotation.z = Math.PI / 2;
+      if (axis === "z") mesh.rotation.x = Math.PI / 2;
+      group.add(shadow(mesh));
+      return mesh;
+    }
+
+    function box(group, name, pos, scale, material) {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.scale.set(...scale);
+      group.add(shadow(mesh));
+      return mesh;
+    }
+
+    function sphere(group, name, pos, radius, material, scale = [1, 1, 1]) {
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, 48, 24), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.scale.set(...scale);
+      group.add(shadow(mesh));
+      return mesh;
+    }
+
+    function pipe(group, name, a, b, radius = 0.045, material = steel) {
+      const start = new THREE.Vector3(...a);
+      const end = new THREE.Vector3(...b);
+      const dir = end.clone().sub(start);
+      const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, dir.length(), 28), material);
+      mesh.name = name;
+      mesh.position.copy(start.clone().add(end).multiplyScalar(0.5));
+      mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+      group.add(shadow(mesh));
+      return mesh;
+    }
+
+    function torus(group, name, pos, major, minor, material, rotation = [0, 0, 0]) {
+      const mesh = new THREE.Mesh(new THREE.TorusGeometry(major, minor, 24, 96), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.rotation.set(...rotation);
+      group.add(shadow(mesh));
+      return mesh;
+    }
+
+    function boltRing(group, cx, cy, cz, radius, count, axis = "z", scale = 1) {
+      for (let i = 0; i < count; i += 1) {
+        const angle = (Math.PI * 2 * i) / count;
+        const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.045 * scale, 0.045 * scale, 0.06 * scale, 12), dark);
+        if (axis === "z") {
+          bolt.position.set(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius, cz);
+          bolt.rotation.x = Math.PI / 2;
+        } else {
+          bolt.position.set(cx, cy + Math.cos(angle) * radius, cz + Math.sin(angle) * radius);
+          bolt.rotation.z = Math.PI / 2;
+        }
+        group.add(shadow(bolt));
+      }
+    }
+
+    function roundedBox(group, name, pos, scale, material, radius = 0.06) {
+      const shape = new THREE.Shape();
+      const w = 1;
+      const h = 1;
+      shape.moveTo(-w / 2 + radius, -h / 2);
+      shape.lineTo(w / 2 - radius, -h / 2);
+      shape.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + radius);
+      shape.lineTo(w / 2, h / 2 - radius);
+      shape.quadraticCurveTo(w / 2, h / 2, w / 2 - radius, h / 2);
+      shape.lineTo(-w / 2 + radius, h / 2);
+      shape.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - radius);
+      shape.lineTo(-w / 2, -h / 2 + radius);
+      shape.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + radius, -h / 2);
+      const mesh = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, {
+        depth: 1,
+        bevelEnabled: true,
+        bevelSize: 0.025,
+        bevelThickness: 0.025,
+        bevelSegments: 3
+      }), material);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.scale.set(...scale);
+      mesh.rotation.y = Math.PI / 2;
+      group.add(shadow(mesh));
+      return mesh;
+    }
+
+    function hexNut(group, name, pos, radius, height, material, axis = "y") {
+      return cylinder(group, name, pos, radius, height, material, axis, 6);
+    }
+
+    function topBoltRing(group, cx, cy, cz, radius, count, scale = 1) {
+      for (let i = 0; i < count; i += 1) {
+        const angle = (Math.PI * 2 * i) / count;
+        const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.045 * scale, 0.045 * scale, 0.07 * scale, 12), dark);
+        bolt.position.set(cx + Math.cos(angle) * radius, cy, cz + Math.sin(angle) * radius);
+        group.add(shadow(bolt));
+      }
+    }
+
+    function component(name, assembled, exploded) {
+      const group = new THREE.Group();
+      group.name = name;
+      group.position.set(...assembled);
+      group.userData.assembled = new THREE.Vector3(...assembled);
+      group.userData.exploded = new THREE.Vector3(...exploded);
+      return group;
+    }
+
+    const valve = new THREE.Group();
+    root.add(valve);
+
+    const bodyGroup = component("阀体", [0, 0, 0], [0, -0.08, 0]);
+    const leftFlangeGroup = component("左法兰接口", [0, 0, 0], [-0.92, 0, 0]);
+    const rightFlangeGroup = component("右法兰接口", [0, 0, 0], [0.92, 0, 0]);
+    const bonnetGroup = component("阀盖阀座", [0, 0, 0], [0, 0.5, 0]);
+    const stemGroup = component("阀杆挡板", [0, 0, 0], [0, 0.9, 0.3]);
+    const actuatorGroup = component("驱动机构", [0, 0, 0], [0.55, 1.18, 0]);
+    const sidePortGroup = component("预抽口", [0, 0, 0], [0.78, -0.18, 0]);
+    const sectionGroup = component("剖视结构", [0, 0, 0], [-0.58, -0.2, -0.56]);
+    const components = [bodyGroup, leftFlangeGroup, rightFlangeGroup, bonnetGroup, stemGroup, actuatorGroup, sidePortGroup, sectionGroup];
+    components.forEach((group) => valve.add(group));
+
+    cylinder(bodyGroup, "main-pipe", [0, 0.95, 0], 0.5, 3.05, steel, "x", 128);
+    box(bodyGroup, "valve-body", [0, 0.72, 0], [1.7, 1.72, 1.12], brushed);
+    cylinder(bodyGroup, "front-round-port", [0, 0.9, 0.62], 0.72, 0.2, bright, "z", 128);
+    torus(bodyGroup, "front-bolt-ring", [0, 0.9, 0.75], 0.58, 0.035, dark);
+    boltRing(bodyGroup, 0, 0.9, 0.85, 0.51, 12, "z", 0.8);
+    cylinder(bodyGroup, "inner-seat", [0, 0.9, 0.89], 0.43, 0.052, dark, "z", 128);
+    torus(bodyGroup, "seat-o-ring", [0, 0.9, 0.935], 0.42, 0.016, rubber);
+    for (let y = 0.18; y < 1.46; y += 0.2) {
+      torus(bodyGroup, "body-machined-rib", [0, y, 0], 0.78, 0.008, bright, [Math.PI / 2, 0, 0]);
+    }
+
+    cylinder(leftFlangeGroup, "left-flange", [-1.78, 0.95, 0], 0.7, 0.26, bright, "x", 128);
+    cylinder(leftFlangeGroup, "left-neck", [-1.48, 0.95, 0], 0.52, 0.34, steel, "x", 96);
+    torus(leftFlangeGroup, "left-flange-lip", [-1.93, 0.95, 0], 0.64, 0.03, dark, [0, Math.PI / 2, 0]);
+    torus(leftFlangeGroup, "left-gasket", [-1.6, 0.95, 0], 0.52, 0.018, rubber, [0, Math.PI / 2, 0]);
+    boltRing(leftFlangeGroup, -1.94, 0.95, 0, 0.58, 10, "x", 0.9);
+
+    cylinder(rightFlangeGroup, "right-flange", [1.78, 0.95, 0], 0.7, 0.26, bright, "x", 128);
+    cylinder(rightFlangeGroup, "right-neck", [1.48, 0.95, 0], 0.52, 0.34, steel, "x", 96);
+    torus(rightFlangeGroup, "right-flange-lip", [1.93, 0.95, 0], 0.64, 0.03, dark, [0, Math.PI / 2, 0]);
+    torus(rightFlangeGroup, "right-gasket", [1.6, 0.95, 0], 0.52, 0.018, rubber, [0, Math.PI / 2, 0]);
+    boltRing(rightFlangeGroup, 1.94, 0.95, 0, 0.58, 10, "x", 0.9);
+
+    cylinder(bonnetGroup, "bonnet-stack-1", [0, 1.52, 0], 0.8, 0.24, bright, "y", 128);
+    cylinder(bonnetGroup, "bonnet-stack-2", [0, 1.76, 0], 0.66, 0.24, steel, "y", 128);
+    cylinder(bonnetGroup, "bonnet-neck", [0, 2.0, 0], 0.4, 0.24, brushed, "y", 96);
+    topBoltRing(bonnetGroup, 0, 1.67, 0, 0.63, 14, 0.82);
+    box(bonnetGroup, "upper-yoke-left", [-0.42, 2.43, 0], [0.12, 1.04, 0.16], brushed);
+    box(bonnetGroup, "upper-yoke-right", [0.42, 2.43, 0], [0.12, 1.04, 0.16], brushed);
+
+    pipe(stemGroup, "valve-stem", [0, 1.24, 0], [0, 3.64, 0], 0.06, bright);
+    cylinder(stemGroup, "gate-disc", [0, 0.9, 0.94], 0.38, 0.038, bright, "z", 128);
+    box(stemGroup, "gate-plate-slot", [0, 0.9, 0.985], [0.14, 0.78, 0.045], dark);
+    box(stemGroup, "gate-stem-visible", [0, 1.03, 1.03], [0.06, 0.78, 0.06], bright);
+    torus(stemGroup, "bellows-ring-1", [0, 2.18, 0], 0.18, 0.012, bright, [Math.PI / 2, 0, 0]);
+    torus(stemGroup, "bellows-ring-2", [0, 2.28, 0], 0.18, 0.012, bright, [Math.PI / 2, 0, 0]);
+    torus(stemGroup, "bellows-ring-3", [0, 2.38, 0], 0.18, 0.012, bright, [Math.PI / 2, 0, 0]);
+
+    cylinder(actuatorGroup, "actuator-cylinder", [0, 3.32, 0], 0.54, 1.12, actuator, "y", 128);
+    cylinder(actuatorGroup, "actuator-top-cap", [0, 3.93, 0], 0.58, 0.16, bright, "y", 128);
+    cylinder(actuatorGroup, "actuator-bottom-cap", [0, 2.7, 0], 0.58, 0.16, bright, "y", 128);
+    topBoltRing(actuatorGroup, 0, 4.02, 0, 0.5, 10, 0.72);
+    topBoltRing(actuatorGroup, 0, 2.6, 0, 0.5, 10, 0.72);
+    cylinder(actuatorGroup, "top-pin", [0, 4.1, 0], 0.12, 0.12, bright, "y", 32);
+    roundedBox(actuatorGroup, "drive-mount-bracket", [0.62, 3.28, -0.22], [0.42, 0.56, 0.5], brushed, 0.08);
+    roundedBox(actuatorGroup, "solenoid-valve-body", [0.83, 3.3, -0.03], [0.28, 0.46, 0.36], blackBox, 0.07);
+    cylinder(actuatorGroup, "solenoid-coil", [1.16, 3.3, -0.03], 0.29, 0.62, dark, "x", 96);
+    cylinder(actuatorGroup, "solenoid-front-cap", [1.49, 3.3, -0.03], 0.295, 0.055, blackBox, "x", 96);
+    cylinder(actuatorGroup, "solenoid-rear-cap", [0.82, 3.3, -0.03], 0.285, 0.055, blackBox, "x", 96);
+    torus(actuatorGroup, "coil-front-rim", [1.52, 3.3, -0.03], 0.24, 0.012, bright, [0, Math.PI / 2, 0]);
+    torus(actuatorGroup, "coil-rear-rim", [0.79, 3.3, -0.03], 0.23, 0.012, bright, [0, Math.PI / 2, 0]);
+    roundedBox(actuatorGroup, "terminal-box", [0.66, 3.05, 0.28], [0.24, 0.24, 0.16], amber, 0.04);
+    roundedBox(actuatorGroup, "terminal-cover", [0.64, 2.82, 0.14], [0.2, 0.22, 0.2], blackBox, 0.035);
+    pipe(actuatorGroup, "upper-air-tube", [0.48, 3.58, -0.22], [1.38, 3.82, -0.43], 0.026, brass);
+    pipe(actuatorGroup, "lower-air-tube", [0.48, 3.02, -0.22], [1.1, 2.84, -0.42], 0.02, brass);
+    cylinder(actuatorGroup, "air-fitting-a", [0.48, 3.58, -0.22], 0.055, 0.08, brass, "x", 24);
+    cylinder(actuatorGroup, "air-fitting-b", [0.48, 3.02, -0.22], 0.045, 0.07, brass, "x", 24);
+    hexNut(actuatorGroup, "coil-nut-top", [0.62, 3.52, 0.2], 0.045, 0.055, dark, "y");
+    hexNut(actuatorGroup, "coil-nut-bottom", [0.62, 3.08, 0.2], 0.045, 0.055, dark, "y");
+    hexNut(actuatorGroup, "coil-nut-rear-top", [0.62, 3.52, -0.32], 0.04, 0.052, dark, "y");
+    hexNut(actuatorGroup, "coil-nut-rear-bottom", [0.62, 3.08, -0.32], 0.04, 0.052, dark, "y");
+
+    pipe(sidePortGroup, "side-vacuum-port", [0.72, 0.52, 0], [1.22, 0.24, 0], 0.1, steel);
+    cylinder(sidePortGroup, "small-side-flange", [1.32, 0.2, 0], 0.24, 0.13, bright, "x", 64);
+    boltRing(sidePortGroup, 1.4, 0.2, 0, 0.19, 6, "x", 0.55);
+
+    sectionGroup.rotation.y = 0.1;
+    box(sectionGroup, "section-housing", [-1.38, 0.96, -0.62], [0.52, 1.25, 0.08], dark);
+    pipe(sectionGroup, "section-stem", [-1.38, 0.96, -0.54], [-1.38, 2.12, -0.54], 0.035, bright);
+    sphere(sectionGroup, "section-disc", [-1.38, 1.08, -0.5], 0.24, bright, [1, 1, 0.32]);
+
+    const baseShadow = new THREE.Mesh(
+      new THREE.CircleGeometry(4.5, 96),
+      new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.22 })
+    );
+    baseShadow.rotation.x = -Math.PI / 2;
+    baseShadow.position.y = -0.06;
+    scene.add(baseShadow);
+
+    function resize() {
+      const width = sceneEl.clientWidth || innerWidth;
+      const height = sceneEl.clientHeight || innerHeight;
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    }
+
+    addEventListener("resize", resize);
+    resize();
+
+    let mode = "assembled";
+    const buttons = Array.from(document.querySelectorAll("[data-mode]"));
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      buttons.forEach((button) => button.classList.toggle("is-active", button.dataset.mode === mode));
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => setMode(button.dataset.mode));
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const alpha = 0.08;
+      components.forEach((group) => {
+        const target = mode === "exploded" ? group.userData.exploded : group.userData.assembled;
+        group.position.lerp(target, alpha);
+      });
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "hebeict-modern-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:static": "node scripts/sync-static-data.mjs",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

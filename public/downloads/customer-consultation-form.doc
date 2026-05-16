@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>客户咨询表</title>
+<style>
+  body { font-family: "Microsoft YaHei", Arial, sans-serif; color: #1f302b; }
+  h1 { text-align: center; font-size: 22px; margin: 18px 0 6px; }
+  .subtitle { text-align: center; margin: 0 0 16px; color: #52645e; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 10px; }
+  th, td { border: 1px solid #777; padding: 9px 10px; min-height: 32px; font-size: 12px; line-height: 1.45; text-align: left; vertical-align: middle; }
+  th { background: #eef7f2; font-weight: 700; }
+  .section th { background: #0d604b; color: #fff; text-align: center; font-size: 14px; }
+  .required { margin: 8px 0 2px; font-size: 12px; color: #b04727; font-weight: 700; }
+  .note { font-size: 12px; color: #52645e; }
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+    <h1>石家庄辰泰环境科技有限公司客户咨询表</h1>
+    <p class="subtitle">有机尾气处理设备项目咨询资料</p>
+    <table>
+      <tbody>
+        <tr><th>单位名称</th><td></td><th>项目名称</th><td>有机尾气处理设备</td></tr>
+        <tr><th>日期</th><td></td><th>联系人</th><td></td></tr>
+        
+          <tr class="section"><th colspan="4">尾气情况</th></tr>
+          <tr><th>* 成分及总损耗量</th><td></td><th>* 各成分体积百分比（%）</th><td></td></tr><tr><th>* 尾气排放总量（Nm3/h）</th><td></td><th>* 风机、泵标示量</th><td></td></tr><tr><th>* 尾气排放压力（kPa）</th><td></td><th>* 实测风量</th><td></td></tr><tr><th>* 排放方式</th><td>连续 / 间歇</td><th>* 尾气温度（℃）</th><td></td></tr><tr><th>* 尾气排放口状况</th><td>方形 / 圆形，分散 / 集中</td><th>截面积</th><td></td></tr><tr><th>排放口数量</th><td></td><th>排放时间（h/日）</th><td></td></tr><tr><th colspan="4">各生产环节排放量（kg/日）</th></tr><tr><th>物料烘干</th><td></td><th>离心机排空</th><td></td></tr><tr><th>真空泵种类及抽真空排放量</th><td></td><th>其他</th><td></td></tr>
+        
+          <tr class="section"><th colspan="4">设备需求</th></tr>
+          <tr><th colspan="2">* 对本设备的要求</th><td colspan="2">需回收物、回收率、处理目的等</td></tr><tr><th>目标排放要求</th><td></td><th>是否需要溶剂回收</th><td>是 / 否</td></tr>
+        
+          <tr class="section"><th colspan="4">公用工程情况</th></tr>
+          <tr><th>公用工程条件</th><th>具备</th><th>不具备</th><th>参数 / 备注</th></tr><tr><th>电力</th><td></td><td></td><td>380/220V 50Hz</td></tr><tr><th>蒸汽</th><td></td><td></td><td>≥0.2-0.6MPa</td></tr><tr><th>冷却水</th><td></td><td></td><td>≤32℃</td></tr><tr><th>压缩空气</th><td></td><td></td><td>≥0.4MPa</td></tr>
+        
+          <tr class="section"><th colspan="4">联系方式</th></tr>
+          <tr><th>所在部门及职务</th><td></td><th>手机</th><td></td></tr><tr><th>电话</th><td></td><th>邮箱</th><td></td></tr><tr><th>地址</th><td colspan="3"></td></tr>
+        
+      </tbody>
+    </table>
+    <p class="required">* 号为必填项</p>
+    <p class="note">填写完整后，请通过邮件或电话提交至公司业务部。</p>
+<div class="page-break"></div>
+
+    <h1>Shijiazhuang Chentai Environmental Technology Co., Ltd. Customer Consultation Form</h1>
+    <p class="subtitle">Organic Waste Gas Treatment Equipment Project Inquiry</p>
+    <table>
+      <tbody>
+        <tr><th>Company</th><td></td><th>Project</th><td>Organic Waste Gas Treatment Equipment</td></tr>
+        <tr><th>Date</th><td></td><th>Contact</th><td></td></tr>
+        
+          <tr class="section"><th colspan="4">Waste Gas Conditions</th></tr>
+          <tr><th>* Components and Total Loss</th><td></td><th>* Volume Percentage of Each Component (%)</th><td></td></tr><tr><th>* Total Exhaust Volume (Nm3/h)</th><td></td><th>* Fan / Pump Rated Flow</th><td></td></tr><tr><th>* Exhaust Pressure (kPa)</th><td></td><th>* Measured Air Volume</th><td></td></tr><tr><th>* Emission Mode</th><td>Continuous / Intermittent</td><th>* Gas Temperature (℃)</th><td></td></tr><tr><th>* Outlet Condition</th><td>Square / Round, Scattered / Centralized</td><th>Section Area</th><td></td></tr><tr><th>Outlet Quantity</th><td></td><th>Emission Time (h/day)</th><td></td></tr><tr><th colspan="4">Emission Quantity by Production Step (kg/day)</th></tr><tr><th>Material Drying</th><td></td><th>Centrifuge Venting</th><td></td></tr><tr><th>Vacuum Pump Type and Exhaust Quantity</th><td></td><th>Other</th><td></td></tr>
+        
+          <tr class="section"><th colspan="4">Equipment Requirements</th></tr>
+          <tr><th colspan="2">* Requirements for Equipment</th><td colspan="2">Recovered material, recovery rate, treatment purpose, etc.</td></tr><tr><th>Target Emission Requirement</th><td></td><th>Solvent Recovery Required</th><td>Yes / No</td></tr>
+        
+          <tr class="section"><th colspan="4">Utility Conditions</th></tr>
+          <tr><th>Utility Condition</th><th>Available</th><th>Unavailable</th><th>Parameter / Notes</th></tr><tr><th>Power</th><td></td><td></td><td>380/220V 50Hz</td></tr><tr><th>Steam</th><td></td><td></td><td>≥0.2-0.6MPa</td></tr><tr><th>Cooling Water</th><td></td><td></td><td>≤32℃</td></tr><tr><th>Compressed Air</th><td></td><td></td><td>≥0.4MPa</td></tr>
+        
+          <tr class="section"><th colspan="4">Contact Information</th></tr>
+          <tr><th>Department and Position</th><td></td><th>Mobile</th><td></td></tr><tr><th>Telephone</th><td></td><th>Email</th><td></td></tr><tr><th>Address</th><td colspan="3"></td></tr>
+        
+      </tbody>
+    </table>
+    <p class="required">* Required field</p>
+    <p class="note">After completion, please submit the form to our business department by email or phone.</p>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>三级精馏分离工艺动态流程图</title>
+  <style>
+    :root {
+      --blue: #0f5fa8;
+      --red: #c81717;
+      --green: #26843a;
+      --feed: #313131;
+      --text: #1d2630;
+      --muted: #5f6b76;
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+      color: var(--text);
+    }
+    .page {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 18px 22px 30px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 2.6vw, 36px);
+      letter-spacing: .03em;
+      font-weight: 800;
+    }
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    button {
+      appearance: none;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-weight: 700;
+      color: #1f2937;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, .06);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    button:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(15, 23, 42, .1); }
+    button.active { background: #0f5fa8; color: #fff; border-color: #0f5fa8; }
+    .canvas-wrap {
+      background: var(--panel);
+      border: 1px solid #d9e2ec;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 38px rgba(20, 33, 61, .10);
+      position: relative;
+    }
+    .hint {
+      position: absolute;
+      right: 16px;
+      top: 14px;
+      z-index: 2;
+      background: rgba(255,255,255,.86);
+      border: 1px solid #d7dee8;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      color: #4b5563;
+      box-shadow: 0 4px 12px rgba(15,23,42,.06);
+      backdrop-filter: blur(6px);
+    }
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      background:
+        radial-gradient(circle at 20% 12%, rgba(15,95,168,.06), transparent 26%),
+        radial-gradient(circle at 80% 22%, rgba(38,132,58,.05), transparent 24%),
+        #fff;
+    }
+    .label { font-size: 23px; font-weight: 750; fill: #111827; }
+    .small-label { font-size: 18px; font-weight: 700; fill: #111827; }
+    .tiny-label { font-size: 15px; font-weight: 700; fill: #334155; }
+    .muted { fill: #475569; }
+    .pipe {
+      fill: none;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      stroke-width: 5.2;
+    }
+    .pipe-thin { stroke-width: 4.2; }
+    .flow-blue { stroke: var(--blue); marker-end: url(#arrowBlue); }
+    .flow-red { stroke: var(--red); marker-end: url(#arrowRed); }
+    .flow-green { stroke: var(--green); marker-end: url(#arrowGreen); }
+    .flow-feed { stroke: var(--feed); marker-end: url(#arrowFeed); }
+    .animated {
+      stroke-dasharray: 14 13;
+      animation: flowDash 1.05s linear infinite;
+    }
+    body.paused .animated { animation-play-state: paused; }
+    @keyframes flowDash { to { stroke-dashoffset: -27; } }
+    .tower-body { fill: url(#towerGrad); stroke: #2f3b46; stroke-width: 2.6; }
+    .tray { stroke: #64748b; stroke-width: 2; stroke-dasharray: 9 7; opacity: .75; }
+    .equipment text { pointer-events: none; }
+    .equipment { cursor: pointer; transition: opacity .2s ease; }
+    .equipment .outline { transition: filter .2s ease, stroke-width .2s ease; }
+    .equipment:hover .outline, .equipment.selected .outline {
+      filter: drop-shadow(0 0 8px rgba(15,95,168,.35));
+      stroke-width: 3.2;
+    }
+    .stage-bg {
+      opacity: .05;
+      transition: opacity .2s ease;
+    }
+    .focus-s1 #stage1bg,
+    .focus-s2 #stage2bg,
+    .focus-s3 #stage3bg { opacity: .16; }
+    .focus-s1 .stage:not(.s1),
+    .focus-s2 .stage:not(.s2),
+    .focus-s3 .stage:not(.s3) { opacity: .25; }
+    .focus-s1 .flow:not(.s1flow):not(.commonflow),
+    .focus-s2 .flow:not(.s2flow):not(.commonflow),
+    .focus-s3 .flow:not(.s3flow):not(.commonflow) { opacity: .22; }
+    .info-card {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #d9e2ec;
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: 0 8px 22px rgba(15,23,42,.06);
+    }
+    #infoTitle { font-size: 18px; font-weight: 850; margin: 0 0 4px; }
+    #infoText { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.65; }
+    .legend-note { font-size: 13px; color: #64748b; white-space: nowrap; }
+    @media (max-width: 860px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .controls { justify-content: flex-start; }
+      .hint { display: none; }
+      .info-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <h1>三级精馏分离工艺动态流程图</h1>
+        <p class="subtitle">蓝色为蒸汽/液体物流，红色为加热介质，绿色为塔底/产品；点击设备可查看说明。</p>
+      </div>
+      <div class="controls">
+        <button id="playBtn" class="active">暂停动画</button>
+        <button data-focus="all" class="focusBtn active">总览</button>
+        <button data-focus="s1" class="focusBtn">一级塔</button>
+        <button data-focus="s2" class="focusBtn">二级塔</button>
+        <button data-focus="s3" class="focusBtn">三级塔</button>
+      </div>
+    </header>
+
+    <div class="canvas-wrap">
+      <div class="hint">点击设备节点 · 支持流程动画播放/暂停</div>
+      <svg id="processSvg" viewBox="0 0 1600 920" role="img" aria-label="三级精馏分离工艺动态流程图">
+        <defs>
+          <linearGradient id="towerGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#aeb7c1"/>
+            <stop offset="0.18" stop-color="#eef3f8"/>
+            <stop offset="0.5" stop-color="#ffffff"/>
+            <stop offset="0.82" stop-color="#d8e0e8"/>
+            <stop offset="1" stop-color="#83909d"/>
+          </linearGradient>
+          <linearGradient id="greenTank" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f6fff5"/>
+            <stop offset="1" stop-color="#dbeedc"/>
+          </linearGradient>
+          <linearGradient id="orangeTank" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fff5df"/>
+            <stop offset="1" stop-color="#f2be62"/>
+          </linearGradient>
+          <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M1,1 L11,6 L1,11 Z" fill="#0f5fa8"/>
+          </marker>
+          <marker id="arrowRed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M1,1 L11,6 L1,11 Z" fill="#c81717"/>
+          </marker>
+          <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M1,1 L11,6 L1,11 Z" fill="#26843a"/>
+          </marker>
+          <marker id="arrowFeed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M1,1 L11,6 L1,11 Z" fill="#313131"/>
+          </marker>
+          <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#1f2937" flood-opacity="0.18"/>
+          </filter>
+          <filter id="blueGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#0f5fa8" flood-opacity="0.35"/>
+          </filter>
+          <clipPath id="tankClip1"><rect x="1456" y="78" width="72" height="92" rx="30"/></clipPath>
+          <clipPath id="tankClip2"><rect x="1456" y="548" width="72" height="116" rx="30"/></clipPath>
+          <clipPath id="tankClip3"><rect x="1456" y="735" width="72" height="116" rx="30"/></clipPath>
+        </defs>
+
+        <!-- soft stage backgrounds -->
+        <g id="stageBackgrounds">
+          <rect id="stage1bg" class="stage-bg" x="300" y="82" width="370" height="675" rx="30" fill="#0f5fa8"/>
+          <rect id="stage2bg" class="stage-bg" x="675" y="248" width="340" height="560" rx="30" fill="#0f5fa8"/>
+          <rect id="stage3bg" class="stage-bg" x="1045" y="208" width="370" height="575" rx="30" fill="#0f5fa8"/>
+        </g>
+
+        <!-- Flow paths first, under equipment -->
+        <g id="flows">
+          <!-- feed -->
+          <path id="p_feed1" class="pipe flow flow-feed commonflow animated" d="M98 438 L132 438"/>
+          <path id="p_feed2" class="pipe flow flow-feed commonflow animated" d="M182 438 L222 438"/>
+          <path id="p_feed3" class="pipe flow flow-feed commonflow animated" d="M282 438 L338 438"/>
+
+          <!-- stage 1 overhead / reflux / interstage -->
+          <path id="p_t1_overhead" class="pipe flow flow-blue s1flow commonflow animated" d="M382 152 L382 82 L538 82 L538 138"/>
+          <path id="p_t1_cond_to_drum" class="pipe flow flow-blue s1flow animated" d="M568 164 L620 164 L620 238"/>
+          <path id="p_t1_reflux" class="pipe flow flow-blue s1flow animated" d="M620 260 L420 260 L420 238"/>
+          <path id="p_t1_to_product" class="pipe flow flow-blue s1flow commonflow animated" d="M568 82 L1450 82"/>
+          <path id="p_t1_to_t2" class="pipe flow flow-blue s1flow s2flow animated" d="M686 276 L686 620 L735 620"/>
+          <path id="p_t1_reboil" class="pipe flow flow-blue s1flow animated" d="M382 632 L382 690 L462 690"/>
+          <path id="p_t1_reboil_return" class="pipe flow flow-blue s1flow animated" d="M492 660 L402 660 L402 595"/>
+
+          <!-- stage 2 overhead / reflux / interstage -->
+          <path id="p_t2_overhead" class="pipe flow flow-blue s2flow animated" d="M775 330 L775 278 L878 278 L878 322"/>
+          <path id="p_t2_cond_to_drum" class="pipe flow flow-blue s2flow animated" d="M908 348 L976 348 L976 408"/>
+          <path id="p_t2_reflux" class="pipe flow flow-blue s2flow animated" d="M976 430 L820 430 L820 410"/>
+          <path id="p_t2_to_t3" class="pipe flow flow-blue s2flow s3flow animated" d="M1042 432 L1042 575 L1090 575"/>
+          <path id="p_t2_reboil" class="pipe flow flow-blue s2flow animated" d="M775 690 L775 742 L820 742"/>
+          <path id="p_t2_reboil_return" class="pipe flow flow-blue s2flow animated" d="M850 712 L795 712 L795 664"/>
+
+          <!-- stage 3 overhead / reflux / products -->
+          <path id="p_t3_overhead" class="pipe flow flow-blue s3flow animated" d="M1130 282 L1130 218 L1268 218 L1268 268"/>
+          <path id="p_t3_cond_to_drum" class="pipe flow flow-blue s3flow animated" d="M1298 294 L1360 294 L1360 362"/>
+          <path id="p_t3_reflux" class="pipe flow flow-blue s3flow animated" d="M1360 386 L1180 386 L1180 372"/>
+          <path id="p_white_oil" class="pipe flow flow-blue s3flow commonflow animated" d="M1178 596 L1450 596"/>
+          <path id="p_t3_reboil" class="pipe flow flow-blue s3flow animated" d="M1130 705 L1130 748 L1190 748"/>
+          <path id="p_t3_reboil_return" class="pipe flow flow-blue s3flow animated" d="M1220 718 L1152 718 L1152 674"/>
+
+          <!-- heating medium red loops -->
+          <path id="p_heat1" class="pipe flow flow-red s1flow animated" d="M530 690 L530 642 L432 642"/>
+          <path id="p_heat1_r" class="pipe flow flow-red s1flow animated" d="M430 614 L520 614 L520 670"/>
+          <path id="p_heat2" class="pipe flow flow-red s2flow animated" d="M878 742 L878 704 L810 704"/>
+          <path id="p_heat2_r" class="pipe flow flow-red s2flow animated" d="M808 672 L870 672 L870 725"/>
+          <path id="p_heat3" class="pipe flow flow-red s3flow animated" d="M1250 748 L1250 706 L1172 706"/>
+          <path id="p_heat3_r" class="pipe flow flow-red s3flow animated" d="M1170 676 L1240 676 L1240 728"/>
+
+          <!-- bottoms/products green header -->
+          <path id="p_bottom_t1" class="pipe flow flow-green s1flow commonflow animated" d="M382 637 L382 792 L735 792"/>
+          <path id="p_bottom_t2" class="pipe flow flow-green s2flow commonflow animated" d="M775 690 L775 792"/>
+          <path id="p_bottom_t3" class="pipe flow flow-green s3flow commonflow animated" d="M1130 710 L1130 792"/>
+          <path id="p_bottom_header" class="pipe flow flow-green commonflow animated" d="M735 792 L1450 792"/>
+        </g>
+
+        <!-- Animated particles -->
+        <g id="particles" filter="url(#blueGlow)">
+          <circle r="7" fill="#313131"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#p_feed3"/></animateMotion></circle>
+          <circle r="7" fill="#0f5fa8"><animateMotion dur="3.6s" repeatCount="indefinite"><mpath href="#p_t1_to_product"/></animateMotion></circle>
+          <circle r="7" fill="#0f5fa8"><animateMotion dur="3.0s" repeatCount="indefinite"><mpath href="#p_t1_to_t2"/></animateMotion></circle>
+          <circle r="7" fill="#0f5fa8"><animateMotion dur="3.1s" repeatCount="indefinite"><mpath href="#p_t2_to_t3"/></animateMotion></circle>
+          <circle r="7" fill="#0f5fa8"><animateMotion dur="2.9s" repeatCount="indefinite"><mpath href="#p_white_oil"/></animateMotion></circle>
+          <circle r="7" fill="#26843a"><animateMotion dur="4.5s" repeatCount="indefinite"><mpath href="#p_bottom_header"/></animateMotion></circle>
+          <circle r="6" fill="#c81717"><animateMotion dur="2.0s" repeatCount="indefinite"><mpath href="#p_heat1"/></animateMotion></circle>
+          <circle r="6" fill="#c81717"><animateMotion dur="2.0s" repeatCount="indefinite"><mpath href="#p_heat2"/></animateMotion></circle>
+          <circle r="6" fill="#c81717"><animateMotion dur="2.0s" repeatCount="indefinite"><mpath href="#p_heat3"/></animateMotion></circle>
+        </g>
+
+        <!-- Feed equipment -->
+        <g class="equipment" data-title="混合物料" data-desc="待分离混合物料进入系统，经进料泵升压后送往进料预热器。">
+          <rect class="outline" x="18" y="400" width="95" height="48" rx="9" fill="#dff0df" stroke="#2d7c39" stroke-width="2.2"/>
+          <text class="small-label" x="65" y="431" text-anchor="middle">混合物料</text>
+        </g>
+        <g class="equipment" data-title="进料泵" data-desc="提供进料输送动力，使混合物料稳定进入预热与一级精馏段。">
+          <circle class="outline" cx="158" cy="438" r="28" fill="#e6edf3" stroke="#111827" stroke-width="2.2"/>
+          <path d="M144 423 L175 438 L144 453 Z" fill="#f8fafc" stroke="#111827" stroke-width="2"/>
+          <path d="M145 466 L137 485 L180 485 L172 466" fill="#d7dee6" stroke="#111827" stroke-width="1.8"/>
+          <text class="small-label" x="158" y="515" text-anchor="middle">进料泵</text>
+        </g>
+        <g class="equipment" data-title="进料预热器" data-desc="利用换热提升进料温度，降低后续塔釜热负荷并改善分离状态。">
+          <circle class="outline" cx="252" cy="438" r="29" fill="#ffd39d" stroke="#111827" stroke-width="2.2"/>
+          <path d="M232 450 C242 420 253 475 272 420" fill="none" stroke="#111827" stroke-width="3"/>
+          <line x1="272" y1="418" x2="281" y2="410" stroke="#111827" stroke-width="2"/>
+          <text class="small-label" x="252" y="515" text-anchor="middle">进料预热器</text>
+        </g>
+
+        <!-- Stage 1 -->
+        <g class="stage s1">
+          <g class="equipment" data-title="一级精馏塔" data-desc="第一级精馏单元：接收预热进料，完成初步轻重组分分离；塔顶进入冷凝回流系统，塔底进入再沸与重组分汇流。">
+            <rect class="tower-body outline" x="338" y="152" width="92" height="480" rx="46" filter="url(#softShadow)"/>
+            <line class="tray" x1="345" y1="270" x2="423" y2="270"/>
+            <line class="tray" x1="345" y1="320" x2="423" y2="320"/>
+            <line class="tray" x1="345" y1="370" x2="423" y2="370"/>
+            <line class="tray" x1="345" y1="420" x2="423" y2="420"/>
+            <line class="tray" x1="345" y1="470" x2="423" y2="470"/>
+            <text class="label" x="384" y="448" text-anchor="middle"><tspan x="384" dy="0">一级</tspan><tspan x="384" dy="32">精馏塔</tspan></text>
+          </g>
+          <g class="equipment" data-title="一级冷凝器" data-desc="冷凝一级塔塔顶蒸汽，形成冷凝液进入回流罐，并分配为回流与后续物流。">
+            <circle class="outline" cx="538" cy="162" r="29" fill="#cfe7c9" stroke="#111827" stroke-width="2.2"/>
+            <path d="M520 177 C530 138 542 200 558 137" fill="none" stroke="#111827" stroke-width="3"/>
+            <text class="small-label" x="500" y="142" text-anchor="middle">冷凝器</text>
+          </g>
+          <g class="equipment" data-title="一级回流罐" data-desc="收集一级塔顶冷凝液，部分作为回流返回塔内，部分送往二级精馏塔或顶部产品线。">
+            <rect class="outline" x="620" y="224" width="92" height="48" rx="22" fill="url(#greenTank)" stroke="#111827" stroke-width="2.2"/>
+            <rect x="624" y="244" width="84" height="25" rx="12" fill="#b7d5aa" opacity=".6"/>
+            <text class="small-label" x="666" y="305" text-anchor="middle">回流罐</text>
+          </g>
+          <text class="small-label" x="486" y="256" text-anchor="middle">回流</text>
+          <g class="equipment" data-title="一级再沸器" data-desc="为一级塔塔底提供汽化热量，红色管线表示外部加热介质循环。">
+            <circle class="outline" cx="492" cy="690" r="32" fill="#ffd39d" stroke="#111827" stroke-width="2.2"/>
+            <path d="M472 674 L510 674 L510 684 L482 684 L482 694 L510 694 L510 704 L472 704" fill="none" stroke="#111827" stroke-width="3"/>
+            <text class="small-label" x="492" y="747" text-anchor="middle">再沸器</text>
+          </g>
+        </g>
+
+        <!-- Stage 2 -->
+        <g class="stage s2">
+          <g class="equipment" data-title="二级精馏塔" data-desc="第二级精馏单元：进一步分离来自一级塔的物流；塔顶冷凝回流，塔底进入重组分/产品汇流。">
+            <rect class="tower-body outline" x="735" y="330" width="86" height="360" rx="43" filter="url(#softShadow)"/>
+            <line class="tray" x1="742" y1="410" x2="814" y2="410"/>
+            <line class="tray" x1="742" y1="460" x2="814" y2="460"/>
+            <line class="tray" x1="742" y1="510" x2="814" y2="510"/>
+            <line class="tray" x1="742" y1="560" x2="814" y2="560"/>
+            <line class="tray" x1="742" y1="610" x2="814" y2="610"/>
+            <text class="label" x="778" y="536" text-anchor="middle"><tspan x="778" dy="0">二级</tspan><tspan x="778" dy="32">精馏塔</tspan></text>
+          </g>
+          <g class="equipment" data-title="二级冷凝器" data-desc="冷凝二级塔塔顶蒸汽，冷凝液进入二级回流罐进行回流与后续分配。">
+            <circle class="outline" cx="878" cy="346" r="29" fill="#cfe7c9" stroke="#111827" stroke-width="2.2"/>
+            <path d="M860 361 C870 322 882 384 898 321" fill="none" stroke="#111827" stroke-width="3"/>
+            <text class="small-label" x="835" y="327" text-anchor="middle">冷凝器</text>
+          </g>
+          <g class="equipment" data-title="二级回流罐" data-desc="收集二级塔顶冷凝液，部分回流至二级塔，另一部分送往三级精馏塔。">
+            <rect class="outline" x="976" y="394" width="92" height="48" rx="22" fill="url(#greenTank)" stroke="#111827" stroke-width="2.2"/>
+            <rect x="980" y="414" width="84" height="25" rx="12" fill="#b7d5aa" opacity=".6"/>
+            <text class="small-label" x="1022" y="475" text-anchor="middle">回流罐</text>
+          </g>
+          <text class="small-label" x="865" y="448" text-anchor="middle">回流</text>
+          <g class="equipment" data-title="二级再沸器" data-desc="为二级塔塔釜提供热量，使部分塔底液汽化后返回塔内。">
+            <circle class="outline" cx="850" cy="742" r="32" fill="#ffd39d" stroke="#111827" stroke-width="2.2"/>
+            <path d="M830 726 L868 726 L868 736 L840 736 L840 746 L868 746 L868 756 L830 756" fill="none" stroke="#111827" stroke-width="3"/>
+            <text class="small-label" x="850" y="799" text-anchor="middle">再沸器</text>
+          </g>
+        </g>
+
+        <!-- Stage 3 -->
+        <g class="stage s3">
+          <g class="equipment" data-title="三级精馏塔" data-desc="第三级精馏单元：进行最终精制分离，得到合格白油高沸点组分，塔底重组分进入回收或处理。">
+            <rect class="tower-body outline" x="1090" y="282" width="86" height="424" rx="43" filter="url(#softShadow)"/>
+            <line class="tray" x1="1097" y1="386" x2="1169" y2="386"/>
+            <line class="tray" x1="1097" y1="438" x2="1169" y2="438"/>
+            <line class="tray" x1="1097" y1="490" x2="1169" y2="490"/>
+            <line class="tray" x1="1097" y1="542" x2="1169" y2="542"/>
+            <line class="tray" x1="1097" y1="594" x2="1169" y2="594"/>
+            <text class="label" x="1133" y="533" text-anchor="middle"><tspan x="1133" dy="0">三级</tspan><tspan x="1133" dy="32">精馏塔</tspan></text>
+          </g>
+          <g class="equipment" data-title="三级冷凝器" data-desc="冷凝三级塔塔顶蒸汽，配合回流罐维持塔顶回流比。">
+            <circle class="outline" cx="1268" cy="292" r="29" fill="#cfe7c9" stroke="#111827" stroke-width="2.2"/>
+            <path d="M1250 307 C1260 268 1272 330 1288 267" fill="none" stroke="#111827" stroke-width="3"/>
+            <text class="small-label" x="1223" y="272" text-anchor="middle">冷凝器</text>
+          </g>
+          <g class="equipment" data-title="三级回流罐" data-desc="收集三级塔顶冷凝液，部分回流返回三级塔以提升分离精度。">
+            <rect class="outline" x="1360" y="348" width="92" height="48" rx="22" fill="url(#greenTank)" stroke="#111827" stroke-width="2.2"/>
+            <rect x="1364" y="368" width="84" height="25" rx="12" fill="#b7d5aa" opacity=".6"/>
+            <text class="small-label" x="1406" y="429" text-anchor="middle">回流罐</text>
+          </g>
+          <text class="small-label" x="1248" y="392" text-anchor="middle">回流</text>
+          <g class="equipment" data-title="三级再沸器" data-desc="为三级塔提供塔釜热量，保证高沸点组分分离和塔底重组分排出。">
+            <circle class="outline" cx="1220" cy="748" r="32" fill="#ffd39d" stroke="#111827" stroke-width="2.2"/>
+            <path d="M1200 732 L1238 732 L1238 742 L1210 742 L1210 752 L1238 752 L1238 762 L1200 762" fill="none" stroke="#111827" stroke-width="3"/>
+            <text class="small-label" x="1220" y="805" text-anchor="middle">再沸器</text>
+          </g>
+        </g>
+
+        <!-- Product tanks -->
+        <g class="equipment" data-title="合格二氯甲烷（低沸点组分）" data-desc="低沸点组分经塔顶物流富集、冷凝后作为合格二氯甲烷产品送出。">
+          <rect class="outline" x="1456" y="78" width="72" height="92" rx="30" fill="#f8fafc" stroke="#111827" stroke-width="2.2" filter="url(#softShadow)"/>
+          <rect x="1456" y="105" width="72" height="65" fill="#8fc184" clip-path="url(#tankClip1)" opacity=".78"/>
+          <path d="M1484 78 L1484 64 L1498 64 L1498 78" fill="#e2e8f0" stroke="#111827" stroke-width="2"/>
+          <text class="label" x="1540" y="113"><tspan x="1540" dy="0">合格二氯甲烷</tspan><tspan x="1540" dy="34">（低沸点组分）</tspan></text>
+        </g>
+        <g class="equipment" data-title="合格白油（高沸点组分）" data-desc="三级塔分离得到的合格白油产品，为高沸点组分产品线。">
+          <rect class="outline" x="1456" y="548" width="72" height="116" rx="30" fill="#f8fafc" stroke="#111827" stroke-width="2.2" filter="url(#softShadow)"/>
+          <rect x="1456" y="610" width="72" height="54" fill="url(#orangeTank)" clip-path="url(#tankClip2)" opacity=".95"/>
+          <path d="M1484 548 L1484 535 L1498 535 L1498 548" fill="#e2e8f0" stroke="#111827" stroke-width="2"/>
+          <text class="label" x="1540" y="595"><tspan x="1540" dy="0">合格白油</tspan><tspan x="1540" dy="34">（高沸点组分）</tspan></text>
+        </g>
+        <g class="equipment" data-title="塔底重组分回收/处理" data-desc="各塔塔底重组分汇入绿色底部物流，最终进入回收或处理单元。">
+          <rect class="outline" x="1456" y="735" width="72" height="116" rx="30" fill="#f8fafc" stroke="#111827" stroke-width="2.2" filter="url(#softShadow)"/>
+          <rect x="1456" y="800" width="72" height="51" fill="#8fc184" clip-path="url(#tankClip3)" opacity=".78"/>
+          <path d="M1484 735 L1484 722 L1498 722 L1498 735" fill="#e2e8f0" stroke="#111827" stroke-width="2"/>
+          <text class="label" x="1540" y="782"><tspan x="1540" dy="0">塔底重组分</tspan><tspan x="1540" dy="34">回收/处理</tspan></text>
+        </g>
+
+        <!-- Legend -->
+        <g id="legend">
+          <rect x="96" y="850" width="930" height="54" rx="14" fill="#fff" stroke="#334155" stroke-width="1.7" stroke-dasharray="8 6" opacity=".96"/>
+          <path class="pipe flow-blue" d="M150 877 L225 877"/>
+          <text class="small-label" x="250" y="884">蒸汽/液体</text>
+          <path class="pipe flow-red" d="M445 877 L520 877"/>
+          <text class="small-label" x="545" y="884">加热介质</text>
+          <path class="pipe flow-green" d="M725 877 L800 877"/>
+          <text class="small-label" x="825" y="884">塔底/产品</text>
+        </g>
+      </svg>
+    </div>
+
+    <section class="info-card">
+      <div>
+        <p id="infoTitle">总览</p>
+        <p id="infoText">这是根据你提供的原图重绘的动态版三级精馏流程图：进料经泵和预热器进入一级精馏塔，经三级塔顶冷凝回流、塔底再沸与产品分流，最终得到合格二氯甲烷、合格白油和塔底重组分。</p>
+      </div>
+      <div class="legend-note">导出/汇报时可直接打开此 HTML 文件播放动画。</div>
+    </section>
+  </div>
+
+  <script>
+    const svg = document.getElementById('processSvg');
+    const playBtn = document.getElementById('playBtn');
+    let paused = false;
+
+    playBtn.addEventListener('click', () => {
+      paused = !paused;
+      document.body.classList.toggle('paused', paused);
+      if (paused) {
+        svg.pauseAnimations();
+        playBtn.textContent = '播放动画';
+        playBtn.classList.remove('active');
+      } else {
+        svg.unpauseAnimations();
+        playBtn.textContent = '暂停动画';
+        playBtn.classList.add('active');
+      }
+    });
+
+    const infoTitle = document.getElementById('infoTitle');
+    const infoText = document.getElementById('infoText');
+    const equipments = document.querySelectorAll('.equipment[data-title]');
+    equipments.forEach(node => {
+      node.addEventListener('click', () => {
+        equipments.forEach(n => n.classList.remove('selected'));
+        node.classList.add('selected');
+        infoTitle.textContent = node.getAttribute('data-title');
+        infoText.textContent = node.getAttribute('data-desc');
+      });
+    });
+
+    const focusBtns = document.querySelectorAll('.focusBtn');
+    const focusClasses = ['focus-s1', 'focus-s2', 'focus-s3'];
+    focusBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        focusBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-focus');
+        svg.classList.remove(...focusClasses);
+        if (target === 's1') svg.classList.add('focus-s1');
+        if (target === 's2') svg.classList.add('focus-s2');
+        if (target === 's3') svg.classList.add('focus-s3');
+        const textMap = {
+          all: ['总览', '完整显示三级串联精馏系统、塔顶冷凝回流、塔底再沸、产品与回收物流。'],
+          s1: ['一级塔流程', '突出一级精馏塔、一级冷凝器、回流罐、再沸器，以及进料和一级塔顶物流。'],
+          s2: ['二级塔流程', '突出二级精馏塔、二级冷凝回流系统、二级再沸器，以及一级到二级、二级到三级的物流衔接。'],
+          s3: ['三级塔流程', '突出三级精馏塔、三级冷凝回流系统、合格白油产品线和塔底重组分回收/处理。']
+        };
+        infoTitle.textContent = textMap[target][0];
+        infoText.textContent = textMap[target][1];
+      });
+    });
+  </script>
+</body>
+</html>

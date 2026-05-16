@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>石家庄辰泰环境科技有限公司</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <a class="brand" href="#home" aria-label="返回首页">
+        <span class="brand-logo-frame">
+          <img class="brand-logo" src="assets/logo/chentai-logo-full.jpg" alt="石家庄辰泰环境科技有限公司" />
+        </span>
+        <span class="brand-text">
+          <strong data-company-name>石家庄辰泰环境科技有限公司</strong>
+          <small data-company-en>Shijiazhuang Chentai Environmental Technology Co., Ltd.</small>
+        </span>
+      </a>
+      <button class="menu-button" type="button" data-menu-button aria-label="打开导航">☰</button>
+      <nav class="nav" data-nav aria-label="主导航">
+        <a href="#home" data-i18n="nav.home">首页</a>
+        <a href="#about" data-i18n="nav.about">公司概况</a>
+        <a href="#news" data-i18n="nav.news">新闻版块</a>
+        <a href="#projects" data-i18n="nav.projects">主营项目</a>
+        <a href="#technology" data-i18n="nav.technology">技术服务</a>
+        <a href="#cases" data-i18n="nav.cases">服务案例</a>
+        <button class="lang-toggle" type="button" data-lang-toggle>EN</button>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <canvas class="hero-industrial" data-hero-canvas aria-hidden="true"></canvas>
+        <div class="hero-shade"></div>
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow reveal">Organic Solvent Recovery</p>
+          <h1 class="reveal delay-1" data-hero-name>石家庄辰泰环境科技有限公司</h1>
+          <p class="hero-copy reveal delay-2" data-hero-summary></p>
+          <div class="hero-actions reveal delay-3">
+            <a class="button primary" href="#projects" data-i18n="hero.primary">查看主营项目</a>
+            <a class="button ghost" href="#cases" data-i18n="hero.secondary">浏览服务案例</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics strip" data-metrics></section>
+
+      <section class="scroll-process" data-scroll-process>
+        <div class="process-sticky">
+          <iframe class="equipment-model-frame" src="equipment-model.html" title="Industrial equipment 3D model"></iframe>
+          <div class="process-copy" data-process-copy>
+            <p class="eyebrow">About Chentai</p>
+            <h2 data-process-title>专业从事有机溶媒回收治理的科技型企业</h2>
+            <p data-process-text>公司本着安全、质量第一的经营理念，主抓设备的安全性，提高设备的稳定性，降低设备的能耗。通过和国内一流大学的技术交流与合作，积极进行科研攻关，解决并攻克了多项专业技术专题。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section about-section" id="about">
+        <div class="section-title">
+          <p class="eyebrow">About Chentai</p>
+          <h2 data-i18n="sections.about">公司概况</h2>
+        </div>
+        <div class="about-layout">
+          <article class="about-copy">
+            <h3 data-about-title></h3>
+            <p data-about-summary></p>
+            <div class="contact-ribbon">
+              <span data-phone></span>
+              <span data-email></span>
+              <span data-address></span>
+            </div>
+          </article>
+          <div class="culture-grid" data-culture></div>
+        </div>
+      </section>
+
+      <section class="section news-section" id="news">
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">News</p>
+            <h2 data-i18n="sections.news">新闻版块</h2>
+          </div>
+          <button class="section-more" type="button" data-toggle-section="news">查看更多</button>
+        </div>
+        <div class="news-list" data-news></div>
+      </section>
+
+      <section class="section full-list-section" id="news-more" data-more-section="news" hidden>
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">All News</p>
+            <h2 data-i18n="sections.allNews">新闻与行业资讯</h2>
+          </div>
+          <button class="section-more" type="button" data-close-more="news">收起</button>
+        </div>
+        <div class="full-list-tabs" data-news-tabs></div>
+        <div class="full-list-grid" data-news-full></div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">Main Projects</p>
+            <h2 data-i18n="sections.projects">主营项目</h2>
+          </div>
+          <button class="section-more" type="button" data-toggle-section="products">查看更多</button>
+        </div>
+        <div class="product-grid" data-products></div>
+      </section>
+
+      <section class="section full-list-section" id="products-more" data-more-section="products" hidden>
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">All Projects</p>
+            <h2 data-i18n="sections.allProjects">全部主营项目</h2>
+          </div>
+          <button class="section-more" type="button" data-close-more="products">收起</button>
+        </div>
+        <div class="product-grid" data-products-full></div>
+      </section>
+
+      <section class="section technology-section" id="technology">
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">Technology</p>
+            <h2 data-i18n="sections.technology">技术服务</h2>
+          </div>
+          <button class="section-more" type="button" data-toggle-section="technology">查看更多</button>
+        </div>
+        <div class="tech-grid" data-technology></div>
+      </section>
+
+      <section class="section full-list-section" id="technology-more" data-more-section="technology" hidden>
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">All Technology</p>
+            <h2 data-i18n="sections.allTechnology">全部技术服务</h2>
+          </div>
+          <button class="section-more" type="button" data-close-more="technology">收起</button>
+        </div>
+        <div class="tech-grid" data-technology-full></div>
+      </section>
+
+      <section class="section" id="cases">
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">Cases</p>
+            <h2 data-i18n="sections.cases">服务案例</h2>
+          </div>
+          <button class="section-more" type="button" data-toggle-section="cases">查看更多</button>
+        </div>
+        <div class="case-grid" data-cases></div>
+      </section>
+
+      <section class="section full-list-section" id="cases-more" data-more-section="cases" hidden>
+        <div class="section-title split">
+          <div>
+            <p class="eyebrow">All Cases</p>
+            <h2 data-i18n="sections.allCases">全部服务案例</h2>
+          </div>
+          <button class="section-more" type="button" data-close-more="cases">收起</button>
+        </div>
+        <div class="case-grid" data-cases-full></div>
+      </section>
+
+      <section class="section contact-section">
+        <div class="section-title">
+          <p class="eyebrow">Inquiry</p>
+          <h2 data-i18n="sections.inquiry">在线留言</h2>
+        </div>
+        <form class="contact-form" data-inquiry-form>
+          <label><span data-i18n="form.name">姓名</span><input name="name" required /></label>
+          <label><span data-i18n="form.company">单位</span><input name="company" /></label>
+          <label><span data-i18n="form.contact">联系方式</span><input name="contact" required /></label>
+          <label><span data-i18n="form.need">需求说明</span><textarea name="need" rows="4" required></textarea></label>
+          <button class="button primary" type="submit" data-i18n="form.submit">提交需求</button>
+          <p class="form-status" data-form-status role="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <div class="detail-modal" data-modal aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <article class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" type="button" data-close-modal aria-label="关闭">×</button>
+        <div class="modal-hero">
+          <img data-modal-image alt="" />
+          <div>
+            <p class="eyebrow" data-modal-kicker></p>
+            <h2 id="modal-title" data-modal-title></h2>
+            <p data-modal-summary></p>
+          </div>
+        </div>
+        <div class="modal-body" data-modal-body>
+          <section data-modal-detail-section>
+            <h3 data-i18n="modal.intro">内容介绍</h3>
+            <div class="modal-detail-text" data-modal-detail></div>
+            <div class="pdf-preview" data-modal-pdf-wrap>
+              <img data-modal-pdf alt="原流程图预览" />
+            </div>
+          </section>
+          <section data-modal-flow-section>
+            <h3 data-i18n="modal.flow" data-modal-flow-title>3D流程图</h3>
+            <iframe class="flow-3d-frame" data-modal-flow title="3D process flow"></iframe>
+          </section>
+        </div>
+      </article>
+    </div>
+
+    <footer class="footer">
+      <span data-footer-name></span>
+      <span data-footer-icp></span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

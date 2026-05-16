@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D Process Flow</title>
+  <style>
+    :root {
+      --bg: #07111c;
+      --panel: rgba(9, 18, 30, 0.82);
+      --panel-strong: rgba(12, 24, 38, 0.94);
+      --line: rgba(185, 220, 255, 0.22);
+      --text: #edf7ff;
+      --muted: #9cafc5;
+      --cyan: #26d6ff;
+      --blue: #4b8cff;
+      --green: #55e18c;
+      --amber: #ffc24d;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(38, 214, 255, 0.15), transparent 28%),
+        radial-gradient(circle at 84% 16%, rgba(85, 225, 140, 0.10), transparent 28%),
+        linear-gradient(135deg, #06101a, #091522 54%, #07111c);
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+    }
+
+    body.compact #app {
+      grid-template-columns: 1fr;
+    }
+
+    body.compact .panel,
+    body.compact .hint {
+      display: none;
+    }
+
+    #scene {
+      position: relative;
+      min-width: 0;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .topbar {
+      position: absolute;
+      z-index: 10;
+      top: 18px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(22px, 3vw, 40px);
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-shadow: 0 10px 34px rgba(0, 0, 0, 0.55);
+    }
+
+    .sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .badge {
+      padding: 10px 14px;
+      border: 1px solid rgba(38, 214, 255, 0.42);
+      border-radius: 999px;
+      color: #c9f4ff;
+      background: rgba(38, 214, 255, 0.10);
+      font-size: 13px;
+      white-space: nowrap;
+      box-shadow: 0 0 28px rgba(38, 214, 255, 0.12);
+    }
+
+    .hint {
+      position: absolute;
+      z-index: 10;
+      left: 20px;
+      bottom: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      pointer-events: none;
+    }
+
+    .hint span {
+      border: 1px solid var(--line);
+      background: rgba(5, 12, 20, 0.58);
+      color: #c6d5e6;
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel {
+      z-index: 20;
+      border-left: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--panel-strong), rgba(8, 16, 27, 0.92));
+      box-shadow: -22px 0 80px rgba(0, 0, 0, 0.32);
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .steps {
+      display: grid;
+      gap: 9px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.035);
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid rgba(185, 220, 255, 0.16);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.025);
+      cursor: pointer;
+      transition: 160ms ease;
+    }
+
+    .step.active {
+      border-color: rgba(38, 214, 255, 0.68);
+      background: rgba(38, 214, 255, 0.12);
+      box-shadow: 0 0 0 1px rgba(38,214,255,0.2) inset, 0 0 28px rgba(38,214,255,0.09);
+    }
+
+    .num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #06111b;
+      font-weight: 800;
+      background: linear-gradient(135deg, #26d6ff, #71a6ff);
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .step span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .controls,
+    .meters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      height: 42px;
+      border: 1px solid rgba(185, 220, 255, 0.25);
+      border-radius: 11px;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(75, 140, 255, 0.24), rgba(38, 214, 255, 0.08));
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .meter {
+      border: 1px solid rgba(185, 220, 255, 0.16);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.035);
+      padding: 12px;
+    }
+
+    .meter b {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .meter span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(185,220,255,0.14);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 0 14px currentColor;
+    }
+
+    .feed { color: var(--cyan); background: var(--cyan); }
+    .vapor { color: var(--amber); background: var(--amber); }
+    .product { color: var(--green); background: var(--green); }
+
+    .note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .label {
+      position: fixed;
+      z-index: 12;
+      transform: translate(-50%, -50%);
+      min-width: 104px;
+      max-width: 170px;
+      border: 1px solid rgba(190, 225, 255, 0.28);
+      background: rgba(5, 12, 20, 0.74);
+      color: #ecf7ff;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.35;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.28);
+    }
+
+    body.compact .label {
+      display: none;
+    }
+
+    .label b {
+      display: block;
+      font-size: 13px;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 980px) {
+      #app {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) auto;
+      }
+
+      .panel {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+        max-height: 44vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="app">
+    <section id="scene">
+      <div class="topbar">
+        <div>
+          <h1 id="title">3D Process Flow</h1>
+          <div class="sub" id="subtitle"></div>
+        </div>
+        <div class="badge" id="status">Ready</div>
+      </div>
+      <div class="hint">
+        <span>拖拽旋转视角</span>
+        <span>滚轮缩放</span>
+        <span>点击右侧步骤查看流程</span>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <h2>流程控制</h2>
+      <div class="steps" id="steps"></div>
+      <div class="controls">
+        <button id="play">播放流程</button>
+        <button id="reset">重置</button>
+        <button id="view">自动环绕</button>
+        <button id="explode">展开结构</button>
+      </div>
+      <div class="meters">
+        <div class="meter"><b id="progress">0%</b><span>流程进度</span></div>
+        <div class="meter"><b id="quality">待机</b><span>状态反馈</span></div>
+      </div>
+      <div class="legend">
+        <div class="legend-row"><i class="dot feed"></i><span>蓝色粒子：尾气/液相进料</span></div>
+        <div class="legend-row"><i class="dot vapor"></i><span>黄色粒子：脱附蒸汽/气相</span></div>
+        <div class="legend-row"><i class="dot product"></i><span>绿色粒子：冷凝液/回收产品</span></div>
+      </div>
+      <div class="note" id="note"></div>
+    </aside>
+  </main>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/OrbitControls.global.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const flowId = params.get("id") || "three-tank";
+    const compact = params.get("compact") === "1";
+    const forceRotate = params.get("rotate") === "1";
+    if (compact) document.body.classList.add("compact");
+
+    const sceneEl = document.getElementById("scene");
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    sceneEl.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x07111c, 18, 54);
+    const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 140);
+    camera.position.set(9, 7, 12);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.075;
+    controls.target.set(0, 2.4, 0);
+    controls.maxPolarAngle = Math.PI * 0.49;
+    controls.minDistance = 7;
+    controls.maxDistance = 30;
+
+    scene.add(new THREE.HemisphereLight(0xd9f4ff, 0x152535, 2.05));
+    const key = new THREE.DirectionalLight(0xffffff, 3.1);
+    key.position.set(5, 9, 6);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x48dfff, 1.8);
+    rim.position.set(-8, 5, -3);
+    scene.add(rim);
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    const colors = {
+      steel: 0xcbd6df,
+      darkSteel: 0x5f6b75,
+      blue: 0x1768bc,
+      glass: 0x9fe7ff,
+      feed: 0x26d6ff,
+      vapor: 0xffc24d,
+      product: 0x55e18c,
+      cabinet: 0xd7e1e8
+    };
+
+    const matSteel = new THREE.MeshStandardMaterial({ color: colors.steel, metalness: 0.92, roughness: 0.18 });
+    const matDark = new THREE.MeshStandardMaterial({ color: colors.darkSteel, metalness: 0.9, roughness: 0.23 });
+    const matBlue = new THREE.MeshStandardMaterial({ color: colors.blue, metalness: 0.55, roughness: 0.32 });
+    const matCabinet = new THREE.MeshStandardMaterial({ color: colors.cabinet, metalness: 0.72, roughness: 0.26 });
+    const matGlass = new THREE.MeshPhysicalMaterial({ color: colors.glass, metalness: 0.05, roughness: 0.08, transmission: 0.25, transparent: true, opacity: 0.34 });
+
+    const objects = [];
+    const pipeMeshes = {};
+    const labels = [];
+
+    function box(group, name, pos, scale, mat) {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mat);
+      mesh.name = name;
+      mesh.position.set(...pos);
+      mesh.scale.set(...scale);
+      group.add(mesh);
+      objects.push(mesh);
+      return mesh;
+    }
+
+    function cylinderBetween(group, name, a, b, radius, mat, radial = 32) {
+      const start = new THREE.Vector3(...a);
+      const end = new THREE.Vector3(...b);
+      const mid = start.clone().add(end).multiplyScalar(0.5);
+      const dir = end.clone().sub(start);
+      const len = dir.length();
+      const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, len, radial), mat);
+      mesh.name = name;
+      mesh.position.copy(mid);
+      mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+      group.add(mesh);
+      objects.push(mesh);
+      return mesh;
+    }
+
+    function makeTank(name, x, z, h = 1.4, r = 0.42) {
+      const g = new THREE.Group();
+      g.name = name;
+      g.position.set(x, h / 2 + 0.72, z);
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 56), matSteel);
+      const top = new THREE.Mesh(new THREE.SphereGeometry(r, 48, 14), matSteel);
+      top.scale.y = 0.36;
+      top.position.y = h / 2;
+      const bottom = top.clone();
+      bottom.position.y = -h / 2;
+      const sight = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.75, r * 0.75, h * 0.7, 40), matGlass);
+      sight.scale.set(1.02, 1, 1.02);
+      g.add(body, top, bottom, sight);
+      root.add(g);
+      objects.push(g);
+      return g;
+    }
+
+    function makeColumn(name, x, z, h = 4.0, r = 0.34) {
+      const g = new THREE.Group();
+      g.name = name;
+      g.position.set(x, h / 2 + 1.5, z);
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 56), matSteel);
+      const glass = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.76, r * 0.76, h * 0.72, 40), matGlass);
+      g.add(body, glass);
+      for (let y = -h * 0.35; y <= h * 0.35; y += h * 0.18) {
+        const tray = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.96, r * 0.96, 0.025, 48), matDark);
+        tray.position.y = y;
+        g.add(tray);
+      }
+      root.add(g);
+      objects.push(g);
+      return g;
+    }
+
+    function makeHorizontal(name, x, y, z, length = 1.6, r = 0.25) {
+      const g = new THREE.Group();
+      g.name = name;
+      g.position.set(x, y, z);
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(r, r, length, 56), matSteel);
+      body.rotation.z = Math.PI / 2;
+      const coil = new THREE.Mesh(new THREE.TorusGeometry(r * 0.58, 0.028, 12, 72), matDark);
+      coil.rotation.y = Math.PI / 2;
+      g.add(body, coil);
+      root.add(g);
+      objects.push(g);
+      return g;
+    }
+
+    function makePump(name, x, y, z) {
+      const g = new THREE.Group();
+      g.name = name;
+      g.position.set(x, y, z);
+      const motor = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.58, 32), matDark);
+      motor.rotation.z = Math.PI / 2;
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.25, 28, 14), matSteel);
+      head.position.x = 0.42;
+      const base = box(g, "base", [0, -0.28, 0], [0.78, 0.12, 0.38], matBlue);
+      g.add(motor, head);
+      root.add(g);
+      objects.push(g);
+      return g;
+    }
+
+    function makeFilter(name, x, z) {
+      const g = new THREE.Group();
+      g.name = name;
+      g.position.set(x, 1.35, z);
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.3, 0.7), matSteel);
+      const screen = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.76, 0.04), matGlass);
+      screen.position.z = 0.37;
+      g.add(body, screen);
+      root.add(g);
+      objects.push(g);
+      return g;
+    }
+
+    function kindForStep(text, i, flow) {
+      const v = `${text}${flow.type}${flow.medium}`;
+      if (v.includes("精馏") || v.includes("塔") || v.includes("吸收") || v.includes("蒸馏")) return "column";
+      if (v.includes("冷凝") || v.includes("冷却") || v.includes("换热") || v.includes("预冷")) return "condenser";
+      if (v.includes("泵") || v.includes("真空") || v.includes("脱附") || v.includes("解析") || v.includes("循环")) return "pump";
+      if (v.includes("过滤") || v.includes("预处理") || v.includes("除尘") || v.includes("除雾")) return "filter";
+      if (v.includes("分离") || v.includes("分层") || v.includes("储") || v.includes("回收") || v.includes("暂存")) return "tank";
+      if (i === 0) return "filter";
+      if (i === flow.steps.length - 1) return "tank";
+      return "vessel";
+    }
+
+    function makeLabel(text, sub, target) {
+      const div = document.createElement("div");
+      div.className = "label";
+      div.innerHTML = `<b>${text}</b>${sub}`;
+      sceneEl.appendChild(div);
+      labels.push({ div, target });
+    }
+
+    function addPipe(name, points, radius = 0.055) {
+      pipeMeshes[name] = pipeMeshes[name] || [];
+      for (let i = 0; i < points.length - 1; i += 1) {
+        pipeMeshes[name].push(cylinderBetween(root, name, points[i], points[i + 1], radius, matSteel, 24));
+      }
+    }
+
+    function particle(color, size = 0.1) {
+      const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.95 });
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(size, 18, 10), mat);
+      scene.add(mesh);
+      return mesh;
+    }
+
+    function pointAt(path, t) {
+      const segments = path.length - 1;
+      const raw = Math.min(0.999, Math.max(0, t)) * segments;
+      const i = Math.floor(raw);
+      const local = raw - i;
+      const a = new THREE.Vector3(...path[i]);
+      const b = new THREE.Vector3(...path[i + 1]);
+      return a.lerp(b, local);
+    }
+
+    function setEmissive(object, color, intensity) {
+      object.traverse((child) => {
+        if (child.isMesh && child.material && "emissive" in child.material) {
+          child.material.emissive.setHex(color);
+          child.material.emissiveIntensity = intensity;
+        }
+      });
+    }
+
+    function resize() {
+      const width = sceneEl.clientWidth;
+      const height = sceneEl.clientHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / Math.max(1, height);
+      camera.updateProjectionMatrix();
+    }
+
+    async function init() {
+      const site = await fetch("data/site.json").then((res) => res.json());
+      const flow = site.flows.find((item) => item.id === flowId) || site.flows[0];
+      document.getElementById("title").textContent = flow.title;
+      document.getElementById("subtitle").textContent = `${flow.medium} / ${flow.type}`;
+      document.getElementById("note").textContent = `本3D流程根据“${flow.title}”的流程图资料生成，按工程逻辑抽象为预处理、吸附/吸收/精馏、脱附或冷凝、分离回收、达标排放等设备单元。`;
+
+      const floor = new THREE.GridHelper(20, 40, 0x285276, 0x17324b);
+      scene.add(floor);
+      const floorPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 13),
+        new THREE.MeshStandardMaterial({ color: 0x071522, roughness: 0.8, metalness: 0.05, transparent: true, opacity: 0.72 })
+      );
+      floorPlane.rotation.x = -Math.PI / 2;
+      floorPlane.position.y = -0.02;
+      scene.add(floorPlane);
+
+      const count = flow.steps.length;
+      const spacing = Math.max(1.8, Math.min(2.35, 12 / Math.max(5, count)));
+      const startX = -(count - 1) * spacing / 2;
+      const positions = flow.steps.map((_, i) => [startX + i * spacing, (i % 2 ? -0.65 : 0.65)]);
+      const path = [];
+
+      flow.steps.forEach((step, i) => {
+        const [x, z] = positions[i];
+        const kind = kindForStep(step, i, flow);
+        let obj;
+        if (kind === "column") obj = makeColumn(step, x, z, 3.4, 0.31);
+        else if (kind === "condenser") obj = makeHorizontal(step, x, 3.2, z, 1.35, 0.22);
+        else if (kind === "pump") obj = makePump(step, x, 0.78, z);
+        else if (kind === "filter") obj = makeFilter(step, x, z);
+        else if (kind === "tank") obj = makeTank(step, x, z, 1.35, 0.38);
+        else obj = makeHorizontal(step, x, 1.15, z, 1.35, 0.32);
+        makeLabel(step, kind, new THREE.Vector3(x, kind === "column" ? 4.9 : 2.35, z));
+        path.push([x, kind === "condenser" ? 3.2 : kind === "column" ? 2.7 : 1.2, z]);
+      });
+
+      for (let i = 0; i < path.length - 1; i += 1) addPipe("main", [path[i], path[i + 1]], 0.055);
+      addPipe("return", [
+        path[Math.max(1, path.length - 2)],
+        [0, 0.8, -2.75],
+        path[Math.min(2, path.length - 1)]
+      ], 0.042);
+
+      const frame = new THREE.Group();
+      root.add(frame);
+      [-6, 6].forEach((x) => {
+        [-3.6, 3.6].forEach((z) => cylinderBetween(frame, "frame", [x, 0.55, z], [x, 5.9, z], 0.06, matSteel));
+      });
+      cylinderBetween(frame, "front", [-6, 5.9, -3.6], [6, 5.9, -3.6], 0.055, matSteel);
+      cylinderBetween(frame, "back", [-6, 5.9, 3.6], [6, 5.9, 3.6], 0.055, matSteel);
+
+      const particles = {
+        feed: Array.from({ length: 11 }, () => particle(colors.feed, 0.09)),
+        vapor: Array.from({ length: 8 }, () => particle(colors.vapor, 0.085)),
+        product: Array.from({ length: 12 }, () => particle(colors.product, 0.105))
+      };
+
+      const steps = flow.steps.map((step, i) => ({
+        title: step,
+        desc: i === 0 ? "进入系统并稳定工况" : i === flow.steps.length - 1 ? "完成回收或达标排放" : "设备单元运行并联锁切换",
+        status: `${i + 1}/${flow.steps.length} ${step}`,
+        progress: `${Math.round(((i + 1) / flow.steps.length) * 100)}%`,
+        quality: i === flow.steps.length - 1 ? "完成" : "运行中"
+      }));
+
+      const stepsEl = document.getElementById("steps");
+      stepsEl.innerHTML = steps.map((step, i) => `
+        <div class="step ${i === 0 ? "active" : ""}" data-step="${i}">
+          <div class="num">${i + 1}</div>
+          <div><strong>${step.title}</strong><span>${step.desc}</span></div>
+        </div>
+      `).join("");
+
+      const statusEl = document.getElementById("status");
+      const progressEl = document.getElementById("progress");
+      const qualityEl = document.getElementById("quality");
+      const stepEls = [...document.querySelectorAll(".step")];
+      let current = 0;
+      let playing = false;
+      let autoOrbit = forceRotate || compact;
+      let exploded = false;
+      let playTimer = null;
+
+      function setStep(index) {
+        current = index;
+        statusEl.textContent = steps[index].status;
+        progressEl.textContent = steps[index].progress;
+        qualityEl.textContent = steps[index].quality;
+        stepEls.forEach((el, i) => el.classList.toggle("active", i === index));
+        objects.forEach((obj) => setEmissive(obj, 0x000000, 0));
+        const active = Math.min(objects.length - 1, index);
+        objects.slice(Math.max(0, active - 1), active + 4).forEach((obj) => setEmissive(obj, colors.feed, 0.22));
+        Object.values(pipeMeshes).flat().forEach((mesh) => setEmissive(mesh, colors.product, 0.32));
+      }
+
+      stepEls.forEach((el) => el.addEventListener("click", () => setStep(Number(el.dataset.step))));
+      document.getElementById("play").addEventListener("click", () => {
+        playing = !playing;
+        if (playing) {
+          playTimer = setInterval(() => setStep((current + 1) % steps.length), 1500);
+        } else {
+          clearInterval(playTimer);
+        }
+      });
+      document.getElementById("reset").addEventListener("click", () => setStep(0));
+      document.getElementById("view").addEventListener("click", () => { autoOrbit = !autoOrbit; });
+      document.getElementById("explode").addEventListener("click", () => {
+        exploded = !exploded;
+        objects.forEach((obj, i) => {
+          if (!obj.position) return;
+          obj.position.z += exploded ? (i % 2 ? 0.7 : -0.7) : (i % 2 ? -0.7 : 0.7);
+        });
+      });
+
+      setStep(0);
+
+      const clock = new THREE.Clock();
+      function updateLabels() {
+        labels.forEach(({ div, target }) => {
+          const p = target.clone().project(camera);
+          const x = (p.x * 0.5 + 0.5) * sceneEl.clientWidth;
+          const y = (-p.y * 0.5 + 0.5) * sceneEl.clientHeight;
+          div.style.left = `${x}px`;
+          div.style.top = `${y}px`;
+          div.style.opacity = p.z > 1 ? 0 : 1;
+        });
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+        if (autoOrbit) root.rotation.y += 0.004;
+        const pulsePath = path;
+        ["feed", "vapor", "product"].forEach((key, ki) => {
+          particles[key].forEach((mesh, i) => {
+            const offset = ((t * (0.09 + ki * 0.018)) + i / particles[key].length + ki * 0.13) % 1;
+            mesh.position.copy(pointAt(pulsePath, offset));
+            mesh.position.y += Math.sin(t * 2 + i) * 0.035 + ki * 0.08;
+          });
+        });
+        controls.update();
+        updateLabels();
+        renderer.render(scene, camera);
+      }
+
+      resize();
+      animate();
+    }
+
+    window.addEventListener("resize", resize);
+    init().catch((error) => {
+      document.getElementById("title").textContent = "3D流程加载失败";
+      document.getElementById("subtitle").textContent = error.message;
+      console.error(error);
+    });
+  </script>
+</body>
+</html>
