@@ -7,212 +7,219 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-header" data-header>
+    <header class="site-header">
       <a class="brand" href="#home" aria-label="返回首页">
-        <span class="brand-logo-frame">
-          <img class="brand-logo" src="assets/logo/chentai-logo-full.jpg" alt="石家庄辰泰环境科技有限公司" />
-        </span>
-        <span class="brand-text">
-          <strong data-company-name>石家庄辰泰环境科技有限公司</strong>
-          <small data-company-en>Shijiazhuang Chentai Environmental Technology Co., Ltd.</small>
+        <img src="assets/logo/chentai-logo-full.jpg" alt="石家庄辰泰环境科技有限公司" />
+        <span>
+          <strong>石家庄辰泰环境科技有限公司</strong>
+          <small>Shijiazhuang Chentai Environmental Technology Co., Ltd.</small>
         </span>
       </a>
-      <button class="menu-button" type="button" data-menu-button aria-label="打开导航">☰</button>
-      <nav class="nav" data-nav aria-label="主导航">
-        <a href="#home" data-i18n="nav.home">首页</a>
-        <a href="#about" data-i18n="nav.about">公司概况</a>
+      <button class="menu-button" type="button" data-menu-button>☰</button>
+      <nav class="nav" data-nav>
+        <a href="#profile" data-i18n="nav.profile">公司简介</a>
+        <a href="#qualifications" data-i18n="nav.qualifications">资质能力</a>
+        <a href="#business" data-i18n="nav.business">主营业务</a>
+        <a href="#products" data-i18n="nav.products">产品体系</a>
         <a href="#news" data-i18n="nav.news">新闻版块</a>
-        <a href="#projects" data-i18n="nav.projects">主营项目</a>
-        <a href="#technology" data-i18n="nav.technology">技术服务</a>
-        <a href="#cases" data-i18n="nav.cases">服务案例</a>
+        <a href="#contact" data-i18n="nav.contact">联系我们</a>
         <button class="lang-toggle" type="button" data-lang-toggle>EN</button>
       </nav>
     </header>
 
     <main id="home">
       <section class="hero">
-        <canvas class="hero-industrial" data-hero-canvas aria-hidden="true"></canvas>
-        <div class="hero-shade"></div>
-        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-media" aria-hidden="true"></div>
         <div class="hero-content">
-          <p class="eyebrow reveal">Organic Solvent Recovery</p>
-          <h1 class="reveal delay-1" data-hero-name>石家庄辰泰环境科技有限公司</h1>
-          <p class="hero-copy reveal delay-2" data-hero-summary></p>
-          <div class="hero-actions reveal delay-3">
-            <a class="button primary" href="#projects" data-i18n="hero.primary">查看主营项目</a>
-            <a class="button ghost" href="#cases" data-i18n="hero.secondary">浏览服务案例</a>
+          <p class="eyebrow" data-i18n="hero.eyebrow">有机溶媒回收治理科技型企业</p>
+          <h1 data-i18n="hero.title">辰起蓝天，泰然自若</h1>
+          <p data-i18n="hero.copy">聚焦工业有机尾气治理、液相萃取及精馏分离工艺设备，为化工、医药、涂布、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#business" data-i18n="hero.primary">查看业务能力</a>
+            <a class="button ghost" href="#news" data-i18n="hero.secondary">浏览新闻动态</a>
           </div>
+        </div>
+        <div class="hero-panel">
+          <span>14334m2</span>
+          <p data-i18n="hero.land">占地面积</p>
+          <span>5923m2</span>
+          <p data-i18n="hero.plant">建筑厂房</p>
+          <span>ISO9001</span>
+          <p data-i18n="hero.iso">质量体系认证</p>
         </div>
       </section>
 
-      <section class="metrics strip" data-metrics></section>
-
-      <section class="scroll-process" data-scroll-process>
-        <div class="process-sticky">
-          <iframe class="equipment-model-frame" src="equipment-model.html" title="Industrial equipment 3D model"></iframe>
-          <div class="process-copy" data-process-copy>
-            <p class="eyebrow">About Chentai</p>
-            <h2 data-process-title>专业从事有机溶媒回收治理的科技型企业</h2>
-            <p data-process-text>公司本着安全、质量第一的经营理念，主抓设备的安全性，提高设备的稳定性，降低设备的能耗。通过和国内一流大学的技术交流与合作，积极进行科研攻关，解决并攻克了多项专业技术专题。</p>
-          </div>
+      <section class="section profile-section" id="profile">
+        <div class="section-head">
+          <p class="eyebrow">Company Profile</p>
+          <h2 data-i18n="profile.title">公司简介</h2>
         </div>
-      </section>
-
-      <section class="section about-section" id="about">
-        <div class="section-title">
-          <p class="eyebrow">About Chentai</p>
-          <h2 data-i18n="sections.about">公司概况</h2>
-        </div>
-        <div class="about-layout">
-          <article class="about-copy">
-            <h3 data-about-title></h3>
-            <p data-about-summary></p>
-            <div class="contact-ribbon">
-              <span data-phone></span>
-              <span data-email></span>
-              <span data-address></span>
-            </div>
+        <div class="profile-grid">
+          <article class="profile-copy">
+            <p data-i18n="profile.p1">石家庄辰泰环境科技有限公司是一家专业从事有机溶媒回收治理的科技型企业。公司位于石家庄灵寿县工业园区，拥有现代化厂房、先进数控设备、市级实验室及专业研发中心。</p>
+            <p data-i18n="profile.p2">公司可为不同类型行业企业提供有机尾气治理、精馏分离工艺、有氧硫化氢制取单质硫工艺等方向的技术咨询、工程设计、设备制造、安装调试、技术培训以及售后服务。</p>
+            <p data-i18n="profile.p3">辰泰将气相回收系统和液相分离系统从设计角度进行融合，实现气相产生液体、液相分离产生气体的统一规划处理，兼顾达标排放、资源回收与能耗控制。</p>
           </article>
-          <div class="culture-grid" data-culture></div>
+          <figure class="brochure-card">
+            <img src="assets/brochure/brochure-02.jpg" alt="公司简介宣传册页面" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="section stats-band">
+        <div>
+          <strong>14334m2</strong>
+          <span data-i18n="stats.land">占地面积</span>
+        </div>
+        <div>
+          <strong>5923m2</strong>
+          <span data-i18n="stats.plant">建筑厂房</span>
+        </div>
+        <div>
+          <strong data-i18n="stats.labValue">市级</strong>
+          <span data-i18n="stats.lab">实验室与研发中心</span>
+        </div>
+        <div>
+          <strong data-i18n="stats.serviceValue">全流程</strong>
+          <span data-i18n="stats.service">设计制造安装调试</span>
+        </div>
+      </section>
+
+      <section class="section" id="qualifications">
+        <div class="section-head">
+          <p class="eyebrow">Company Qualifications</p>
+          <h2 data-i18n="qual.title">资质能力</h2>
+        </div>
+        <div class="qualification-layout">
+          <article class="feature-card">
+            <h3 data-i18n="qual.card1Title">企业资质</h3>
+            <p data-i18n="qual.card1Text">公司通过 ISO9001 质量体系认证，并取得有机尾气治理回收设备相关防爆认证资质，拥有多项自主知识产权、商标知识产权及专利成果。</p>
+          </article>
+          <article class="feature-card">
+            <h3 data-i18n="qual.card2Title">企业认定</h3>
+            <p data-i18n="qual.card2Text">公司先后获评河北省科技型中小企业、高新技术企业、规模以上企业、国家级科技型中小企业、河北省专精特新中小企业。</p>
+          </article>
+          <figure class="qualification-image">
+            <img src="assets/brochure/brochure-03.jpg" alt="公司资质宣传册页面" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="section business-section" id="business">
+        <div class="section-head">
+          <p class="eyebrow">Corporate Business</p>
+          <h2 data-i18n="business.title">主营业务</h2>
+        </div>
+        <div class="business-grid">
+          <article>
+            <span>01</span>
+            <h3 data-i18n="business.item1Title">工业有机尾气治理</h3>
+            <p data-i18n="business.item1Text">面向化工、医药、印刷、涂布、新材料等行业，提供吸附、脱附、冷凝、回收、达标排放一体化解决方案。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3 data-i18n="business.item2Title">液相萃取及精馏分离工艺设备</h3>
+            <p data-i18n="business.item2Text">围绕溶剂回收、节能精馏和资源利用，完成从基础设计、设备制作、安装施工到调试验收的全过程工作。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3 data-i18n="business.item3Title">工业臭气尾气治理</h3>
+            <p data-i18n="business.item3Text">针对硫化氢、恶臭气体及复合尾气，进行工艺组合设计和系统化治理。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section products-section" id="products">
+        <div class="section-head">
+          <p class="eyebrow">Product System</p>
+          <h2 data-i18n="products.title">产品体系</h2>
+        </div>
+        <div class="product-layout">
+          <figure>
+            <img src="assets/brochure/brochure-05.jpg" alt="精馏萃取设备宣传册页面" />
+          </figure>
+          <div class="product-list">
+            <h3 data-i18n="products.distillationTitle">精馏萃取设备</h3>
+            <p data-i18n="products.distillationText">融合精馏分离专业技术团队与化工节能过程集成研究能力，适用于甲醇、乙醇、DMF、DMAC、DMSO、NMP、乙酸乙酯等常用溶剂的分离提纯与回收。</p>
+            <ul>
+              <li data-i18n="products.p1">萃取精馏技术</li>
+              <li data-i18n="products.p2">恒沸精馏技术</li>
+              <li data-i18n="products.p3">多效精馏节能技术</li>
+              <li data-i18n="products.p4">热泵精馏技术</li>
+              <li data-i18n="products.p5">隔壁塔技术</li>
+              <li data-i18n="products.p6">催化反应精馏技术</li>
+            </ul>
+          </div>
+        </div>
+        <div class="product-cards">
+          <article>
+            <h3 data-i18n="products.tailTitle">有机尾气治理设备</h3>
+            <p data-i18n="products.tailText">颗粒活性炭吸附蒸汽脱附、真空脱附、变压吸附回收以及活性炭纤维吸附蒸汽脱附等装置。</p>
+          </article>
+          <article>
+            <h3 data-i18n="products.liquidTitle">液相分离及配套设备</h3>
+            <p data-i18n="products.liquidText">液相萃取及精馏分离装置、有机混合物分离装置、多效蒸发装置等。</p>
+          </article>
+          <article>
+            <h3 data-i18n="products.supportTitle">配套系统</h3>
+            <p data-i18n="products.supportText">变压吸附制氮、变压吸附制氧及项目现场配套自动控制系统。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section gallery-section">
+        <div class="section-head">
+          <p class="eyebrow">Factory & Projects</p>
+          <h2 data-i18n="gallery.title">工厂与工程现场</h2>
+        </div>
+        <div class="gallery-grid">
+          <img src="assets/brochure/brochure-04.jpg" alt="公司业务与厂区照片" />
+          <img src="assets/brochure/brochure-06.jpg" alt="产品介绍宣传册页面" />
+          <img src="assets/brochure/brochure-07.jpg" alt="产品介绍宣传册页面" />
         </div>
       </section>
 
       <section class="section news-section" id="news">
-        <div class="section-title split">
+        <div class="section-head with-action">
           <div>
-            <p class="eyebrow">News</p>
-            <h2 data-i18n="sections.news">新闻版块</h2>
+            <p class="eyebrow">News Center</p>
+            <h2 data-i18n="news.title">新闻版块</h2>
           </div>
-          <button class="section-more" type="button" data-toggle-section="news">查看更多</button>
+          <div class="news-tabs">
+            <button class="is-active" type="button" data-news-filter="all" data-i18n="news.all">全部</button>
+            <button type="button" data-news-filter="company" data-i18n="news.company">公司新闻</button>
+            <button type="button" data-news-filter="industry" data-i18n="news.industry">行业资讯</button>
+          </div>
         </div>
-        <div class="news-list" data-news></div>
+        <div class="news-grid" data-news-grid></div>
       </section>
 
-      <section class="section full-list-section" id="news-more" data-more-section="news" hidden>
-        <div class="section-title split">
+      <section class="section contact-section" id="contact">
+        <div class="contact-card">
           <div>
-            <p class="eyebrow">All News</p>
-            <h2 data-i18n="sections.allNews">新闻与行业资讯</h2>
+            <p class="eyebrow">Contact</p>
+            <h2 data-i18n="contact.title">联系我们</h2>
+            <p data-i18n="contact.copy">欢迎围绕有机尾气治理、溶剂回收、液相分离和精馏节能改造需求进行项目咨询。</p>
           </div>
-          <button class="section-more" type="button" data-close-more="news">收起</button>
+          <ul>
+            <li><strong data-i18n="contact.phone">电话</strong><span>0311-82649608</span></li>
+            <li><strong data-i18n="contact.email">邮箱</strong><span>chentaihj@163.com</span></li>
+            <li><strong data-i18n="contact.address">地址</strong><span data-i18n="contact.addressValue">河北省石家庄市灵寿县工业园区二区</span></li>
+          </ul>
         </div>
-        <div class="full-list-tabs" data-news-tabs></div>
-        <div class="full-list-grid" data-news-full></div>
-      </section>
-
-      <section class="section" id="projects">
-        <div class="section-title split">
-          <div>
-            <p class="eyebrow">Main Projects</p>
-            <h2 data-i18n="sections.projects">主营项目</h2>
-          </div>
-          <button class="section-more" type="button" data-toggle-section="products">查看更多</button>
-        </div>
-        <div class="product-grid" data-products></div>
-      </section>
-
-      <section class="section full-list-section" id="products-more" data-more-section="products" hidden>
-        <div class="section-title split">
-          <div>
-            <p class="eyebrow">All Projects</p>
-            <h2 data-i18n="sections.allProjects">全部主营项目</h2>
-          </div>
-          <button class="section-more" type="button" data-close-more="products">收起</button>
-        </div>
-        <div class="product-grid" data-products-full></div>
-      </section>
-
-      <section class="section technology-section" id="technology">
-        <div class="section-title split">
-          <div>
-            <p class="eyebrow">Technology</p>
-            <h2 data-i18n="sections.technology">技术服务</h2>
-          </div>
-          <button class="section-more" type="button" data-toggle-section="technology">查看更多</button>
-        </div>
-        <div class="tech-grid" data-technology></div>
-      </section>
-
-      <section class="section full-list-section" id="technology-more" data-more-section="technology" hidden>
-        <div class="section-title split">
-          <div>
-            <p class="eyebrow">All Technology</p>
-            <h2 data-i18n="sections.allTechnology">全部技术服务</h2>
-          </div>
-          <button class="section-more" type="button" data-close-more="technology">收起</button>
-        </div>
-        <div class="tech-grid" data-technology-full></div>
-      </section>
-
-      <section class="section" id="cases">
-        <div class="section-title split">
-          <div>
-            <p class="eyebrow">Cases</p>
-            <h2 data-i18n="sections.cases">服务案例</h2>
-          </div>
-          <button class="section-more" type="button" data-toggle-section="cases">查看更多</button>
-        </div>
-        <div class="case-grid" data-cases></div>
-      </section>
-
-      <section class="section full-list-section" id="cases-more" data-more-section="cases" hidden>
-        <div class="section-title split">
-          <div>
-            <p class="eyebrow">All Cases</p>
-            <h2 data-i18n="sections.allCases">全部服务案例</h2>
-          </div>
-          <button class="section-more" type="button" data-close-more="cases">收起</button>
-        </div>
-        <div class="case-grid" data-cases-full></div>
-      </section>
-
-      <section class="section contact-section">
-        <div class="section-title">
-          <p class="eyebrow">Inquiry</p>
-          <h2 data-i18n="sections.inquiry">在线留言</h2>
-        </div>
-        <form class="contact-form" data-inquiry-form>
-          <label><span data-i18n="form.name">姓名</span><input name="name" required /></label>
-          <label><span data-i18n="form.company">单位</span><input name="company" /></label>
-          <label><span data-i18n="form.contact">联系方式</span><input name="contact" required /></label>
-          <label><span data-i18n="form.need">需求说明</span><textarea name="need" rows="4" required></textarea></label>
-          <button class="button primary" type="submit" data-i18n="form.submit">提交需求</button>
-          <p class="form-status" data-form-status role="status"></p>
-        </form>
       </section>
     </main>
 
-    <div class="detail-modal" data-modal aria-hidden="true">
-      <div class="modal-backdrop" data-close-modal></div>
-      <article class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <button class="modal-close" type="button" data-close-modal aria-label="关闭">×</button>
-        <div class="modal-hero">
-          <img data-modal-image alt="" />
-          <div>
-            <p class="eyebrow" data-modal-kicker></p>
-            <h2 id="modal-title" data-modal-title></h2>
-            <p data-modal-summary></p>
-          </div>
-        </div>
-        <div class="modal-body" data-modal-body>
-          <section data-modal-detail-section>
-            <h3 data-i18n="modal.intro">内容介绍</h3>
-            <div class="modal-detail-text" data-modal-detail></div>
-            <div class="pdf-preview" data-modal-pdf-wrap>
-              <img data-modal-pdf alt="原流程图预览" />
-            </div>
-          </section>
-          <section data-modal-flow-section>
-            <h3 data-i18n="modal.flow" data-modal-flow-title>3D流程图</h3>
-            <iframe class="flow-3d-frame" data-modal-flow title="3D process flow"></iframe>
-          </section>
-        </div>
-      </article>
+    <div class="modal" data-modal aria-hidden="true">
+      <div class="modal-panel">
+        <button class="modal-close" type="button" data-close-modal>×</button>
+        <article data-modal-content></article>
+      </div>
     </div>
 
     <footer class="footer">
-      <span data-footer-name></span>
-      <span data-footer-icp></span>
+      <span>石家庄辰泰环境科技有限公司</span>
+      <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
     </footer>
 
     <script src="app.js"></script>
