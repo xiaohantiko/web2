@@ -438,6 +438,38 @@ function renderNews() {
   }).join("");
 }
 
+function initGalleryCarousel() {
+  const slots = $$("[data-gallery-slot]");
+  if (!slots.length) return;
+  const images = [
+    "assets/gallery/project-site-01.jpg",
+    "assets/gallery/project-site-02.jpg",
+    "assets/gallery/project-site-03.jpg",
+    "assets/gallery/project-site-04.jpg",
+    "assets/gallery/project-site-05.jpg"
+  ];
+  let step = 0;
+
+  const render = () => {
+    slots.forEach((img, index) => {
+      const nextSrc = images[(step + index) % images.length];
+      if (img.getAttribute("src") === nextSrc) return;
+      img.classList.add("is-switching");
+      window.setTimeout(() => {
+        img.src = nextSrc;
+        img.alt = currentLang === "zh" ? `辰泰环保工程现场 ${index + 1}` : `Chentai project site ${index + 1}`;
+        img.classList.remove("is-switching");
+      }, 260);
+    });
+  };
+
+  render();
+  window.setInterval(() => {
+    step = (step + 1) % images.length;
+    render();
+  }, 4200);
+}
+
 function openNews(id, type) {
   const item = allNews().find((entry) => entry.id === id && entry.sourceType === type);
   if (!item) return;
@@ -531,6 +563,7 @@ async function boot() {
   siteData = await response.json();
   renderI18n();
   renderNews();
+  initGalleryCarousel();
   bind();
 }
 
