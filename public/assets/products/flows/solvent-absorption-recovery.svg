@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 900" role="img" aria-labelledby="title desc">
+  <title id="title">吸收法回收溶剂工艺流程图</title>
+  <desc id="desc">含有机溶剂尾气经过一级吸收塔、二级吸收塔、除雾器、气液分离和回收液储槽完成吸收回收。</desc>
+  <defs>
+    <linearGradient id="steel" x1="0" x2="1">
+      <stop offset="0" stop-color="#f7fbfb"/>
+      <stop offset=".24" stop-color="#b7c5c4"/>
+      <stop offset=".52" stop-color="#ffffff"/>
+      <stop offset=".78" stop-color="#9eadab"/>
+      <stop offset="1" stop-color="#eef4f3"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#93d9ff" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#278cc7" stop-opacity=".88"/>
+    </linearGradient>
+    <marker id="arrow-gas" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M1,1 L13,7 L1,13 Z" fill="#159447"/>
+    </marker>
+    <marker id="arrow-solvent" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M1,1 L13,7 L1,13 Z" fill="#c21aa0"/>
+    </marker>
+    <marker id="arrow-water" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M1,1 L13,7 L1,13 Z" fill="#1475dc"/>
+    </marker>
+    <marker id="arrow-liquid" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M1,1 L13,7 L1,13 Z" fill="#f07a18"/>
+    </marker>
+    <style>
+      .title{font:700 44px Arial,"Microsoft YaHei",sans-serif;fill:#111827}
+      .label{font:700 22px Arial,"Microsoft YaHei",sans-serif;fill:#102a25}
+      .small{font:600 18px Arial,"Microsoft YaHei",sans-serif;fill:#203b36}
+      .tiny{font:600 15px Arial,"Microsoft YaHei",sans-serif;fill:#3d514d}
+      .box{fill:#fff;stroke:#9fb0ad;stroke-width:2}
+      .equip{fill:url(#steel);stroke:#293d3a;stroke-width:2.2}
+      .gas{fill:none;stroke:#159447;stroke-width:5;marker-end:url(#arrow-gas)}
+      .solvent{fill:none;stroke:#c21aa0;stroke-width:5;marker-end:url(#arrow-solvent)}
+      .water{fill:none;stroke:#1475dc;stroke-width:4;marker-end:url(#arrow-water)}
+      .liquid{fill:none;stroke:#f07a18;stroke-width:5;marker-end:url(#arrow-liquid)}
+      .thin{fill:none;stroke:#455a57;stroke-width:2}
+      .dash{stroke-dasharray:10 8}
+    </style>
+  </defs>
+
+  <rect width="1448" height="900" fill="#fbfdfd"/>
+  <text class="title" x="724" y="70" text-anchor="middle">吸收法回收溶剂工艺流程图</text>
+
+  <path class="gas" d="M80 245 H250"/>
+  <text class="label" x="70" y="238" text-anchor="end">含溶剂尾气</text>
+  <text class="tiny" x="70" y="264" text-anchor="end">来自生产或制冷系统</text>
+
+  <g transform="translate(270 155)">
+    <rect class="equip" x="0" y="45" width="155" height="410" rx="78"/>
+    <ellipse class="equip" cx="77.5" cy="45" rx="77.5" ry="30"/>
+    <ellipse class="equip" cx="77.5" cy="455" rx="77.5" ry="30"/>
+    <rect x="18" y="135" width="119" height="120" fill="url(#water)" opacity=".76"/>
+    <path class="thin" d="M20 132 H135 M20 250 H135 M38 150 l80 84 M118 150 l-80 84"/>
+    <rect x="20" y="290" width="115" height="92" fill="#e7f4ff" stroke="#66a6d8" stroke-width="2" stroke-dasharray="8 8"/>
+    <line class="thin" x1="0" y1="455" x2="-15" y2="500"/>
+    <line class="thin" x1="155" y1="455" x2="170" y2="500"/>
+    <text class="label" x="77.5" y="525" text-anchor="middle">一级吸收塔</text>
+    <text class="small" x="77.5" y="552" text-anchor="middle">T101</text>
+  </g>
+
+  <g transform="translate(615 155)">
+    <rect class="equip" x="0" y="45" width="155" height="410" rx="78"/>
+    <ellipse class="equip" cx="77.5" cy="45" rx="77.5" ry="30"/>
+    <ellipse class="equip" cx="77.5" cy="455" rx="77.5" ry="30"/>
+    <rect x="18" y="135" width="119" height="120" fill="url(#water)" opacity=".76"/>
+    <path class="thin" d="M20 132 H135 M20 250 H135 M38 150 l80 84 M118 150 l-80 84"/>
+    <rect x="20" y="290" width="115" height="92" fill="#e7f4ff" stroke="#66a6d8" stroke-width="2" stroke-dasharray="8 8"/>
+    <line class="thin" x1="0" y1="455" x2="-15" y2="500"/>
+    <line class="thin" x1="155" y1="455" x2="170" y2="500"/>
+    <text class="label" x="77.5" y="525" text-anchor="middle">二级吸收塔</text>
+    <text class="small" x="77.5" y="552" text-anchor="middle">T102</text>
+  </g>
+
+  <path class="gas" d="M425 245 H615"/>
+  <path class="gas" d="M770 245 H900 V210 H1005"/>
+  <path class="gas" d="M1115 210 H1290"/>
+  <text class="label" x="1328" y="202">净化尾气排放</text>
+
+  <g transform="translate(1005 150)">
+    <rect class="equip" x="0" y="10" width="110" height="175" rx="55"/>
+    <ellipse class="equip" cx="55" cy="10" rx="55" ry="22"/>
+    <ellipse class="equip" cx="55" cy="185" rx="55" ry="22"/>
+    <path d="M18 70 H92 M25 88 H85 M32 106 H78" stroke="#2e4945" stroke-width="5"/>
+    <text class="label" x="55" y="235" text-anchor="middle">除雾器</text>
+    <text class="small" x="55" y="262" text-anchor="middle">捕集液滴</text>
+  </g>
+
+  <g transform="translate(1085 445)">
+    <rect class="equip" x="0" y="0" width="160" height="230" rx="80"/>
+    <ellipse class="equip" cx="80" cy="0" rx="80" ry="25"/>
+    <ellipse class="equip" cx="80" cy="230" rx="80" ry="25"/>
+    <path d="M25 128 C55 108 105 150 135 128" fill="none" stroke="#2e9f77" stroke-width="4"/>
+    <rect x="26" y="135" width="108" height="55" fill="#b8e9e1" opacity=".8"/>
+    <text class="label" x="80" y="290" text-anchor="middle">气液分离器</text>
+    <text class="small" x="80" y="318" text-anchor="middle">V101</text>
+  </g>
+
+  <g transform="translate(760 570)">
+    <rect class="equip" x="0" y="0" width="210" height="105" rx="52"/>
+    <ellipse class="equip" cx="0" cy="52" rx="18" ry="52"/>
+    <ellipse class="equip" cx="210" cy="52" rx="18" ry="52"/>
+    <rect x="36" y="46" width="138" height="24" fill="#d2f0eb"/>
+    <text class="label" x="105" y="158" text-anchor="middle">回收液储槽</text>
+    <text class="small" x="105" y="185" text-anchor="middle">V201</text>
+  </g>
+
+  <g transform="translate(250 620)">
+    <circle class="equip" cx="40" cy="40" r="34"/>
+    <circle fill="#fbfdfd" stroke="#293d3a" stroke-width="2" cx="40" cy="40" r="15"/>
+    <path d="M40 25 L50 48 L28 42 Z" fill="#293d3a"/>
+    <rect class="equip" x="8" y="74" width="64" height="20" rx="4"/>
+    <text class="label" x="40" y="135" text-anchor="middle">循环泵</text>
+    <text class="small" x="40" y="162" text-anchor="middle">P101</text>
+  </g>
+
+  <g transform="translate(595 620)">
+    <circle class="equip" cx="40" cy="40" r="34"/>
+    <circle fill="#fbfdfd" stroke="#293d3a" stroke-width="2" cx="40" cy="40" r="15"/>
+    <path d="M40 25 L50 48 L28 42 Z" fill="#293d3a"/>
+    <rect class="equip" x="8" y="74" width="64" height="20" rx="4"/>
+    <text class="label" x="40" y="135" text-anchor="middle">循环泵</text>
+    <text class="small" x="40" y="162" text-anchor="middle">P102</text>
+  </g>
+
+  <path class="solvent" d="M330 120 V155"/>
+  <path class="solvent" d="M675 120 V155"/>
+  <path class="solvent" d="M1290 120 H675"/>
+  <text class="label" x="1328" y="125">吸收剂补充 / 循环</text>
+
+  <path class="liquid" d="M345 610 V705 H290"/>
+  <path class="liquid" d="M690 610 V705 H635"/>
+  <path class="liquid" d="M635 705 H760"/>
+  <path class="liquid" d="M1115 650 H970"/>
+  <path class="liquid" d="M970 650 V622"/>
+  <text class="label" x="1030" y="708">富液 / 回收液</text>
+
+  <path class="water" d="M245 495 H185 V380 H270"/>
+  <path class="water" d="M430 380 H500 V495 H425"/>
+  <path class="water" d="M590 495 H530 V380 H615"/>
+  <path class="water" d="M775 380 H845 V495 H770"/>
+  <text class="small" x="176" y="372" text-anchor="end">循环冷却水进</text>
+  <text class="small" x="855" y="372">循环冷却水出</text>
+
+  <rect class="box" x="60" y="665" width="285" height="160" rx="10"/>
+  <text class="label" x="85" y="705">图例（管线颜色说明）</text>
+  <path class="gas" d="M90 742 H165"/>
+  <text class="small" x="185" y="748">尾气 / 净化气</text>
+  <path class="solvent" d="M90 780 H165"/>
+  <text class="small" x="185" y="786">吸收剂循环</text>
+  <path class="water" d="M90 818 H165"/>
+  <text class="small" x="185" y="824">循环冷却水</text>
+
+  <rect class="box" x="835" y="715" width="540" height="130" rx="10"/>
+  <text class="label" x="865" y="755">工艺说明</text>
+  <text class="tiny" x="865" y="790">1. 含有机溶剂尾气由底部依次进入一级吸收塔、二级吸收塔，与循环吸收剂逆流接触。</text>
+  <text class="tiny" x="865" y="820">2. 吸收后的富液进入回收液储槽，可送精馏、解析或其他回收系统处理。</text>
+  <text class="tiny" x="865" y="850">3. 塔顶净化气经除雾和气液分离后排放或进入后续净化单元。</text>
+</svg>
