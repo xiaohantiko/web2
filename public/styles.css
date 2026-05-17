@@ -1,15 +1,15 @@
 :root {
-  --deep: #061f1b;
-  --forest: #0f4c40;
-  --green: #168568;
+  --deep: #03120f;
+  --forest: #0b5a46;
+  --green: #15936f;
   --mint: #5bd0ad;
-  --lime: #c8f05a;
-  --ink: #14342f;
-  --muted: #6c7c77;
-  --line: rgba(20, 52, 47, 0.14);
-  --paper: #f6faf7;
+  --lime: #bdf35e;
+  --ink: #e7f4ef;
+  --muted: #9ab0aa;
+  --line: rgba(183, 255, 223, 0.16);
+  --paper: #061613;
   --white: #ffffff;
-  --shadow: 0 24px 70px rgba(5, 39, 34, 0.14);
+  --shadow: 0 28px 80px rgba(0, 16, 14, 0.36);
 }
 
 * {
@@ -24,7 +24,10 @@ body {
   margin: 0;
   font-family: Inter, "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
   color: var(--ink);
-  background: var(--paper);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(33, 151, 119, 0.2), transparent 34%),
+    radial-gradient(circle at 88% 28%, rgba(70, 170, 210, 0.11), transparent 32%),
+    linear-gradient(180deg, #061a16 0%, #071813 42%, #04100e 100%);
 }
 
 img {
@@ -1391,6 +1394,218 @@ a {
   padding: 24px clamp(22px, 7vw, 120px);
   color: rgba(255, 255, 255, 0.74);
   background: var(--deep);
+}
+
+/* Dark green visual system aligned with the video hero. */
+.section {
+  position: relative;
+}
+
+.section:not(.hero):not(.business-section):not(.lab-section) {
+  background:
+    linear-gradient(180deg, rgba(5, 24, 20, 0.86), rgba(4, 18, 16, 0.96)),
+    radial-gradient(circle at 14% 18%, rgba(31, 143, 113, 0.14), transparent 32%);
+}
+
+.profile-section,
+.products-section,
+.news-section,
+.cert-section,
+.profile-detail-section,
+.history-section,
+.inquiry-section,
+.product-page-section,
+.team-section {
+  color: var(--ink);
+}
+
+.gallery-section {
+  background:
+    linear-gradient(180deg, rgba(7, 28, 24, 0.96), rgba(4, 18, 16, 0.98)),
+    radial-gradient(circle at 82% 10%, rgba(93, 208, 173, 0.12), transparent 30%);
+}
+
+.section-head h2,
+.profile-detail-grid h2,
+.product-intro h3,
+.product-flow-card h3,
+.news-card h3,
+.cert-card h3,
+.lab-panel h3,
+.capability-grid h3 {
+  color: #effff8;
+  text-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+}
+
+.profile-copy,
+.product-intro p,
+.product-flow-card p,
+.news-card p,
+.profile-detail-grid p:not(.eyebrow),
+.history-timeline p,
+.cert-card p,
+.lab-panel p,
+.capability-grid p,
+.lab-panel li,
+.article-body p,
+.business-intro p {
+  color: rgba(223, 242, 235, 0.76);
+}
+
+.media-card,
+.qualification-image,
+.product-layout figure,
+.feature-card,
+.business-grid article,
+.product-cards article,
+.product-intro,
+.product-flow-card,
+.news-card,
+.profile-detail-grid article,
+.history-timeline article,
+.inquiry-form,
+.cert-card,
+.capability-grid article,
+.lab-panel,
+.modal-panel {
+  border-color: rgba(190, 255, 226, 0.16);
+  background: linear-gradient(145deg, rgba(8, 31, 29, 0.82), rgba(9, 61, 50, 0.4));
+  box-shadow: 0 20px 58px rgba(0, 14, 12, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+}
+
+.flip-face {
+  border-color: rgba(190, 255, 226, 0.16);
+  background: linear-gradient(145deg, rgba(8, 31, 29, 0.88), rgba(9, 61, 50, 0.42));
+  box-shadow: 0 20px 58px rgba(0, 14, 12, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.flip-card .flip-back,
+.business-section,
+.lab-section,
+.contact-card,
+.news-hero,
+.inquiry-hero,
+.qual-hero,
+.profile-hero,
+.products-hero {
+  background:
+    linear-gradient(135deg, rgba(3, 16, 20, 0.94), rgba(7, 61, 51, 0.78)),
+    radial-gradient(circle at 78% 22%, rgba(71, 173, 210, 0.14), transparent 34%),
+    url("assets/hero/factory-realistic.png") center/cover no-repeat;
+}
+
+.stats-band {
+  background: rgba(183, 255, 223, 0.12);
+}
+
+.stats-band div {
+  background: linear-gradient(145deg, rgba(6, 28, 24, 0.86), rgba(9, 57, 47, 0.52));
+}
+
+.stats-band span,
+.product-flow-card dd,
+.required-note,
+.form-status {
+  color: rgba(222, 242, 235, 0.66);
+}
+
+.feature-card h3,
+.business-grid h3,
+.product-list h3,
+.product-cards h3,
+.product-flow-card dt,
+.inquiry-form label,
+.news-tabs button,
+.product-list li,
+.product-tags li,
+.news-card button,
+.lab-gallery figcaption {
+  color: #eefdf7;
+}
+
+.feature-card p,
+.business-grid p,
+.product-list p,
+.product-cards p {
+  color: rgba(223, 242, 235, 0.72);
+}
+
+.product-list li,
+.product-tags li,
+.news-tabs,
+.product-flow-card figure,
+.product-flow-card img,
+.cert-card figure,
+.lab-gallery figure {
+  border-color: rgba(183, 255, 223, 0.14);
+  background: rgba(2, 17, 15, 0.54);
+}
+
+.product-tags li {
+  color: rgba(235, 255, 247, 0.86);
+}
+
+.section-more,
+.news-tabs button.is-active {
+  background: linear-gradient(135deg, #128864, #67d7b2);
+  box-shadow: 0 18px 42px rgba(43, 183, 139, 0.18);
+}
+
+.news-tabs {
+  background: rgba(4, 20, 18, 0.76);
+}
+
+.news-card img {
+  background: #102822;
+}
+
+.inquiry-form input,
+.inquiry-form textarea {
+  color: #eaf8f2;
+  border-color: rgba(183, 255, 223, 0.18);
+  background: rgba(2, 17, 15, 0.72);
+}
+
+.inquiry-form input::placeholder,
+.inquiry-form textarea::placeholder {
+  color: rgba(221, 241, 234, 0.46);
+}
+
+.button.ghost.dark {
+  color: #effff8;
+  border-color: rgba(183, 255, 223, 0.26);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.modal {
+  background: rgba(0, 10, 9, 0.82);
+}
+
+.modal-summary,
+.history-timeline strong,
+.product-flow-card span,
+.news-card span,
+.business-grid span,
+.contact-card strong {
+  color: var(--lime);
+}
+
+.footer {
+  border-top: 1px solid rgba(183, 255, 223, 0.12);
+  background: #020d0b;
+}
+
+.news-page,
+.inquiry-page,
+.qual-page,
+.profile-page,
+.products-page {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(33, 151, 119, 0.2), transparent 34%),
+    radial-gradient(circle at 88% 28%, rgba(70, 170, 210, 0.11), transparent 32%),
+    linear-gradient(180deg, #061a16 0%, #071813 42%, #04100e 100%);
 }
 
 .modal {
