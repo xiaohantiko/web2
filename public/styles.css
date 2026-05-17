@@ -128,39 +128,90 @@ a {
 
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 430px);
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 460px);
   align-items: center;
   gap: clamp(24px, 4vw, 64px);
-  padding: 118px clamp(22px, 7vw, 120px) 70px;
+  padding: 128px clamp(22px, 7vw, 120px) 86px;
   overflow: hidden;
   color: var(--white);
-  background: var(--deep);
+  background: #04121a;
 }
 
+.hero::before,
 .hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg, rgba(3, 23, 19, 0.9), rgba(8, 57, 48, 0.68) 44%, rgba(8, 57, 48, 0.18)),
-    linear-gradient(180deg, rgba(3, 23, 19, 0.25), rgba(3, 23, 19, 0.88));
+  pointer-events: none;
   z-index: 1;
+}
+
+.hero::before {
+  background:
+    linear-gradient(90deg, rgba(0, 12, 18, 0.98) 0%, rgba(3, 28, 29, 0.9) 36%, rgba(8, 62, 54, 0.38) 68%, rgba(8, 62, 54, 0.08) 100%),
+    radial-gradient(circle at 16% 52%, rgba(92, 184, 170, 0.16), transparent 36%);
+}
+
+.hero::after {
+  background:
+    linear-gradient(180deg, rgba(1, 18, 24, 0.34), rgba(2, 24, 20, 0.72)),
+    linear-gradient(0deg, rgba(0, 9, 11, 0.94), rgba(0, 9, 11, 0.12) 42%, transparent 68%),
+    radial-gradient(circle at 78% 30%, rgba(90, 190, 255, 0.16), transparent 36%);
 }
 
 .hero-media {
   position: absolute;
   inset: 0;
-  background: url("assets/hero/factory-realistic.png") center/cover no-repeat;
-  transform: scale(1.04);
-  filter: saturate(1.04) contrast(1.02);
+  overflow: hidden;
+  background: #04121a url("assets/hero/factory-realistic.png") center/cover no-repeat;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.62) saturate(1.08) contrast(1.08);
+  transform: scale(1.01);
 }
 
 .hero-content,
 .hero-panel {
   position: relative;
   z-index: 2;
+}
+
+.hero-content .eyebrow,
+.hero h1,
+.hero-subtitle,
+.hero-content > p:not(.eyebrow),
+.hero-actions,
+.hero-panel {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(10px);
+  animation: heroReveal 960ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero h1 {
+  animation-delay: 180ms;
+}
+
+.hero-subtitle {
+  animation-delay: 340ms;
+}
+
+.hero-content > p:not(.eyebrow) {
+  animation-delay: 500ms;
+}
+
+.hero-actions {
+  animation-delay: 660ms;
+}
+
+.hero-panel {
+  animation-delay: 760ms;
 }
 
 .eyebrow {
@@ -174,26 +225,39 @@ a {
 
 .hero h1 {
   margin: 0;
-  max-width: 980px;
-  font-size: clamp(42px, 6.4vw, 96px);
-  line-height: 1.06;
+  max-width: 1040px;
+  position: relative;
+  overflow: hidden;
+  font-size: clamp(50px, 7vw, 112px);
+  line-height: 0.96;
   letter-spacing: 0;
+  text-shadow: 0 18px 58px rgba(0, 0, 0, 0.42), 0 0 26px rgba(172, 224, 255, 0.11);
+}
+
+.hero h1::after {
+  content: "";
+  position: absolute;
+  inset: -18% -36%;
+  background: linear-gradient(105deg, transparent 32%, rgba(188, 234, 255, 0.2) 46%, rgba(207, 255, 231, 0.16) 52%, transparent 68%);
+  transform: translateX(-130%);
+  animation: titleSweep 5.6s ease 1.25s infinite;
 }
 
 .hero-subtitle {
   max-width: 780px;
   margin: 18px 0 0;
-  color: rgba(222, 255, 236, 0.86);
-  font-size: clamp(18px, 2.1vw, 31px);
+  color: rgba(232, 242, 250, 0.84);
+  font-size: clamp(16px, 1.6vw, 25px);
   line-height: 1.35;
   font-weight: 800;
+  letter-spacing: 0.035em;
 }
 
 .hero-content > p:not(.eyebrow) {
   max-width: 760px;
   margin: 24px 0 0;
-  color: rgba(245, 255, 250, 0.84);
-  font-size: clamp(17px, 1.5vw, 24px);
+  color: rgba(241, 250, 246, 0.82);
+  font-size: clamp(17px, 1.35vw, 22px);
   line-height: 1.8;
   font-weight: 700;
 }
@@ -213,17 +277,33 @@ a {
   padding: 0 24px;
   border-radius: 6px;
   font-weight: 900;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background 220ms ease;
 }
 
 .button.primary {
   color: #06251f;
   background: linear-gradient(135deg, var(--lime), var(--mint));
+  box-shadow: 0 16px 42px rgba(112, 255, 190, 0.18);
 }
 
 .button.ghost {
   border: 1px solid rgba(255, 255, 255, 0.34);
   color: var(--white);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button.primary:hover {
+  box-shadow: 0 20px 58px rgba(132, 255, 191, 0.28);
+}
+
+.button.ghost:hover {
+  border-color: rgba(202, 255, 224, 0.74);
+  box-shadow: 0 18px 44px rgba(94, 194, 178, 0.16);
 }
 
 .button.ghost.dark {
@@ -235,22 +315,51 @@ a {
 .hero-panel {
   display: grid;
   grid-template-columns: 1fr;
-  padding: 26px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(14px);
+  gap: 22px;
+  padding: 30px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(4, 22, 31, 0.6), rgba(8, 73, 60, 0.26));
+  border: 1px solid rgba(183, 255, 223, 0.2);
+  backdrop-filter: blur(18px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 26px 80px rgba(0, 18, 16, 0.36);
 }
 
-.hero-panel span {
+.hero-metric + .hero-metric {
+  padding-top: 22px;
+  border-top: 1px solid rgba(221, 255, 239, 0.14);
+}
+
+.hero-metric span {
+  display: block;
   color: var(--lime);
   font-size: clamp(32px, 4vw, 56px);
+  line-height: 0.95;
   font-weight: 900;
 }
 
-.hero-panel p {
-  margin: 4px 0 24px;
-  color: rgba(255, 255, 255, 0.74);
+.hero-metric p {
+  margin: 12px 0 0;
+  color: rgba(238, 251, 246, 0.76);
   font-weight: 800;
+}
+
+@keyframes heroReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes titleSweep {
+  0%,
+  34% {
+    transform: translateX(-130%);
+  }
+  62%,
+  100% {
+    transform: translateX(130%);
+  }
 }
 
 .section {
@@ -473,6 +582,19 @@ a {
 
   .flip-back {
     display: none;
+  }
+
+  .hero-content .eyebrow,
+  .hero h1,
+  .hero h1::after,
+  .hero-subtitle,
+  .hero-content > p:not(.eyebrow),
+  .hero-actions,
+  .hero-panel {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
   }
 }
 
@@ -1425,12 +1547,19 @@ a {
     gap: 10px;
   }
 
-  .hero-panel span {
+  .hero-metric + .hero-metric {
+    padding-top: 0;
+    padding-left: 10px;
+    border-top: 0;
+    border-left: 1px solid rgba(221, 255, 239, 0.14);
+  }
+
+  .hero-metric span {
     font-size: 24px;
   }
 
-  .hero-panel p {
-    margin-bottom: 0;
+  .hero-metric p {
+    margin-top: 8px;
     font-size: 12px;
   }
 

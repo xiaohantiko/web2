@@ -470,6 +470,21 @@ function initGalleryCarousel() {
   }, 4200);
 }
 
+function initHeroVideo() {
+  const video = $(".hero-video");
+  if (!video) return;
+  video.muted = true;
+  video.defaultMuted = true;
+  video.volume = 0;
+  video.controls = false;
+  video.setAttribute("muted", "");
+  video.setAttribute("playsinline", "");
+  const playback = video.play();
+  if (playback && typeof playback.catch === "function") {
+    playback.catch(() => {});
+  }
+}
+
 function openNews(id, type) {
   const item = allNews().find((entry) => entry.id === id && entry.sourceType === type);
   if (!item) return;
@@ -564,6 +579,7 @@ async function boot() {
   renderI18n();
   renderNews();
   initGalleryCarousel();
+  initHeroVideo();
   bind();
 }
 
