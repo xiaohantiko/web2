@@ -446,7 +446,7 @@ function initGalleryCarousel() {
     "assets/gallery/project-site-02.jpg",
     "assets/gallery/project-site-03.jpg",
     "assets/gallery/project-site-04.jpg",
-    "assets/gallery/project-site-05.jpg"
+    "assets/gallery/project-site-05.jpg?v=20260518b"
   ];
   let step = 0;
 
