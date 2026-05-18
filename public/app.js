@@ -485,6 +485,29 @@ function initHeroVideo() {
   }
 }
 
+function initSideNav() {
+  const links = $$(".hero-side-nav a");
+  if (!links.length) return;
+  const items = links.map((link) => {
+    const hash = link.getAttribute("href");
+    const target = hash === "#home" ? $(".hero") : $(hash);
+    return { link, target };
+  }).filter((item) => item.target);
+
+  const setActive = () => {
+    const marker = window.scrollY + window.innerHeight * 0.42;
+    let active = items[0];
+    items.forEach((item) => {
+      if (item.target.offsetTop <= marker) active = item;
+    });
+    items.forEach((item) => item.link.classList.toggle("is-active", item === active));
+  };
+
+  setActive();
+  window.addEventListener("scroll", setActive, { passive: true });
+  window.addEventListener("resize", setActive);
+}
+
 function openNews(id, type) {
   const item = allNews().find((entry) => entry.id === id && entry.sourceType === type);
   if (!item) return;
@@ -580,6 +603,7 @@ async function boot() {
   renderNews();
   initGalleryCarousel();
   initHeroVideo();
+  initSideNav();
   bind();
 }
 

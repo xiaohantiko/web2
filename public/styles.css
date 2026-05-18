@@ -181,8 +181,7 @@ a {
 }
 
 .hero-content,
-.hero-panel,
-.hero-side-nav {
+.hero-panel {
   position: relative;
   z-index: 2;
 }
@@ -195,9 +194,10 @@ a {
 }
 
 .hero-side-nav {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: clamp(22px, 3.5vw, 58px);
+  z-index: 18;
   display: grid;
   gap: 16px;
   transform: translateY(-50%);
@@ -214,7 +214,7 @@ a {
   transition: transform 220ms ease, background 220ms ease, box-shadow 220ms ease;
 }
 
-.hero-side-nav a:first-child {
+.hero-side-nav a.is-active {
   background: var(--lime);
   box-shadow: 0 0 0 7px rgba(189, 243, 94, 0.1), 0 0 24px rgba(189, 243, 94, 0.3);
 }
@@ -254,8 +254,7 @@ a {
 .hero-subtitle,
 .hero-content > p:not(.eyebrow),
 .hero-actions,
-.hero-panel,
-.hero-side-nav {
+.hero-panel {
   opacity: 0;
   transform: translateY(22px);
   filter: blur(10px);
@@ -280,10 +279,6 @@ a {
 
 .hero-panel {
   animation-delay: 760ms;
-}
-
-.hero-side-nav {
-  animation-delay: 880ms;
 }
 
 .eyebrow {
@@ -667,8 +662,7 @@ a {
   .hero-subtitle,
   .hero-content > p:not(.eyebrow),
   .hero-actions,
-  .hero-panel,
-  .hero-side-nav {
+  .hero-panel {
     opacity: 1;
     transform: none;
     filter: none;
