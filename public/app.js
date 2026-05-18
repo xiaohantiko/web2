@@ -439,8 +439,8 @@ function renderNews() {
 }
 
 function initGalleryCarousel() {
-  const slots = $$("[data-gallery-slot]");
-  if (!slots.length) return;
+  const cards = $$(".gallery-carousel-card");
+  if (!cards.length) return;
   const images = [
     "assets/gallery/project-site-01.jpg",
     "assets/gallery/project-site-02.jpg",
@@ -448,26 +448,47 @@ function initGalleryCarousel() {
     "assets/gallery/project-site-04.jpg",
     "assets/gallery/project-site-05.jpg?v=20260518b"
   ];
-  let step = 0;
+  const visible = cards.map((card, index) => {
+    const img = card.querySelector("img");
+    const src = images[index % images.length];
+    if (img) img.src = src;
+    return src;
+  });
+  let step = cards.length;
+  let cardIndex = 0;
 
-  const render = () => {
-    slots.forEach((img, index) => {
-      const nextSrc = images[(step + index) % images.length];
-      if (img.getAttribute("src") === nextSrc) return;
-      img.classList.add("is-switching");
-      window.setTimeout(() => {
-        img.src = nextSrc;
-        img.alt = currentLang === "zh" ? `辰泰环保工程现场 ${index + 1}` : `Chentai project site ${index + 1}`;
-        img.classList.remove("is-switching");
-      }, 260);
-    });
+  const chooseNext = () => {
+    for (let i = 0; i < images.length; i += 1) {
+      const candidate = images[(step + i) % images.length];
+      if (!visible.includes(candidate)) return candidate;
+    }
+    return images[step % images.length];
   };
 
-  render();
   window.setInterval(() => {
-    step = (step + 1) % images.length;
-    render();
-  }, 4200);
+    const card = cards[cardIndex % cards.length];
+    const current = card.querySelector("img:not(.gallery-next)");
+    const nextSrc = chooseNext();
+    const preloader = new Image();
+
+    preloader.onload = () => {
+      const next = document.createElement("img");
+      next.src = nextSrc;
+      next.alt = currentLang === "zh" ? `辰泰环保工程现场 ${cardIndex + 1}` : `Chentai project site ${cardIndex + 1}`;
+      next.className = "gallery-next";
+      card.appendChild(next);
+      window.requestAnimationFrame(() => next.classList.add("is-visible"));
+      window.setTimeout(() => {
+        if (current) current.remove();
+        next.classList.remove("gallery-next", "is-visible");
+      }, 1200);
+      visible[cardIndex % cards.length] = nextSrc;
+      step = (images.indexOf(nextSrc) + 1) % images.length;
+      cardIndex = (cardIndex + 1) % cards.length;
+    };
+
+    preloader.src = nextSrc;
+  }, 2600);
 }
 
 function initHeroVideo() {

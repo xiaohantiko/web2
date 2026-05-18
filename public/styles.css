@@ -483,6 +483,14 @@ a {
   text-align: center;
 }
 
+.hero-metric sup,
+.stats-band sup {
+  font-size: 0.45em;
+  line-height: 0;
+  vertical-align: super;
+  margin-left: 1px;
+}
+
 .hero-metric p {
   margin: 8px 0 0;
   color: rgba(238, 251, 246, 0.76);
@@ -567,7 +575,7 @@ a {
 
 .stats-band {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   padding-top: 0;
   padding-bottom: 0;
@@ -577,6 +585,7 @@ a {
 .stats-band div {
   padding: clamp(28px, 5vw, 54px);
   background: rgba(255, 255, 255, 0.86);
+  min-width: 0;
 }
 
 .stats-band strong,
@@ -586,8 +595,10 @@ a {
 
 .stats-band strong {
   color: var(--green);
-  font-size: clamp(34px, 4vw, 62px);
+  font-size: clamp(30px, 3.5vw, 56px);
   line-height: 1;
+  white-space: nowrap;
+  letter-spacing: 0;
 }
 
 .stats-band span {
@@ -1016,14 +1027,27 @@ a {
   object-fit: cover;
   opacity: 1;
   transform: scale(1);
+  z-index: 1;
   transition:
-    opacity 620ms ease,
-    transform 1200ms ease;
+    opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1600ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1600ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gallery-carousel-card img.is-switching {
   opacity: 0;
   transform: scale(1.025);
+}
+
+.gallery-carousel-card img.gallery-next {
+  opacity: 0;
+  transform: scale(1.028);
+  z-index: 2;
+}
+
+.gallery-carousel-card img.gallery-next.is-visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .with-action {
