@@ -183,15 +183,15 @@ a {
 
 .hero::before {
   background:
-    linear-gradient(90deg, rgba(0, 12, 18, 0.86) 0%, rgba(3, 28, 29, 0.64) 36%, rgba(8, 62, 54, 0.28) 68%, rgba(8, 62, 54, 0.05) 100%),
-    radial-gradient(circle at 18% 52%, rgba(92, 184, 170, 0.13), transparent 36%);
+    linear-gradient(90deg, rgba(0, 12, 18, 0.8) 0%, rgba(3, 28, 29, 0.54) 36%, rgba(8, 62, 54, 0.22) 68%, rgba(8, 62, 54, 0.04) 100%),
+    radial-gradient(circle at 18% 52%, rgba(92, 184, 170, 0.11), transparent 36%);
 }
 
 .hero::after {
   background:
-    linear-gradient(180deg, rgba(1, 18, 24, 0.22), rgba(2, 24, 20, 0.56)),
-    linear-gradient(0deg, rgba(0, 9, 11, 0.86), rgba(0, 9, 11, 0.08) 42%, transparent 68%),
-    radial-gradient(circle at 78% 30%, rgba(90, 190, 255, 0.13), transparent 36%);
+    linear-gradient(180deg, rgba(1, 18, 24, 0.16), rgba(2, 24, 20, 0.48)),
+    linear-gradient(0deg, rgba(0, 9, 11, 0.78), rgba(0, 9, 11, 0.06) 42%, transparent 68%),
+    radial-gradient(circle at 78% 30%, rgba(90, 190, 255, 0.16), transparent 36%);
 }
 
 .hero-media {
@@ -223,24 +223,24 @@ a {
 .darkveil-container::before {
   z-index: 1;
   background:
-    radial-gradient(circle at 30% 44%, rgba(116, 255, 187, 0.2), transparent 26%),
-    radial-gradient(circle at 72% 34%, rgba(55, 147, 255, 0.16), transparent 24%),
-    linear-gradient(115deg, transparent 24%, rgba(113, 238, 206, 0.1) 42%, transparent 62%);
-  filter: blur(22px);
-  opacity: 0.58;
-  transform: translate3d(-4%, 0, 0) scale(1.08);
-  animation: darkVeilDrift 12s ease-in-out infinite alternate;
+    radial-gradient(circle at 30% 44%, rgba(116, 255, 187, 0.28), transparent 28%),
+    radial-gradient(circle at 72% 34%, rgba(55, 147, 255, 0.24), transparent 26%),
+    linear-gradient(115deg, transparent 20%, rgba(113, 238, 206, 0.18) 42%, transparent 66%);
+  filter: blur(18px);
+  opacity: 0.76;
+  transform: translate3d(-7%, -2%, 0) scale(1.14);
+  animation: darkVeilDrift 8.5s ease-in-out infinite alternate;
 }
 
 .darkveil-container::after {
   z-index: 2;
   background:
-    linear-gradient(rgba(188, 255, 222, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(113, 238, 206, 0.034) 1px, transparent 1px);
-  background-size: 118px 118px, 118px 118px;
-  opacity: 0.44;
+    linear-gradient(rgba(188, 255, 222, 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(113, 238, 206, 0.052) 1px, transparent 1px);
+  background-size: 104px 104px, 104px 104px;
+  opacity: 0.58;
   transform: translate3d(0, 0, 0);
-  animation: darkVeilGrid 20s linear infinite;
+  animation: darkVeilGrid 13s linear infinite;
 }
 
 .darkveil-canvas,
@@ -250,7 +250,7 @@ a {
   width: 100%;
   height: 100%;
   display: block;
-  filter: saturate(1.08) brightness(0.86) contrast(1.18);
+  filter: saturate(1.2) brightness(0.98) contrast(1.22);
 }
 
 .darkveil-fallback {
@@ -269,8 +269,8 @@ a {
     linear-gradient(rgba(189, 243, 94, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(91, 208, 173, 0.035) 1px, transparent 1px),
     radial-gradient(circle at 50% 38%, rgba(91, 208, 173, 0.08), transparent 36%);
-  background-size: 96px 96px, 96px 96px, auto;
-  opacity: 0.22;
+  background-size: 82px 82px, 82px 82px, auto;
+  opacity: 0.3;
   mix-blend-mode: screen;
 }
 
@@ -597,22 +597,22 @@ a {
 
 @keyframes darkVeilDrift {
   0% {
-    transform: translate3d(-5%, -2%, 0) scale(1.06) rotate(0deg);
-    opacity: 0.46;
+    transform: translate3d(-9%, -4%, 0) scale(1.1) rotate(0deg);
+    opacity: 0.58;
   }
   50% {
-    transform: translate3d(3%, 2%, 0) scale(1.12) rotate(2deg);
-    opacity: 0.66;
+    transform: translate3d(4%, 3%, 0) scale(1.2) rotate(3deg);
+    opacity: 0.84;
   }
   100% {
-    transform: translate3d(6%, -1%, 0) scale(1.08) rotate(-1deg);
-    opacity: 0.52;
+    transform: translate3d(10%, -2%, 0) scale(1.13) rotate(-2deg);
+    opacity: 0.64;
   }
 }
 
 @keyframes darkVeilGrid {
   to {
-    transform: translate3d(118px, 118px, 0);
+    transform: translate3d(104px, 104px, 0);
   }
 }
 
