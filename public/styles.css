@@ -2264,7 +2264,10 @@ a {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(3, 23, 19, 0.72);
+  background:
+    radial-gradient(circle at 20% 16%, rgba(128, 221, 212, 0.12), transparent 32%),
+    rgba(1, 14, 12, 0.82);
+  backdrop-filter: blur(18px);
 }
 
 .modal[aria-hidden="false"] {
@@ -2281,23 +2284,41 @@ a {
   max-height: min(86vh, 900px);
   overflow: auto;
   padding: clamp(28px, 4vw, 48px);
-  border-radius: 10px;
-  background: var(--white);
+  border: 1px solid rgba(183, 255, 223, 0.16);
+  border-radius: 14px;
+  color: #f2fff9;
+  background:
+    linear-gradient(135deg, rgba(7, 38, 31, 0.96), rgba(2, 17, 15, 0.98)),
+    radial-gradient(circle at 88% 10%, rgba(128, 221, 212, 0.14), transparent 30%);
+  box-shadow: 0 36px 120px rgba(0, 8, 6, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  scrollbar-color: rgba(189, 243, 94, 0.5) rgba(255, 255, 255, 0.06);
 }
 
 .modal-close {
   position: sticky;
   top: 0;
   float: right;
-  width: 42px;
-  height: 42px;
-  border: 0;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(183, 255, 223, 0.2);
   border-radius: 50%;
-  color: var(--white);
-  background: var(--forest);
+  color: #f3fff8;
+  background: rgba(16, 112, 84, 0.88);
   cursor: pointer;
   font-size: 28px;
   line-height: 1;
+  box-shadow: 0 16px 42px rgba(0, 18, 13, 0.35);
+  transition: transform 300ms ease, background 300ms ease, border-color 300ms ease;
+}
+
+.modal-close:hover {
+  border-color: rgba(189, 243, 94, 0.58);
+  background: rgba(30, 150, 109, 0.95);
+  transform: scale(1.04);
+}
+
+.modal .eyebrow {
+  color: var(--lime);
 }
 
 .modal h2 {
@@ -2305,10 +2326,12 @@ a {
   margin: 0 0 16px;
   font-size: clamp(28px, 4vw, 48px);
   line-height: 1.2;
+  color: #f5fff9;
+  text-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
 }
 
 .modal-summary {
-  color: var(--green);
+  color: rgba(205, 246, 228, 0.9);
   font-size: 18px;
   font-weight: 800;
   line-height: 1.7;
@@ -2322,7 +2345,7 @@ a {
 
 .article-body p {
   margin: 0;
-  color: #405650;
+  color: rgba(235, 250, 243, 0.82);
   font-size: 17px;
   line-height: 2;
 }
@@ -2335,7 +2358,10 @@ a {
 
 .article-images img {
   width: 100%;
-  border-radius: 8px;
+  border: 1px solid rgba(183, 255, 223, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 24px 76px rgba(0, 8, 6, 0.36);
 }
 
 @media (max-width: 1100px) {
