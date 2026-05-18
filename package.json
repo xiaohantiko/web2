@@ -10,6 +10,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "nodemailer": "^8.0.7"
+    "nodemailer": "^8.0.7",
+    "ogl": "^1.0.11"
   }
 }
