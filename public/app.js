@@ -540,23 +540,37 @@ function initGalleryCarousel() {
   update();
   restartAutoplay();
 
+  const prevButton = $("[data-carousel-prev]", carousel);
+  const nextButton = $("[data-carousel-next]", carousel);
+
   carousel.addEventListener("mouseenter", () => { paused = true; });
   carousel.addEventListener("mouseleave", () => { paused = false; });
   carousel.addEventListener("pointerdown", (event) => {
+    if (event.target.closest("[data-carousel-prev], [data-carousel-next], [data-carousel-dot]")) return;
     dragStart = event.clientX;
     carousel.setPointerCapture?.(event.pointerId);
   });
   carousel.addEventListener("pointerup", (event) => {
+    if (event.target.closest("[data-carousel-prev], [data-carousel-next], [data-carousel-dot]")) return;
     const delta = event.clientX - dragStart;
     if (Math.abs(delta) > 42) go(delta < 0 ? 1 : -1, true);
   });
-  carousel.addEventListener("click", (event) => {
-    if (event.target.closest("[data-carousel-prev]")) go(-1, true);
-    if (event.target.closest("[data-carousel-next]")) go(1, true);
-    const dot = event.target.closest("[data-carousel-dot]");
-    if (dot) {
+  prevButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    go(-1, true);
+  });
+  nextButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    go(1, true);
+  });
+  dots.forEach((dot) => {
+    dot.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       goTo(Number(dot.dataset.carouselDot), true);
-    }
+    });
   });
   window.addEventListener("beforeunload", () => window.clearInterval(autoplayTimer), { once: true });
 }
