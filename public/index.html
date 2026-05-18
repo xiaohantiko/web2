@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>石家庄辰泰环境科技有限公司</title>
-    <link rel="stylesheet" href="styles.css?v=20260518g" />
+    <link rel="stylesheet" href="styles.css?v=20260518h" />
   </head>
   <body>
     <header class="site-header">
@@ -52,9 +52,9 @@
           <a href="#contact"><span>联系我们</span></a>
         </nav>
         <div class="hero-content">
-          <p class="eyebrow" data-i18n="hero.eyebrow">有机溶媒回收治理科技型企业</p>
-          <h1 data-i18n="hero.title">石家庄辰泰环境科技有限公司</h1>
-          <p class="hero-subtitle" data-i18n="hero.subtitle">Shijiazhuang Chentai Environmental Technology Co., Ltd.</p>
+          <p class="eyebrow" data-i18n="hero.eyebrow" data-split-text data-split-type="words">有机溶媒回收治理科技型企业</p>
+          <h1 data-i18n="hero.title" data-split-text>石家庄辰泰环境科技有限公司</h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle" data-split-text data-split-type="words">Shijiazhuang Chentai Environmental Technology Co., Ltd.</p>
           <p data-i18n="hero.copy">聚焦工业有机尾气治理、液相萃取及精馏分离工艺设备，为化工、医药、涂布、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。</p>
           <div class="hero-actions">
             <a class="button primary" href="#business" data-i18n="hero.primary">查看业务能力</a>
@@ -62,15 +62,15 @@
           </div>
         </div>
         <div class="hero-panel">
-          <div class="hero-metric">
+          <div class="hero-metric card-spotlight" data-spotlight-card>
             <span>14334m<sup>2</sup></span>
             <p data-i18n="hero.land">占地面积</p>
           </div>
-          <div class="hero-metric">
+          <div class="hero-metric card-spotlight" data-spotlight-card>
             <span>5923m<sup>2</sup></span>
             <p data-i18n="hero.plant">建筑厂房</p>
           </div>
-          <div class="hero-metric">
+          <div class="hero-metric card-spotlight" data-spotlight-card>
             <span>ISO9001</span>
             <p data-i18n="hero.iso">质量体系认证</p>
           </div>
@@ -98,19 +98,19 @@
       </section>
 
       <section class="section stats-band">
-        <div>
+        <div class="card-spotlight" data-spotlight-card>
           <strong>14334m<sup>2</sup></strong>
           <span data-i18n="stats.land">占地面积</span>
         </div>
-        <div>
+        <div class="card-spotlight" data-spotlight-card>
           <strong>5923m<sup>2</sup></strong>
           <span data-i18n="stats.plant">建筑厂房</span>
         </div>
-        <div>
+        <div class="card-spotlight" data-spotlight-card>
           <strong data-i18n="stats.labValue">市级</strong>
           <span data-i18n="stats.lab">实验室与研发中心</span>
         </div>
-        <div>
+        <div class="card-spotlight" data-spotlight-card>
           <strong data-i18n="stats.serviceValue">全流程</strong>
           <span data-i18n="stats.service">设计制造安装调试</span>
         </div>
@@ -280,16 +280,13 @@
           <p class="eyebrow">Factory & Projects</p>
           <h2 data-i18n="gallery.title">工厂与工程现场</h2>
         </div>
-        <div class="gallery-grid" data-gallery-carousel>
-          <figure class="gallery-carousel-card" aria-label="工程现场图片一">
-            <img data-gallery-slot="0" src="assets/gallery/project-site-01.jpg" alt="辰泰环保工程现场" />
-          </figure>
-          <figure class="gallery-carousel-card" aria-label="工程现场图片二">
-            <img data-gallery-slot="1" src="assets/gallery/project-site-02.jpg" alt="辰泰环保设备现场" />
-          </figure>
-          <figure class="gallery-carousel-card" aria-label="工程现场图片三">
-            <img data-gallery-slot="2" src="assets/gallery/project-site-03.jpg" alt="辰泰环保工厂现场" />
-          </figure>
+        <div class="factory-carousel" data-gallery-carousel aria-label="工厂与工程现场轮播">
+          <button class="factory-carousel-control prev" type="button" data-carousel-prev aria-label="上一张"></button>
+          <div class="factory-carousel-viewport">
+            <div class="factory-carousel-track" data-carousel-track></div>
+          </div>
+          <button class="factory-carousel-control next" type="button" data-carousel-next aria-label="下一张"></button>
+          <div class="factory-carousel-indicators" data-carousel-indicators></div>
         </div>
       </section>
 
@@ -333,7 +330,7 @@
       <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
     </footer>
 
-    <script type="module" src="plasma.js?v=20260518g"></script>
-    <script src="app.js?v=20260518g"></script>
+    <script type="module" src="plasma.js?v=20260518h"></script>
+    <script src="app.js?v=20260518h"></script>
   </body>
 </html>

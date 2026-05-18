@@ -439,56 +439,140 @@ function renderNews() {
 }
 
 function initGalleryCarousel() {
-  const cards = $$(".gallery-carousel-card");
-  if (!cards.length) return;
-  const images = [
-    "assets/gallery/project-site-01.jpg",
-    "assets/gallery/project-site-02.jpg",
-    "assets/gallery/project-site-03.jpg",
-    "assets/gallery/project-site-04.jpg",
-    "assets/gallery/project-site-05.jpg?v=20260518b"
-  ];
-  const visible = cards.map((card, index) => {
-    const img = card.querySelector("img");
-    const src = images[index % images.length];
-    if (img) img.src = src;
-    return src;
-  });
-  let step = cards.length;
-  let cardIndex = 0;
+  const carousel = $("[data-gallery-carousel]");
+  const track = $("[data-carousel-track]");
+  const indicators = $("[data-carousel-indicators]");
+  if (!carousel || !track || !indicators || carousel.dataset.carouselReady === "true") return;
+  carousel.dataset.carouselReady = "true";
 
-  const chooseNext = () => {
-    for (let i = 0; i < images.length; i += 1) {
-      const candidate = images[(step + i) % images.length];
-      if (!visible.includes(candidate)) return candidate;
+  const items = [
+    {
+      src: "assets/gallery/project-site-01.jpg",
+      title: "厂区外景",
+      description: "现代化生产基地与工程服务体系。"
+    },
+    {
+      src: "assets/gallery/project-site-02.jpg",
+      title: "装置框架",
+      description: "多层钢结构平台承载尾气回收与溶剂处理单元。"
+    },
+    {
+      src: "assets/gallery/project-site-03.jpg",
+      title: "管线与塔器",
+      description: "不锈钢塔器、冷凝换热与管廊系统协同运行。"
+    },
+    {
+      src: "assets/gallery/project-site-04.jpg",
+      title: "工程现场",
+      description: "面向化工与新材料场景的成套环保设备。"
+    },
+    {
+      src: "assets/gallery/project-site-05.jpg?v=20260518b",
+      title: "现场细节",
+      description: "设备安装、巡检通道和安全维护空间一体考虑。"
     }
-    return images[step % images.length];
+  ];
+
+  let active = 0;
+  let paused = false;
+  let dragStart = 0;
+
+  const render = () => {
+    track.innerHTML = items.map((item, index) => {
+      const offset = (index - active + items.length) % items.length;
+      const signedOffset = offset > items.length / 2 ? offset - items.length : offset;
+      const absOffset = Math.abs(signedOffset);
+      const state = signedOffset === 0 ? "is-active" : Math.abs(signedOffset) === 1 ? "is-near" : "is-far";
+      const rotate = signedOffset * -28;
+      const scale = 1 - Math.min(absOffset, 2) * 0.12;
+      const z = signedOffset === 0 ? 90 : 0;
+      return `
+        <figure class="factory-carousel-card ${state}" style="--offset:${signedOffset};--rotate:${rotate}deg;--scale:${scale};--z:${z}px;" aria-label="${escapeHtml(item.title)}">
+            <img src="${item.src}" alt="${escapeHtml(item.title)}" loading="eager" />
+          <figcaption>
+            <span>${String(index + 1).padStart(2, "0")}</span>
+            <strong>${escapeHtml(item.title)}</strong>
+            <p>${escapeHtml(item.description)}</p>
+          </figcaption>
+        </figure>
+      `;
+    }).join("");
+
+    indicators.innerHTML = items.map((_, index) => `
+      <button type="button" class="${index === active ? "is-active" : ""}" data-carousel-dot="${index}" aria-label="切换到第 ${index + 1} 张"></button>
+    `).join("");
   };
 
-  window.setInterval(() => {
-    const card = cards[cardIndex % cards.length];
-    const current = card.querySelector("img:not(.gallery-next)");
-    const nextSrc = chooseNext();
-    const preloader = new Image();
+  const go = (direction) => {
+    active = (active + direction + items.length) % items.length;
+    render();
+  };
 
-    preloader.onload = () => {
-      const next = document.createElement("img");
-      next.src = nextSrc;
-      next.alt = currentLang === "zh" ? `辰泰环保工程现场 ${cardIndex + 1}` : `Chentai project site ${cardIndex + 1}`;
-      next.className = "gallery-next";
-      card.appendChild(next);
-      window.requestAnimationFrame(() => next.classList.add("is-visible"));
-      window.setTimeout(() => {
-        if (current) current.remove();
-        next.classList.remove("gallery-next", "is-visible");
-      }, 1200);
-      visible[cardIndex % cards.length] = nextSrc;
-      step = (images.indexOf(nextSrc) + 1) % images.length;
-      cardIndex = (cardIndex + 1) % cards.length;
-    };
+  render();
+  const timer = window.setInterval(() => {
+    if (!paused) go(1);
+  }, 3200);
 
-    preloader.src = nextSrc;
-  }, 2600);
+  carousel.addEventListener("mouseenter", () => { paused = true; });
+  carousel.addEventListener("mouseleave", () => { paused = false; });
+  carousel.addEventListener("pointerdown", (event) => {
+    dragStart = event.clientX;
+    carousel.setPointerCapture?.(event.pointerId);
+  });
+  carousel.addEventListener("pointerup", (event) => {
+    const delta = event.clientX - dragStart;
+    if (Math.abs(delta) > 42) go(delta < 0 ? 1 : -1);
+  });
+  carousel.addEventListener("click", (event) => {
+    if (event.target.closest("[data-carousel-prev]")) go(-1);
+    if (event.target.closest("[data-carousel-next]")) go(1);
+    const dot = event.target.closest("[data-carousel-dot]");
+    if (dot) {
+      active = Number(dot.dataset.carouselDot);
+      render();
+    }
+  });
+  window.addEventListener("beforeunload", () => clearInterval(timer), { once: true });
+}
+
+function initSpotlightCards() {
+  $$("[data-spotlight-card]").forEach((card) => {
+    if (card.dataset.spotlightReady === "true") return;
+    card.dataset.spotlightReady = "true";
+    card.addEventListener("mousemove", (event) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
+      card.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+      card.style.setProperty("--spotlight-color", "rgba(128, 221, 212, 0.24)");
+    });
+  });
+}
+
+function initSplitText() {
+  $$("[data-split-text]").forEach((element) => {
+    const text = element.textContent.trim();
+    if (!text) return;
+    const splitType = element.dataset.splitType || "chars";
+    const units = splitType === "words" ? text.split(/(\s+)/) : Array.from(text);
+    element.setAttribute("aria-label", text);
+    element.innerHTML = units.map((unit, index) => {
+      const isSpace = /^\s+$/.test(unit);
+      const safe = isSpace ? "&nbsp;" : escapeHtml(unit);
+      return `<span class="split-unit" aria-hidden="true" style="--split-index:${index};">${safe}</span>`;
+    }).join("");
+    element.classList.remove("is-split-visible");
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-split-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "-80px" });
+
+  $$("[data-split-text]").forEach((element) => observer.observe(element));
 }
 
 function initHeroVideo() {
@@ -571,6 +655,7 @@ function bind() {
       currentLang = currentLang === "zh" ? "en" : "zh";
       renderI18n();
       renderNews();
+      initSplitText();
     });
   }
   document.addEventListener("click", (event) => {
@@ -622,6 +707,8 @@ async function boot() {
   siteData = await response.json();
   renderI18n();
   renderNews();
+  initSplitText();
+  initSpotlightCards();
   initGalleryCarousel();
   initHeroVideo();
   initSideNav();
