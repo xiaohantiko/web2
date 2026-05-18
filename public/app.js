@@ -476,42 +476,69 @@ function initGalleryCarousel() {
   let active = 0;
   let paused = false;
   let dragStart = 0;
+  let autoplayTimer;
 
-  const render = () => {
-    track.innerHTML = items.map((item, index) => {
+  track.innerHTML = items.map((item, index) => `
+    <figure class="factory-carousel-card" data-carousel-card="${index}" aria-label="${escapeHtml(item.title)}">
+      <img src="${item.src}" alt="${escapeHtml(item.title)}" loading="eager" />
+      <figcaption>
+        <span>${String(index + 1).padStart(2, "0")}</span>
+        <strong>${escapeHtml(item.title)}</strong>
+        <p>${escapeHtml(item.description)}</p>
+      </figcaption>
+    </figure>
+  `).join("");
+
+  indicators.innerHTML = items.map((_, index) => `
+    <button type="button" data-carousel-dot="${index}" aria-label="切换到第 ${index + 1} 张"></button>
+  `).join("");
+
+  const cards = $$("[data-carousel-card]", track);
+  const dots = $$("[data-carousel-dot]", indicators);
+
+  const update = () => {
+    cards.forEach((card, index) => {
       const offset = (index - active + items.length) % items.length;
       const signedOffset = offset > items.length / 2 ? offset - items.length : offset;
       const absOffset = Math.abs(signedOffset);
-      const state = signedOffset === 0 ? "is-active" : Math.abs(signedOffset) === 1 ? "is-near" : "is-far";
-      const rotate = signedOffset * -28;
-      const scale = 1 - Math.min(absOffset, 2) * 0.12;
-      const z = signedOffset === 0 ? 90 : 0;
-      return `
-        <figure class="factory-carousel-card ${state}" style="--offset:${signedOffset};--rotate:${rotate}deg;--scale:${scale};--z:${z}px;" aria-label="${escapeHtml(item.title)}">
-            <img src="${item.src}" alt="${escapeHtml(item.title)}" loading="eager" />
-          <figcaption>
-            <span>${String(index + 1).padStart(2, "0")}</span>
-            <strong>${escapeHtml(item.title)}</strong>
-            <p>${escapeHtml(item.description)}</p>
-          </figcaption>
-        </figure>
-      `;
-    }).join("");
-
-    indicators.innerHTML = items.map((_, index) => `
-      <button type="button" class="${index === active ? "is-active" : ""}" data-carousel-dot="${index}" aria-label="切换到第 ${index + 1} 张"></button>
-    `).join("");
+      const isActive = signedOffset === 0;
+      const state = isActive ? "is-active" : absOffset === 1 ? "is-near" : "is-far";
+      card.classList.toggle("is-active", isActive);
+      card.classList.toggle("is-near", absOffset === 1);
+      card.classList.toggle("is-far", absOffset > 1);
+      card.style.setProperty("--offset", signedOffset);
+      card.style.setProperty("--rotate", `${signedOffset * -28}deg`);
+      card.style.setProperty("--scale", 1 - Math.min(absOffset, 2) * 0.12);
+      card.style.setProperty("--z", isActive ? "90px" : "0px");
+      card.style.zIndex = String(20 - absOffset);
+      card.setAttribute("aria-hidden", isActive ? "false" : "true");
+      card.dataset.carouselState = state;
+    });
+    dots.forEach((dot, index) => {
+      dot.classList.toggle("is-active", index === active);
+      dot.setAttribute("aria-current", index === active ? "true" : "false");
+    });
   };
 
-  const go = (direction) => {
-    active = (active + direction + items.length) % items.length;
-    render();
+  const restartAutoplay = () => {
+    window.clearInterval(autoplayTimer);
+    autoplayTimer = window.setInterval(() => {
+      if (!paused) go(1);
+    }, 3200);
   };
 
-  render();
-  const timer = window.setInterval(() => {
-    if (!paused) go(1);
-  }, 3200);
+  const goTo = (index, shouldResetAutoplay = false) => {
+    active = (index + items.length) % items.length;
+    update();
+    if (shouldResetAutoplay) restartAutoplay();
+  };
+
+  const go = (direction, shouldResetAutoplay = false) => {
+    goTo(active + direction, shouldResetAutoplay);
+  };
+
+  update();
+  restartAutoplay();
 
   carousel.addEventListener("mouseenter", () => { paused = true; });
   carousel.addEventListener("mouseleave", () => { paused = false; });
@@ -521,18 +548,17 @@ function initGalleryCarousel() {
   });
   carousel.addEventListener("pointerup", (event) => {
     const delta = event.clientX - dragStart;
-    if (Math.abs(delta) > 42) go(delta < 0 ? 1 : -1);
+    if (Math.abs(delta) > 42) go(delta < 0 ? 1 : -1, true);
   });
   carousel.addEventListener("click", (event) => {
-    if (event.target.closest("[data-carousel-prev]")) go(-1);
-    if (event.target.closest("[data-carousel-next]")) go(1);
+    if (event.target.closest("[data-carousel-prev]")) go(-1, true);
+    if (event.target.closest("[data-carousel-next]")) go(1, true);
     const dot = event.target.closest("[data-carousel-dot]");
     if (dot) {
-      active = Number(dot.dataset.carouselDot);
-      render();
+      goTo(Number(dot.dataset.carouselDot), true);
     }
   });
-  window.addEventListener("beforeunload", () => clearInterval(timer), { once: true });
+  window.addEventListener("beforeunload", () => window.clearInterval(autoplayTimer), { once: true });
 }
 
 function initSpotlightCards() {
