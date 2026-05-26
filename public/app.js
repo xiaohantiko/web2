@@ -3,7 +3,7 @@ let currentLang = "zh";
 let newsFilter = "all";
 
 const $ = (selector) => document.querySelector(selector);
-const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
 function assetPath(value) {
   if (!value || /^(https?:|data:|blob:|mailto:|tel:|#|about:)/.test(value)) return value;
@@ -14,12 +14,15 @@ const labels = {
   zh: {
     "nav.profile": "公司简介",
     "nav.qualifications": "资质能力",
+    "nav.innovation": "科研创新",
+    "nav.industries": "业务领域",
+    "nav.solutions": "工艺方案",
     "nav.business": "主营业务",
     "nav.products": "产品体系",
     "nav.news": "新闻版块",
     "nav.inquiry": "客户咨询",
     "nav.contact": "联系我们",
-    "hero.eyebrow": "有机溶媒回收治理科技型企业",
+    "hero.eyebrow": "资源循环利用一体化供应商",
     "hero.title": "石家庄辰泰环境科技有限公司",
     "hero.subtitle": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
     "hero.copy": "聚焦工业有机尾气治理、液相萃取及精馏分离工艺设备，为化工、医药、涂布、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。",
@@ -113,6 +116,15 @@ const labels = {
     "business.item3Text": "针对硫化氢、恶臭气体及复合尾气，进行工艺组合设计和系统化治理。",
     "business.item4Title": "整包工艺与配套系统",
     "business.item4Text": "承接 PE 高分子材料、醋酸制醋酐、乙醚制造等整套工艺设计制造，并配套多效蒸发、MVR、PSA 制氮制氧及自动控制系统。",
+    "innovation.title": "科研创新",
+    "innovation.more": "查看科研创新",
+    "innovation.copy": "以流程模拟、实验验证和工程放大为核心，形成从技术团队、研发平台到专利成果的持续创新能力。",
+    "industries.title": "业务领域",
+    "industries.more": "查看业务领域",
+    "industries.copy": "服务医药、化工、新能源、新材料等行业，围绕溶剂回收、尾气治理和节能分离提供行业化方案。",
+    "solutions.title": "工艺解决方案",
+    "solutions.more": "查看工艺方案",
+    "solutions.copy": "覆盖精馏分离、硫化氢制硫、VOCs治理、多效蒸发、混氨及MVR等成套工艺路线。",
     "products.title": "产品体系",
     "products.more": "查看全部产品",
     "products.pageTitle": "完整产品体系",
@@ -193,12 +205,15 @@ const labels = {
   en: {
     "nav.profile": "Profile",
     "nav.qualifications": "Qualifications",
+    "nav.innovation": "R&D",
+    "nav.industries": "Industries",
+    "nav.solutions": "Solutions",
     "nav.business": "Business",
     "nav.products": "Products",
     "nav.news": "News",
     "nav.inquiry": "Inquiry",
     "nav.contact": "Contact",
-    "hero.eyebrow": "Technology Company for Organic Solvent Recovery",
+    "hero.eyebrow": "Integrated Supplier for Resource Recycling",
     "hero.title": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
     "hero.subtitle": "Organic solvent recovery and VOCs treatment systems provider",
     "hero.copy": "Chentai focuses on industrial organic waste gas treatment, liquid extraction and distillation separation equipment, providing technical consulting, engineering design, equipment manufacturing, installation, commissioning and after-sales service.",
@@ -292,6 +307,15 @@ const labels = {
     "business.item3Text": "Combined process design and system treatment for hydrogen sulfide, odor gases and complex exhaust streams.",
     "business.item4Title": "Integrated Process Packages and Utilities",
     "business.item4Text": "Integrated process design and equipment supply for PE polymer materials, acetic-acid-to-acetic-anhydride and ether manufacturing, plus multi-effect evaporation, MVR, PSA nitrogen/oxygen and automation systems.",
+    "innovation.title": "R&D Innovation",
+    "innovation.more": "View R&D",
+    "innovation.copy": "Process simulation, laboratory validation and engineering scale-up form Chentai's continuous innovation capability.",
+    "industries.title": "Industries",
+    "industries.more": "View Industries",
+    "industries.copy": "Industry-oriented solutions for pharmaceutical, chemical, new energy and advanced materials projects.",
+    "solutions.title": "Process Solutions",
+    "solutions.more": "View Solutions",
+    "solutions.copy": "Complete process routes covering distillation, H2S sulfur recovery, VOCs treatment, evaporation, ammonia mixing and MVR.",
     "products.title": "Product System",
     "products.more": "All Products",
     "products.pageTitle": "Complete Product System",
@@ -440,34 +464,34 @@ function renderNews() {
 
 function initGalleryCarousel() {
   const carousel = $("[data-gallery-carousel]");
-  const track = $("[data-carousel-track]");
-  const indicators = $("[data-carousel-indicators]");
+  const track = carousel.querySelector("[data-carousel-track]");
+  const indicators = carousel.querySelector("[data-carousel-indicators]");
   if (!carousel || !track || !indicators || carousel.dataset.carouselReady === "true") return;
   carousel.dataset.carouselReady = "true";
 
   const items = [
     {
-      src: "assets/gallery/project-site-01.jpg",
+      src: "assets/new-content/2-关于我们/公司大门-图.jpg",
       title: "厂区外景",
       description: "现代化生产基地与工程服务体系。"
     },
     {
-      src: "assets/gallery/project-site-02.jpg",
+      src: "assets/new-content/2-关于我们/车间设备（需修图）/厂房图片IMG_20191007_131654.jpg",
       title: "装置框架",
       description: "多层钢结构平台承载尾气回收与溶剂处理单元。"
     },
     {
-      src: "assets/gallery/project-site-03.jpg",
+      src: "assets/new-content/2-关于我们/车间设备（需修图）/IMG_20250415_165136_副本.jpg",
       title: "管线与塔器",
       description: "不锈钢塔器、冷凝换热与管廊系统协同运行。"
     },
     {
-      src: "assets/gallery/project-site-04.jpg",
+      src: "assets/new-content/5-业务领域/3-新能源行业/IMG_20250729_090730(1).jpg",
       title: "工程现场",
       description: "面向化工与新材料场景的成套环保设备。"
     },
     {
-      src: "assets/gallery/project-site-05.jpg?v=20260518b",
+      src: "assets/new-content/5-业务领域/2-化工行业/70377ca309c7fd530d116a8caa3968e.jpg",
       title: "现场细节",
       description: "设备安装、巡检通道和安全维护空间一体考虑。"
     }
@@ -540,8 +564,8 @@ function initGalleryCarousel() {
   update();
   restartAutoplay();
 
-  const prevButton = $("[data-carousel-prev]", carousel);
-  const nextButton = $("[data-carousel-next]", carousel);
+  const prevButton = carousel.querySelector("[data-carousel-prev]");
+  const nextButton = carousel.querySelector("[data-carousel-next]");
 
   carousel.addEventListener("mouseenter", () => { paused = true; });
   carousel.addEventListener("mouseleave", () => { paused = false; });
