@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>石家庄辰泰环境科技有限公司</title>
-    <link rel="stylesheet" href="styles.css?v=20260526b" />
+    <link rel="stylesheet" href="styles.css?v=20260527a" />
   </head>
   <body>
     <header class="site-header">
@@ -18,13 +18,12 @@
       <button class="menu-button" type="button" data-menu-button>☰</button>
       <nav class="nav" data-nav>
         <a href="profile.html" data-i18n="nav.profile">公司简介</a>
-        <a href="qualifications.html" data-i18n="nav.qualifications">资质能力</a>
+        <a href="news.html" data-i18n="nav.news">新闻资讯</a>
         <a href="innovation.html" data-i18n="nav.innovation">科研创新</a>
         <a href="industries.html" data-i18n="nav.industries">业务领域</a>
         <a href="solutions.html" data-i18n="nav.solutions">工艺方案</a>
         <a href="#business" data-i18n="nav.business">主营业务</a>
         <a href="products.html" data-i18n="nav.products">产品体系</a>
-        <a href="news.html" data-i18n="nav.news">新闻版块</a>
         <a href="inquiry.html" data-i18n="nav.inquiry">客户咨询</a>
         <a href="#contact" data-i18n="nav.contact">联系我们</a>
         <button class="lang-toggle" type="button" data-lang-toggle>EN</button>
@@ -49,13 +48,12 @@
         <nav class="hero-side-nav" aria-label="首页板块导航">
           <a href="#home" class="is-active"><span>首页</span></a>
           <a href="#profile"><span>公司简介</span></a>
-          <a href="#qualifications"><span>资质能力</span></a>
+          <a href="#news"><span>新闻资讯</span></a>
           <a href="#innovation"><span>科研创新</span></a>
           <a href="#industries"><span>业务领域</span></a>
           <a href="#solutions"><span>工艺方案</span></a>
           <a href="#business"><span>主营业务</span></a>
           <a href="#products"><span>产品体系</span></a>
-          <a href="#news"><span>新闻版块</span></a>
           <a href="#contact"><span>联系我们</span></a>
         </nav>
         <div class="hero-content">
@@ -146,50 +144,15 @@
         </div>
       </section>
 
-      <section class="section" id="qualifications">
-        <div class="section-head">
-          <p class="eyebrow">Company Qualifications</p>
-          <h2 data-i18n="qual.title">资质能力</h2>
+      <section class="section news-section" id="news">
+        <div class="section-head with-action">
+          <div>
+            <p class="eyebrow">News Center</p>
+            <h2 data-i18n="news.title">新闻资讯</h2>
+          </div>
+          <a class="section-more" href="news.html" data-i18n="news.more">查看更多新闻</a>
         </div>
-        <div class="qualification-summary">
-          <article class="feature-card flip-card" tabindex="0" aria-label="企业资质自动切换展示证书">
-            <div class="flip-card-inner">
-              <div class="flip-face flip-front">
-                <h3 data-i18n="qual.card1Title">企业资质</h3>
-                <p data-i18n="qual.card1Text">公司通过 ISO9001 质量体系认证，并取得有机尾气治理回收设备相关防爆认证资质，拥有多项自主知识产权、商标知识产权及专利成果。</p>
-              </div>
-              <div class="flip-face flip-back">
-                <img src="assets/qualifications/iso9001.jpg" alt="ISO9001质量体系认证" loading="lazy" />
-                <span>ISO9001 / 防爆合格证 / 特种设备生产许可</span>
-              </div>
-            </div>
-          </article>
-          <article class="feature-card flip-card" tabindex="0" aria-label="企业认定自动切换展示证书">
-            <div class="flip-card-inner">
-              <div class="flip-face flip-front">
-                <h3 data-i18n="qual.card2Title">企业认定</h3>
-                <p data-i18n="qual.card2Text">公司先后获评河北省科技型中小企业、高新技术企业、规模以上企业、国家级科技型中小企业、河北省专精特新中小企业。</p>
-              </div>
-              <div class="flip-face flip-back">
-                <img src="assets/qualifications/high-tech-enterprise-upright.jpg" alt="高新技术企业证书" loading="lazy" />
-                <span>高新技术企业 / 科技型中小企业 / 专精特新</span>
-              </div>
-            </div>
-          </article>
-          <article class="feature-card flip-card" tabindex="0" aria-label="实验室与研发自动切换展示实验室">
-            <div class="flip-card-inner">
-              <div class="flip-face flip-front">
-                <h3 data-i18n="qual.card3Title">实验室与研发</h3>
-                <p data-i18n="qual.card3Text">公司建有市级实验室及专业化研发中心，可围绕气相回收、液相分离、精馏萃取等工况进行工艺模拟、参数分析和工程验证。</p>
-              </div>
-              <div class="flip-face flip-back">
-                <img src="assets/qualifications/laboratory-overview.png" alt="公司实验室" loading="lazy" />
-                <span>实验验证 / 参数分析 / 工程放大</span>
-              </div>
-            </div>
-          </article>
-        </div>
-        <a class="section-more" href="qualifications.html" data-i18n="qual.more">查看资质与实验室</a>
+        <div class="news-grid home-news-grid" data-news-grid data-news-limit="4"></div>
       </section>
 
       <section class="section business-section" id="business">
@@ -378,17 +341,6 @@
         </div>
       </section>
 
-      <section class="section news-section" id="news">
-        <div class="section-head with-action">
-          <div>
-            <p class="eyebrow">News Center</p>
-            <h2 data-i18n="news.title">新闻版块</h2>
-          </div>
-          <a class="section-more" href="news.html" data-i18n="news.more">查看更多新闻</a>
-        </div>
-        <div class="news-grid home-news-grid" data-news-grid data-news-limit="4"></div>
-      </section>
-
       <section class="section contact-section" id="contact">
         <div class="contact-card">
           <div>
@@ -418,7 +370,7 @@
       <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
     </footer>
 
-    <script type="module" src="darkveil.js?v=20260526b"></script>
-    <script src="app.js?v=20260526b"></script>
+    <script type="module" src="darkveil.js?v=20260527a"></script>
+    <script src="app.js?v=20260527a"></script>
   </body>
 </html>
