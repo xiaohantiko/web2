@@ -22,9 +22,9 @@ const labels = {
     "nav.news": "新闻版块",
     "nav.inquiry": "客户咨询",
     "nav.contact": "联系我们",
-    "hero.eyebrow": "资源循环利用一体化供应商",
-    "hero.title": "石家庄辰泰环境科技有限公司",
-    "hero.subtitle": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+    "hero.eyebrow": "石家庄辰泰环境科技有限公司",
+    "hero.title": "资源循环利用一体化供应商",
+    "hero.subtitle": "化工行业节能降耗专家",
     "hero.copy": "聚焦工业有机尾气治理、液相萃取及精馏分离工艺设备，为化工、医药、涂布、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。",
     "hero.primary": "查看业务能力",
     "hero.secondary": "提交项目咨询",
@@ -32,9 +32,16 @@ const labels = {
     "hero.plant": "建筑厂房",
     "hero.iso": "质量体系认证",
     "profile.title": "公司简介",
-    "profile.p1": "石家庄辰泰环境科技有限公司是一家专业从事有机溶媒回收治理的高新技术企业，位于河北省石家庄灵寿县工业园二区，拥有现代化厂房、工程实验室、先进机械加工设备和完整售后服务体系。",
-    "profile.p2": "公司围绕有机尾气回收治理、精馏分离、有氧硫化氢制取单质硫等方向，提供技术咨询、工程设计、设备制造、安装调试、技术培训及运行服务。",
-    "profile.p3": "辰泰的关键技术特点，是将气相回收系统和液相分离系统从设计端整体融合，统一规划气相回收产生的液体与液相分离产生的不凝气体，实现达标排放、资源回收与能耗控制的协同。",
+    "profile.card1Kicker": "Company Overview",
+    "profile.card1Title": "资源循环利用一体化供应商",
+    "profile.card2Kicker": "R&D Center",
+    "profile.card2Title": "技术研发中心",
+    "profile.card3Kicker": "Smart Manufacturing",
+    "profile.card3Title": "智能化高端加工设备",
+    "profile.p1": "石家庄辰泰环境科技有限公司是一家专注有机溶剂回收治理的高新技术企业。可为不同类型行业提供绿色化工分离技术一一数智化的液相和气相能源耦合利用一体化工艺系统，包括精馏分离、萃取分离绿色能源回收系统，含硫化氢尾气综合治理及硫回收技术，有机尾气能源回收系统，数智化蒸发结晶系统等，并承接EPC总包（技术咨询、工程设计、生产制造、安装调试、培训及售后）一站式服务。公司技术团队不断开发新工艺包的应用，能完美解决各行业所有溶剂的循环回收利用。自主创新的气相与液相分离系统融合设计，实现“废水、废气”都达标排放的双赢效果，能耗节省高达40-70%以上，行业技术国内领先",
+    "profile.p2": "公司拥有化工专业硕士、高级工程师数人，拥有压力容器制造（含安装、改造）许可证，属于国家级高新技术企业、河北省“专精特新”企业、河北省创新型企业。公司设立精馏技术研发中心，是河北省工业企业研发机构B级研发中心，公司组建了“化工节能过程集成与资源利用研究室”，针对多家大中型化工企业，尤其是超高分子量聚乙烯材料、隔膜材料、PE新材料等行业的技术难题，创造了显著的经济效益和社会效益。",
+    "profile.p3": "公司拥有自动化以及智能化高端加工和检测设备，配备先进的激光切割机、自动等离子焊机、管板自动焊机、法兰焊机、氩弧自动焊机以及铣、刨、磨、镗、钻、折弯成型等专业化机械加工设备。拥有各种非标设备制造及装配工艺的高级技师及中级以上技工数十人，公司成立至今，已成功研发设计并建成运行千余套工业化精馏装置。",
+    "profile.p4": "公司同时还拥有多支专业经验丰富的工程安装队伍，配备多种先进的施工机械长期在项目现场进行设备、管道、电气仪表、钢结构、自控系统等工程安装服务，应用严格、全面的质量管理体系，成功完成了多个重大工程项目，施工地域覆盖全国各省市。",
     "profile.more": "查看完整介绍",
     "profile.pageTitle": "完整公司介绍",
     "profile.pageCopy": "根据公司宣传资料整理企业定位、技术路线、发展历程、研发制造能力和合作方向。",
@@ -213,9 +220,9 @@ const labels = {
     "nav.news": "News",
     "nav.inquiry": "Inquiry",
     "nav.contact": "Contact",
-    "hero.eyebrow": "Integrated Supplier for Resource Recycling",
-    "hero.title": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
-    "hero.subtitle": "Organic solvent recovery and VOCs treatment systems provider",
+    "hero.eyebrow": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+    "hero.title": "Integrated Supplier for Resource Recycling",
+    "hero.subtitle": "Energy-saving and consumption-reduction specialist for the chemical industry",
     "hero.copy": "Chentai focuses on industrial organic waste gas treatment, liquid extraction and distillation separation equipment, providing technical consulting, engineering design, equipment manufacturing, installation, commissioning and after-sales service.",
     "hero.primary": "Business Capability",
     "hero.secondary": "Project Inquiry",
@@ -223,9 +230,16 @@ const labels = {
     "hero.plant": "Plant area",
     "hero.iso": "Quality system certification",
     "profile.title": "Company Profile",
-    "profile.p1": "Shijiazhuang Chentai Environmental Technology Co., Ltd. is a high-tech enterprise specializing in organic solvent recovery and treatment. Located in Zone 2 of Lingshou County Industrial Park, it has modern workshops, an engineering laboratory, advanced machining equipment and a complete service system.",
-    "profile.p2": "The company provides technical consulting, engineering design, equipment manufacturing, installation, commissioning, training and operation services for organic tail-gas recovery, distillation separation and aerobic H2S-to-sulfur processes.",
-    "profile.p3": "Chentai's key technical feature is integrating gas-phase recovery with liquid-phase separation from the design stage, so recovered liquids and non-condensable gases are planned together for compliant emission, resource recovery and energy control.",
+    "profile.card1Kicker": "Company Overview",
+    "profile.card1Title": "Integrated Supplier for Resource Recycling",
+    "profile.card2Kicker": "R&D Center",
+    "profile.card2Title": "Technology R&D Center",
+    "profile.card3Kicker": "Smart Manufacturing",
+    "profile.card3Title": "Intelligent High-end Fabrication Equipment",
+    "profile.p1": "Shijiazhuang Chentai Environmental Technology Co., Ltd. is a high-tech enterprise focused on organic solvent recovery and treatment. The company provides green chemical separation technologies for different industries, including digitalized integrated liquid-phase and gas-phase energy-coupled process systems, distillation separation, extraction separation and green energy recovery systems, comprehensive H2S tail-gas treatment and sulfur recovery, organic tail-gas energy recovery systems, digital evaporation crystallization systems, and EPC turnkey services covering technical consulting, engineering design, manufacturing, installation, commissioning, training and after-sales service. The technical team continuously develops new process packages to solve solvent recycling needs across industries. Its independently innovated gas-phase and liquid-phase separation integration design achieves compliant discharge of both wastewater and waste gas, saves energy by 40-70% or more, and leads the domestic industry technically.",
+    "profile.p2": "The company has chemical engineering masters and senior engineers, holds a pressure vessel manufacturing license including installation and modification, and is recognized as a national high-tech enterprise, Hebei Specialized and Innovative Enterprise, and Hebei Innovative Enterprise. It has established a distillation technology R&D center, a Grade-B R&D center for industrial enterprises in Hebei, and the Research Office of Chemical Energy-saving Process Integration and Resource Utilization, creating significant economic and social benefits for many large and medium-sized chemical enterprises, especially in ultra-high molecular weight polyethylene, separator materials and PE new materials.",
+    "profile.p3": "The company owns automated and intelligent high-end fabrication and inspection equipment, including advanced laser cutting machines, automatic plasma welding machines, tube-sheet automatic welding machines, flange welding machines, automatic argon arc welding machines, and professional machining equipment for milling, planing, grinding, boring, drilling and bending. It also has senior technicians and intermediate-or-above skilled workers for non-standard equipment manufacturing and assembly. Since its establishment, the company has successfully developed, designed and built more than one thousand industrial distillation units.",
+    "profile.p4": "The company also has multiple experienced professional installation teams equipped with advanced construction machinery, providing long-term on-site services for equipment, piping, electrical instrumentation, steel structures and automation systems. With a strict and comprehensive quality management system, Chentai has completed many major engineering projects across China.",
     "profile.more": "Full Profile",
     "profile.pageTitle": "Full Company Profile",
     "profile.pageCopy": "A structured summary of Chentai's positioning, technical route, development milestones, R&D and manufacturing capabilities based on the company presentation.",
@@ -464,34 +478,35 @@ function renderNews() {
 
 function initGalleryCarousel() {
   const carousel = $("[data-gallery-carousel]");
+  if (!carousel) return;
   const track = carousel.querySelector("[data-carousel-track]");
   const indicators = carousel.querySelector("[data-carousel-indicators]");
-  if (!carousel || !track || !indicators || carousel.dataset.carouselReady === "true") return;
+  if (!track || !indicators || carousel.dataset.carouselReady === "true") return;
   carousel.dataset.carouselReady = "true";
 
   const items = [
     {
-      src: "assets/new-content/2-关于我们/公司大门-图.jpg",
+      src: "assets/about/company-gate.jpg",
       title: "厂区外景",
       description: "现代化生产基地与工程服务体系。"
     },
     {
-      src: "assets/new-content/2-关于我们/车间设备（需修图）/厂房图片IMG_20191007_131654.jpg",
+      src: "assets/about/workshop-panel-1.png",
       title: "装置框架",
       description: "多层钢结构平台承载尾气回收与溶剂处理单元。"
     },
     {
-      src: "assets/new-content/2-关于我们/车间设备（需修图）/IMG_20250415_165136_副本.jpg",
+      src: "assets/about/workshop-panel-2.png",
       title: "管线与塔器",
       description: "不锈钢塔器、冷凝换热与管廊系统协同运行。"
     },
     {
-      src: "assets/new-content/5-业务领域/3-新能源行业/IMG_20250729_090730(1).jpg",
+      src: "assets/about/workshop-panel-3.png",
       title: "工程现场",
       description: "面向化工与新材料场景的成套环保设备。"
     },
     {
-      src: "assets/new-content/5-业务领域/2-化工行业/70377ca309c7fd530d116a8caa3968e.jpg",
+      src: "assets/about/workshop-panel-4.png",
       title: "现场细节",
       description: "设备安装、巡检通道和安全维护空间一体考虑。"
     }
@@ -564,9 +579,6 @@ function initGalleryCarousel() {
   update();
   restartAutoplay();
 
-  const prevButton = carousel.querySelector("[data-carousel-prev]");
-  const nextButton = carousel.querySelector("[data-carousel-next]");
-
   carousel.addEventListener("mouseenter", () => { paused = true; });
   carousel.addEventListener("mouseleave", () => { paused = false; });
   carousel.addEventListener("pointerdown", (event) => {
@@ -579,24 +591,94 @@ function initGalleryCarousel() {
     const delta = event.clientX - dragStart;
     if (Math.abs(delta) > 42) go(delta < 0 ? 1 : -1, true);
   });
-  prevButton?.addEventListener("click", (event) => {
+
+  carousel.addEventListener("click", (event) => {
+    const prev = event.target.closest("[data-carousel-prev]");
+    const next = event.target.closest("[data-carousel-next]");
+    const dot = event.target.closest("[data-carousel-dot]");
+    if (!prev && !next && !dot) return;
     event.preventDefault();
     event.stopPropagation();
-    go(-1, true);
-  });
-  nextButton?.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    go(1, true);
-  });
-  dots.forEach((dot) => {
-    dot.addEventListener("click", (event) => {
+    if (prev) go(-1, true);
+    if (next) go(1, true);
+    if (dot) goTo(Number(dot.dataset.carouselDot), true);
+  }, true);
+  window.addEventListener("beforeunload", () => window.clearInterval(autoplayTimer), { once: true });
+}
+
+function initMediaCarousels() {
+  $$("[data-media-carousel]").forEach((carousel) => {
+    if (carousel.dataset.mediaCarouselReady === "true") return;
+    const slides = $$("[data-media-slide], .media-carousel-slide", carousel);
+    const dotsWrap = carousel.querySelector("[data-media-dots]");
+    if (!slides.length || !dotsWrap) return;
+    carousel.dataset.mediaCarouselReady = "true";
+
+    let active = 0;
+    let paused = false;
+    let timer;
+
+    dotsWrap.innerHTML = slides.map((_, index) => `
+      <button type="button" data-media-dot="${index}" aria-label="切换到第 ${index + 1} 张"></button>
+    `).join("");
+    const dots = $$("[data-media-dot]", dotsWrap);
+
+    const update = () => {
+      slides.forEach((slide, index) => {
+        const offset = (index - active + slides.length) % slides.length;
+        const signedOffset = offset > slides.length / 2 ? offset - slides.length : offset;
+        const absOffset = Math.abs(signedOffset);
+        const isActive = signedOffset === 0;
+        slide.classList.toggle("is-active", isActive);
+        slide.classList.toggle("is-prev", signedOffset === -1);
+        slide.classList.toggle("is-next", signedOffset === 1);
+        slide.classList.toggle("is-hidden", absOffset > 1);
+        slide.style.setProperty("--media-offset", signedOffset);
+        slide.style.zIndex = String(20 - absOffset);
+        slide.setAttribute("aria-hidden", isActive ? "false" : "true");
+      });
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("is-active", index === active);
+        dot.setAttribute("aria-current", index === active ? "true" : "false");
+      });
+    };
+
+    const restart = () => {
+      window.clearInterval(timer);
+      timer = window.setInterval(() => {
+        if (!paused) go(1);
+      }, Number(carousel.dataset.interval || 3800));
+    };
+
+    const goTo = (index, shouldReset = false) => {
+      active = (index + slides.length) % slides.length;
+      update();
+      if (shouldReset) restart();
+    };
+
+    const go = (direction, shouldReset = false) => goTo(active + direction, shouldReset);
+
+    carousel.addEventListener("click", (event) => {
+      const prev = event.target.closest("[data-media-prev]");
+      const next = event.target.closest("[data-media-next]");
+      const dot = event.target.closest("[data-media-dot]");
+      if (!prev && !next && !dot) return;
       event.preventDefault();
       event.stopPropagation();
-      goTo(Number(dot.dataset.carouselDot), true);
-    });
+      if (prev) go(-1, true);
+      if (next) go(1, true);
+      if (dot) goTo(Number(dot.dataset.mediaDot), true);
+    }, true);
+
+    carousel.addEventListener("mouseenter", () => { paused = true; });
+    carousel.addEventListener("mouseleave", () => { paused = false; });
+    carousel.addEventListener("focusin", () => { paused = true; });
+    carousel.addEventListener("focusout", () => { paused = false; });
+
+    update();
+    restart();
+    window.addEventListener("beforeunload", () => window.clearInterval(timer), { once: true });
   });
-  window.addEventListener("beforeunload", () => window.clearInterval(autoplayTimer), { once: true });
 }
 
 function initSpotlightCards() {
@@ -774,6 +856,7 @@ async function boot() {
   initSplitText();
   initSpotlightCards();
   initGalleryCarousel();
+  initMediaCarousels();
   initHeroVideo();
   initSideNav();
   bind();
