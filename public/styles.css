@@ -619,7 +619,7 @@ a {
   position: fixed;
   top: 50%;
   left: clamp(22px, 3.5vw, 58px);
-  z-index: 18;
+  z-index: 48;
   display: grid;
   gap: 16px;
   transform: translateY(-50%);
@@ -658,6 +658,16 @@ a {
   box-shadow: 0 0 0 7px rgba(189, 243, 94, 0.1), 0 0 24px rgba(189, 243, 94, 0.3);
 }
 
+.hero-side-nav a.is-active::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(189, 243, 94, 0.22), transparent 62%);
+  animation: sideNavPulse 1.9s ease-in-out infinite;
+  pointer-events: none;
+}
+
 .hero-side-nav a:hover {
   transform: scale(1.2);
   background: var(--mint);
@@ -683,7 +693,9 @@ a {
   transition: opacity 180ms ease, transform 180ms ease;
 }
 
-.hero-side-nav a:hover span {
+.hero-side-nav a:hover span,
+.hero-side-nav a:focus-visible span,
+.hero-side-nav a.is-active span {
   opacity: 1;
   transform: translate(0, -50%);
 }
@@ -970,6 +982,19 @@ a {
     opacity: 1;
     transform: translateY(0);
     filter: blur(0);
+  }
+}
+
+@keyframes sideNavPulse {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: scale(1.06);
   }
 }
 
@@ -1523,6 +1548,10 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .flip-face {
+    animation: none;
+  }
+
+  .hero-side-nav a.is-active::after {
     animation: none;
   }
 
