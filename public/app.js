@@ -511,6 +511,316 @@ const labels = {
   }
 };
 
+const staticEnglishOverrides = {
+  "网站首页 - 石家庄辰泰环境科技有限公司": "Home - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "石家庄辰泰环境科技有限公司": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "公司简介 - 石家庄辰泰环境科技有限公司": "Company Profile - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "新闻资讯 - 石家庄辰泰环境科技有限公司": "News - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "科研创新 - 石家庄辰泰环境科技有限公司": "R&D Innovation - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "业务领域 - 石家庄辰泰环境科技有限公司": "Business Fields - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "工艺解决方案 - 石家庄辰泰环境科技有限公司": "Process Solutions - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "资质能力 - 石家庄辰泰环境科技有限公司": "Qualifications - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "资质证书与实验室 - 石家庄辰泰环境科技有限公司": "Certificates and Laboratory - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "产品体系 - 石家庄辰泰环境科技有限公司": "Product System - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "客户咨询表 - 石家庄辰泰环境科技有限公司": "Project Inquiry - Shijiazhuang Chentai Environmental Technology Co., Ltd.",
+  "返回首页": "Back to home",
+  "网站首页下拉导航": "Home dropdown navigation",
+  "关于我们下拉导航": "About us dropdown navigation",
+  "新闻资讯下拉导航": "News dropdown navigation",
+  "科研创新下拉导航": "R&D innovation dropdown navigation",
+  "业务领域下拉导航": "Business fields dropdown navigation",
+  "工艺解决方案下拉导航": "Process solutions dropdown navigation",
+  "联系我们下拉导航": "Contact dropdown navigation",
+  "上一张": "Previous slide",
+  "下一张": "Next slide",
+  "子公司介绍": "Subsidiaries",
+  "围绕华北、长三角、珠三角、海南及海外市场建立协同服务网络，覆盖项目开发、工程设计、生产制造、维护售后和进出口业务。": "A coordinated service network covers North China, the Yangtze River Delta, the Pearl River Delta, Hainan and overseas markets, supporting project development, engineering design, manufacturing, maintenance, after-sales service, and import-export business.",
+  "南通剑驰分公司": "Nantong Jianchi Branch",
+  "租赁厂房1800平方米，办公楼200㎡，拥有设备约800万元，负责长三角项目的开发与生产、维护及售后服务等。": "Leases an 1,800 m2 workshop and a 200 m2 office building, with equipment valued at about RMB 8 million. It handles development, production, maintenance and after-sales service for Yangtze River Delta projects.",
+  "天津迪威洛普分公司": "Tianjin Develop Branch",
+  "主要负责公司萃取精馏系统整体工程的设计、部分生产及售后服务等，拥有设备约1200万，租赁办公楼200平米。": "Mainly responsible for overall engineering design, partial production and after-sales service for extraction distillation systems, with equipment valued at about RMB 12 million and a 200 m2 leased office.",
+  "石家庄市滕泰环保设备分公司": "Shijiazhuang Tengtai Environmental Equipment Branch",
+  "租赁办公楼200平米，库房1000平米，拥有设备约200万，主要负责公司成套技术产品及吸附材料的进出口业务。": "Leases a 200 m2 office and a 1,000 m2 warehouse, with equipment valued at about RMB 2 million. It mainly handles import and export of complete technical products and adsorption materials.",
+  "三亚鸿滕工贸分公司": "Sanya Hongteng Industry and Trade Branch",
+  "租赁厂房1000平方米，办公楼200㎡，拥有设备约500万元，负责珠三角及海南项目的开发与生产、维护及售后服务等。": "Leases a 1,000 m2 workshop and a 200 m2 office building, with equipment valued at about RMB 5 million. It supports project development, production, maintenance and after-sales service in the Pearl River Delta and Hainan.",
+  "美国 Syntech Chemical 分公司": "Syntech Chemical U.S. Branch",
+  "用于开拓美国市场，承担部分组装、售后服务等工作，租用厂房1000㎡，设备约1000万元。": "Established to develop the U.S. market, undertake partial assembly and after-sales service, with a leased 1,000 m2 workshop and equipment valued at about RMB 10 million.",
+  "质量体系管理": "Quality System Management",
+  "石家庄辰泰环境科技有限公司依托ISO9001 质量管理体系认证，构建覆盖设计研发、材料工艺、生产制造、安装调试、售后服务全链条的闭环质量管理体系，以“技术创新为核心、过程管控为关键、客户满意为目标”，实现产品质量稳定可靠、技术服务专业高效，为客户提供节能降耗与资源循环利用综合解决方案。": "With ISO9001 quality management certification, Chentai has built a closed-loop quality system covering design and R&D, materials and processes, manufacturing, installation and commissioning, and after-sales service. With technical innovation at the core, process control as the key, and customer satisfaction as the goal, the system supports stable product quality, efficient technical service, and integrated solutions for energy saving and resource recycling.",
+  "ISO9001质量管理体系认证": "ISO9001 Quality Management System Certification",
+  "防爆合格证": "Explosion-proof Certificate",
+  "压力容器制造许可证": "Pressure Vessel Manufacturing License",
+  "高新技术企业": "High-tech Enterprise",
+  "河北省工业企业研发机构 B 级": "Grade B R&D Institution for Hebei Industrial Enterprises",
+  "专精特新企业": "Specialized and Innovative Enterprise",
+  "市级绿色工厂": "Municipal Green Factory",
+  "河北省科技型中小企业": "Hebei Technology-based SME",
+  "企业荣誉": "Corporate Honors",
+  "设计研发：源头把控，创新赋能质量": "Design and R&D: source control and innovation-driven quality",
+  "公司建立“市场需求-技术研发-模拟验证-方案定型”研发质量管控流程，组建由高级工程师、行业专家领衔的专业技术团队，每年投入营收8%用于技术创新。对精馏工艺、设备结构进行多维度仿真验证，提前规避设计缺陷。从源头保障工艺适配性与技术可靠性。同时，严格执行研发评审制度，通过方案评审、图纸审核、样机测试三重把关，确保设计输出符合行业标准与客户需求，累计取得多项精馏技术专利，筑牢质量根基。": "The company follows an R&D quality control process from market demand to technical development, simulation verification and final scheme definition. A professional team led by senior engineers and industry experts invests 8% of annual revenue in technical innovation. Distillation processes and equipment structures are verified through multidimensional simulation to reduce design risks early. R&D reviews, drawing checks and prototype tests ensure outputs meet industry standards and customer requirements, forming a strong quality foundation supported by multiple distillation patents.",
+  "材料工艺：精挑细选，标准严控品质": "Materials and processes: selected inputs and strict standards",
+  "公司建立供应商准入-评估-动态管理机制，关键零部件供应商需通过资质审核、样品检验、现场考察三重筛选，签订质量协议，明确质量标准与追责机制。工艺管理方面，制定标准化作业指导书（SOP），明确设备焊接、组装、防腐等关键工序参数，严控填料层厚度、塔体垂直度等核心指标。针对有机溶剂分离提纯工艺，优化萃取剂配方与精馏参数，确保溶剂回收率、纯度达标，从材料与工艺双重维度严控质量。": "Chentai manages suppliers through admission, evaluation and dynamic review. Key component suppliers must pass qualification review, sample inspection and site assessment, then sign quality agreements defining standards and accountability. Standard operating procedures define parameters for welding, assembly, anti-corrosion and other key processes, with strict control of packing-layer thickness, tower verticality and other indicators. For organic solvent separation and purification, extractant formulas and distillation parameters are optimized to meet recovery and purity targets.",
+  "自动化高端加工设备": "Automated High-end Processing Equipment",
+  "机械加工与检测能力": "Machining and Inspection Capability",
+  "成套装备生产现场": "Complete Equipment Production Site",
+  "非标设备制造与装配": "Non-standard Equipment Manufacturing and Assembly",
+  "生产制造：精益管控，全程追溯保稳": "Manufacturing: lean control and full traceability",
+  "公司配备数控切割机、自动焊接机、无损检测仪等先进设备，实现生产自动化、精细化。生产环节推行“三检制”（自检、互检、专检），每道工序操作人员自检、上下工序互检、质检专员专检，关键工序全程旁站监督。焊接工序执行无损检测，水压试验100%合格，确保设备耐压性与密封性；组装环节严格把控部件精度，杜绝错装、漏装。建立产品全生命周期追溯系统，从原材料批次、生产工序、操作人员到检测数据全程记录，实现质量问题可追溯、可追责。同时，定期开展设备维护校准与员工技能培训，保障生产稳定性，产品良品率稳定在99%以上。": "The company uses CNC cutting machines, automatic welding machines, non-destructive testing instruments and other advanced equipment for automated, refined production. A three-level inspection system covers self-inspection, mutual inspection and dedicated inspection, with full supervision for key processes. Welds undergo non-destructive testing, hydrostatic tests are fully qualified, and assembly accuracy is controlled to prevent wrong or missing installation. A full lifecycle traceability system records raw material batches, production steps, operators and inspection data. Regular equipment calibration and staff training keep production stable, with product yield maintained above 99%.",
+  "安装调试：规范实施，精准交付达标": "Installation and commissioning: standardized execution and accurate delivery",
+  "公司制定标准化安装流程，明确现场勘测、基础施工、设备就位、管道连接、系统调试等全流程规范。安装前进行技术交底，核对图纸与现场工况；安装中严格执行安全与质量标准，严控设备水平度、管道密封性，杜绝安装偏差；安装后开展72小时连续试运行，全面检测设备运行参数、溶剂回收效率、废气废水排放指标，确保符合设计要求与环保标准，助力客户快速投产、稳定运行。": "Standardized installation procedures cover site survey, foundation work, equipment positioning, piping connection and system commissioning. Before installation, technical disclosure confirms drawings and site conditions. During installation, safety and quality standards control equipment leveling and pipe sealing. After installation, a 72-hour continuous trial run checks operating parameters, solvent recovery efficiency and wastewater and exhaust indicators to meet design and environmental requirements.",
+  "售后服务：全程护航，持续改进提质": "After-sales service: full support and continuous improvement",
+  "公司建立“快速响应-专业服务-定期回访-持续优化”售后服务体系，设立24小时服务热线。设备交付后，提供免费安装指导、技术培训与操作交底，确保客户人员熟练掌握设备操作与维护技能。建立客户档案，定期回访设备运行状况，提供预防性维护建议，及时更换易损部件，延长设备使用寿命。同时，跟踪行业技术动态与客户需求升级，持续迭代精馏技术与服务方案，助力客户实现节能降碳、提质增效，增强核心竞争力。": "Chentai has built an after-sales system covering rapid response, professional service, regular follow-up and continuous optimization, with a 24-hour hotline. After delivery, the company provides installation guidance, technical training and operation handover so customer teams can operate and maintain equipment properly. Customer files, regular follow-ups, preventive maintenance advice and timely replacement of wearing parts extend equipment life. Chentai also tracks industry technology and customer upgrades to improve distillation technology and service plans.",
+  "客户服务与团队协作": "Customer Service and Team Collaboration",
+  "项目沟通与现场支持": "Project Communication and Site Support",
+  "工程服务团队": "Engineering Service Team",
+  "持续培训与服务改进": "Continuous Training and Service Improvement",
+  "售后回访与运营支持": "After-sales Follow-up and Operations Support",
+  "企业文化与客户共创": "Corporate Culture and Customer Co-creation",
+  "厂区外景": "Factory Exterior",
+  "车间装备": "Workshop Equipment",
+  "制造现场": "Manufacturing Site",
+  "项目装置现场": "Project Unit Site",
+  "塔器与管线系统": "Tower and Piping System",
+  "企业风采": "Corporate Culture",
+  "科研创新": "R&D Innovation",
+  "以专业团队、闭环研发流程、校企合作、实验平台和专利成果为支撑，形成可从实验验证走向工业落地的技术体系。": "Supported by professional teams, closed-loop R&D processes, university-enterprise cooperation, experimental platforms and patent results, Chentai has built a technical system that moves from experimental verification to industrial implementation.",
+  "高级工程师与专家占比": "Share of senior engineers and experts",
+  "15年+": "15+ years",
+  "核心骨干平均行业经验": "Average industry experience of core staff",
+  "20项": "20 items",
+  "发明与实用新型专利成果": "Invention and utility-model patent results",
+  "科技团队建设": "Technology Team Building",
+  "人才实力：专业团队引领，经验与创新兼备": "Talent strength: professional leadership with experience and innovation",
+  "公司打造了一支专业的核心技术团队，其中高级工程师、教授级专家占比超60%，汇聚国内早期从事精馏分离技术研发、活性炭吸附的资深人员，核心骨干平均行业经验超15年。人才结构覆盖工艺设计、设备研发、模拟仿真、自动化控制全领域，形成“资深专家+骨干工程师+青年技术人员”三级梯队。": "The company has built a professional core technical team. Senior engineers and professor-level experts account for more than 60%, bringing together experienced specialists who worked early in China on distillation separation technology and activated-carbon adsorption. Core staff average more than 15 years of industry experience. The talent structure covers process design, equipment R&D, simulation and automation control, forming a three-level team of senior experts, backbone engineers and young technical staff.",
+  "公司坚持“技术立身”，建立常态化内训与外部交流机制，团队兼具理论深度与工程实践能力，为技术迭代与项目落地提供坚实人才支撑。": "Chentai is built on technology. Through regular internal training and external technical exchange, the team combines theoretical depth with engineering practice, supporting continuous technical iteration and project delivery.",
+  "流程设计：全链条闭环研发，精准高效可控": "Process design: closed-loop R&D across the full chain",
+  "公司以需求识别、方案模拟、实验验证、工程放大、运行反馈为主线，将实验数据、工艺模型和项目现场反馈闭环管理，确保研发方案在进入工程阶段前完成关键参数校核与风险预判。": "Chentai manages demand identification, scheme simulation, experimental verification, engineering scale-up and operating feedback as one closed loop, integrating test data, process models and site feedback so key parameters and risks are checked before engineering implementation.",
+  "需求识别": "Demand identification",
+  "方案模拟": "Scheme simulation",
+  "实验验证": "Experimental verification",
+  "工程放大": "Engineering scale-up",
+  "运行反馈": "Operating feedback",
+  "校企合作：产学研深度融合，技术协同创新": "University-enterprise cooperation: integrated research and industrial innovation",
+  "公司坚持产学研协同发展，与国内多所一流高校建立长期稳定合作关系，共建技术研发平台、联合实验室与人才培养基地，打通“高校科研-企业转化-产业应用”链条。": "The company promotes industry-university-research cooperation and has established long-term relationships with leading domestic universities to build R&D platforms, joint laboratories and talent training bases, connecting university research, enterprise transformation and industrial application.",
+  "技术攻关，联合研发": "Technical breakthroughs and joint R&D",
+  "聚焦新能源、新材料等行业溶剂回收、工业废气治理等关键技术，累计取得多项发明专利与实用新型专利。": "The cooperation focuses on key technologies such as solvent recovery and industrial exhaust treatment for new energy and new materials, resulting in multiple invention and utility-model patents.",
+  "资源共享，优势互补": "Resource sharing and complementary strengths",
+  "共享理论研究成果与企业工程化、产业化优势，加速科研成果转化；高校为企业提供技术咨询与人才培训，企业为高校提供实践平台与项目资金，实现互利共赢。": "Research results are combined with Chentai's engineering and industrialization strengths to accelerate transformation. Universities provide technical consulting and talent training, while the company provides practice platforms and project funding.",
+  "人才共育，储备力量": "Joint talent development and reserve building",
+  "开展“订单式”人才培养，定向输送技术人才；邀请高校专家驻企指导，提升团队理论水平与创新能力，为技术可持续发展储备人才。": "Customized talent training channels technical staff to the company, while university experts provide on-site guidance to improve the team's theoretical foundation and innovation capability.",
+  "研发基础设施介绍": "R&D Infrastructure",
+  "中小试实验平台搭建与检测仪器配置，为工艺路线验证、参数分析和工程放大提供支撑。": "Pilot platforms and analytical instruments support process route verification, parameter analysis and engineering scale-up.",
+  "中小试实验平台": "Pilot Test Platform",
+  "实验平台搭建": "Experimental Platform Setup",
+  "中小试装置": "Pilot Test Unit",
+  "检测仪器": "Testing Instruments",
+  "检测设备": "Testing Equipment",
+  "检测仪器细节": "Testing Instrument Details",
+  "研发成果展示": "R&D Results",
+  "4项": "4 items",
+  "发明专利": "Invention Patents",
+  "16项": "16 items",
+  "实用新型专利": "Utility-model Patents",
+  "业务领域": "Business Fields",
+  "面向医药、化工、新能源、新材料等行业，围绕溶剂回收、尾气治理、节能精馏和资源化回收提供工程化解决方案。": "For pharmaceuticals, chemicals, new energy and new materials, Chentai provides engineered solutions for solvent recovery, exhaust treatment, energy-saving distillation and resource recycling.",
+  "4类": "4 categories",
+  "重点行业场景": "Key industry scenarios",
+  "多路线": "Multiple routes",
+  "冷凝、吸收、精馏与吸附组合": "Condensation, absorption, distillation and adsorption combinations",
+  "工艺、设备、施工和调试交付": "Process, equipment, construction and commissioning delivery",
+  "医药行业": "Pharmaceutical Industry",
+  "医药生产过程涉及多种有机溶剂、母液和尾气工况，辰泰可根据溶剂沸点、浓度、含水量和回收价值，配置精馏、萃取、冷凝、吸附或真空脱附组合工艺。": "Pharmaceutical production involves many organic solvents, mother liquors and exhaust conditions. Chentai configures distillation, extraction, condensation, adsorption or vacuum desorption combinations based on boiling point, concentration, water content and recovery value.",
+  "医药行业项目": "Pharmaceutical Project",
+  "齐鲁制药": "Qilu Pharmaceutical",
+  "齐鲁制药项目": "Qilu Pharmaceutical Project",
+  "齐鲁天和惠世有限公司": "Qilu Tianhe Huishi Co., Ltd.",
+  "山东朗诺制药": "Shandong Langnuo Pharmaceutical",
+  "山东朗诺制药有限公司": "Shandong Langnuo Pharmaceutical Co., Ltd.",
+  "甘肃康巴斯生物科技有限公司": "Gansu Kangbasi Biotechnology Co., Ltd.",
+  "玉星生物": "Yuxing Bio",
+  "医药行业精馏工艺": "Pharmaceutical Distillation Process",
+  "化工行业": "Chemical Industry",
+  "化工行业工况差异大，常见需求包括VOCs回收、尾气吸收、溶剂精制、含硫尾气治理和过程节能改造。辰泰以EPC思路整合工艺、设备、管道、自控和施工调试。": "Chemical operating conditions vary widely. Common needs include VOCs recovery, exhaust absorption, solvent refining, sulfur-containing exhaust treatment and process energy-saving retrofits. Chentai integrates process, equipment, piping, automation, construction and commissioning through an EPC approach.",
+  "化工项目现场": "Chemical Project Site",
+  "甘肃银光化工工业集团有限公司": "Gansu Yinguang Chemical Industry Group Co., Ltd.",
+  "天辰泉港": "Tianchen Quangang",
+  "安徽智新生物化工有限公司": "Anhui Zhixin Biochemical Co., Ltd.",
+  "华陆工程科技有限责任公司": "Hualu Engineering & Technology Co., Ltd.",
+  "山东章丘雅思达": "Shandong Zhangqiu Yasida",
+  "山东银鹰": "Shandong Yinying",
+  "尾气吸附装置": "Exhaust Adsorption Unit",
+  "新能源行业": "New Energy Industry",
+  "新能源和锂电隔膜等生产环节对溶剂回收率、能耗和运行稳定性要求较高，适合采用冷凝、吸收、精馏、白油吸收和尾气回收的组合路线。": "New energy and lithium battery separator production require high solvent recovery, low energy consumption and stable operation, making combined routes such as condensation, absorption, distillation, white-oil absorption and exhaust recovery suitable.",
+  "沧州明珠": "Cangzhou Mingzhu",
+  "沧州明珠项目": "Cangzhou Mingzhu Project",
+  "新能源项目现场": "New Energy Project Site",
+  "新能源项目": "New Energy Project",
+  "新能源项目设备": "New Energy Project Equipment",
+  "新材料行业": "New Materials Industry",
+  "新材料、涂布和纤维类项目通常需要兼顾有机尾气治理、溶剂回收、低能耗运行和长期稳定。辰泰可按介质特性提供吸附回收、冷凝回收、白油吸收和精馏精制方案。": "New materials, coating and fiber projects must balance organic exhaust treatment, solvent recovery, low-energy operation and long-term stability. Chentai provides adsorption recovery, condensation recovery, white-oil absorption and distillation refining schemes based on media characteristics.",
+  "新材料项目": "New Materials Project",
+  "同益中": "Tongyizhong",
+  "同益中项目": "Tongyizhong Project",
+  "浙江蓝德": "Zhejiang Lande",
+  "华泰": "Huatai",
+  "南通新帝克": "Nantong Xindike",
+  "常熟秀珀": "Changshu Xiupo",
+  "活性炭吸附": "Activated Carbon Adsorption",
+  "活性炭吸附回收": "Activated Carbon Adsorption Recovery",
+  "工艺解决方案": "Process Solutions",
+  "围绕精馏分离、硫回收、VOCs回收治理、蒸发结晶与混氨等核心工艺包，形成从实验验证、工艺设计到设备制造和现场交付的系统化解决方案。": "Chentai builds systematic solutions around core process packages such as distillation separation, sulfur recovery, VOCs recovery and treatment, evaporation crystallization and ammonia mixing, covering experimental verification, process design, equipment manufacturing and site delivery.",
+  "10套": "10 sets",
+  "核心工艺方案模块": "Core process solution modules",
+  "重点场景节能空间": "Energy-saving potential in key scenarios",
+  "全流程": "Full process",
+  "验证、设计、制造和现场交付": "Verification, design, manufacturing and site delivery",
+  "成套工艺路线": "Complete process routes",
+  "精馏分离技术及装置": "Distillation Separation Technology and Equipment",
+  "硫化氢尾气综合治理": "Comprehensive H2S Tail-gas Treatment",
+  "脱硫 / 再生 / 后处理": "Desulfurization / Regeneration / Post-treatment",
+  "VOCs尾气回收治理": "VOCs Exhaust Recovery and Treatment",
+  "颗粒活性炭VPS回收": "Granular Activated Carbon VPS Recovery",
+  "多效蒸发系统": "Multi-effect Evaporation System",
+  "混氨技术及装置": "Ammonia Mixing Technology and Equipment",
+  "MVR系统": "MVR System",
+  "石家庄辰泰环境科技有限公司通过整体融合精馏分离专业技术团队，组建了具有本公司特点的“化工节能过程集成与资源利用研究室”，致力于化工节能过程与资源利用的相关研究，在精馏过程与设备的研究开发和工业应用方面具有鲜明特色。多年来针对多家大中型化工企业，尤其是超高分子量聚乙烯材料、隔膜材料、PE新材料、新能源等行业的技术难题，创造了显著的经济效益和社会效益。": "By integrating a professional distillation separation team, Chentai has established the Research Office for Chemical Energy-saving Process Integration and Resource Utilization. The team focuses on chemical energy-saving processes and resource utilization, with distinctive capabilities in distillation process and equipment R&D and industrial application. Over the years, it has created significant economic and social benefits for many large and medium-sized chemical enterprises, especially in ultra-high molecular weight polyethylene, separator materials, PE new materials and new energy.",
+  "公司的热泵精馏技术可显著降低传统精馏工艺的蒸汽和冷却水消耗，在化工、石化等领域应用广泛，可使费用降低50%以上。多效精馏技术的应用，能实现40%以上的节能效率，助力多个行业的节能降耗。变压精馏通过压力变化实现共沸体系的高效分离，在医药、精细化工以及新能源等领域应用价值较高。": "Heat-pump distillation can significantly reduce steam and cooling water consumption compared with traditional distillation and is widely used in chemical and petrochemical fields, cutting costs by more than 50%. Multi-effect distillation can achieve more than 40% energy savings. Pressure-swing distillation separates azeotropic systems efficiently through pressure changes and has high application value in pharmaceuticals, fine chemicals and new energy.",
+  "隔壁塔精馏广泛应用于精细化工、石油化工及新能源行业，比传统多塔精馏可节约30%的投资费用和60%的运行操作费用，特别在高纯电子级别溶剂的生产中有不可比拟的优势。": "Dividing-wall column distillation is widely used in fine chemicals, petrochemicals and new energy. Compared with conventional multi-column distillation, it can save 30% of investment cost and 60% of operating cost, with particular advantages in high-purity electronic-grade solvent production.",
+  "公司拥有众多溶剂单品的回收案例和液相溶媒回收过程实验室，拥有醋酐制造、醋酸回收等多项完整工艺包，可模拟各类溶剂回收过程，形成完整的模拟参数分析，可以做到从原料到成品的全过程。公司拥有一支技术过硬、品质优良的团队，能够完成从项目基础设计、施工、设备制造、安装调试和验收的全流程工作。": "The company has many single-solvent recovery cases and a liquid-phase solvent recovery laboratory. Complete process packages such as acetic anhydride production and acetic acid recovery allow simulation and parameter analysis for many solvent recovery processes, covering the full path from raw materials to finished products. Its technical team can complete basic design, construction, equipment manufacturing, installation, commissioning and acceptance.",
+  "硫化氢尾气综合治理与硫回收技术及装置": "Comprehensive H2S Tail-gas Treatment, Sulfur Recovery Technology and Equipment",
+  "本工艺采用络合铁或PDS为催化剂，利用Na2CO3或NH4OH为碱源，将废气中的硫化氢，吸收还原生成单质硫，同时，碱液可循环使用。相较于传统碱洗工艺大大节约运行费用，有明显的经济效益。": "This process uses chelated iron or PDS as catalyst and Na2CO3 or NH4OH as alkaline source to absorb and reduce hydrogen sulfide in exhaust gas into elemental sulfur. The alkaline solution can be recycled, significantly reducing operating cost compared with traditional alkali scrubbing.",
+  "脱硫工艺": "Desulfurization process",
+  "将含H2S的尾气从塔底进入脱硫塔，与塔顶喷淋下来的脱硫液充分接触，吸收了H2S的脱硫液从脱硫塔下部回流至反应槽。": "H2S-containing tail gas enters the desulfurization tower from the bottom and contacts the sprayed desulfurization liquid from the top. The liquid absorbing H2S returns from the lower part of the tower to the reaction tank.",
+  "再生工艺": "Regeneration process",
+  "通过脱硫液循环泵将硫富液抽送进入再生塔，通入大量空气对脱硫富液进行氧化再生，再生后的溶液从塔底自流回脱硫塔循环使用。": "A circulation pump sends sulfur-rich liquid into the regeneration tower, where large volumes of air oxidize and regenerate it. The regenerated solution flows back to the desulfurization tower for reuse.",
+  "后处理工艺": "Post-treatment process",
+  "从再生塔顶部浮选出的硫泡沫，进入硫泡沫槽，经过熔硫釜的熔硫工艺，最后生成硫磺成品，排出的清液则返回脱硫塔。": "Sulfur foam floated from the top of the regeneration tower enters the sulfur foam tank, then passes through sulfur melting to produce finished sulfur. The discharged clear liquid returns to the desulfurization tower.",
+  "VOCs尾气回收治理技术及装置": "VOCs Exhaust Recovery and Treatment Technology and Equipment",
+  "我们通过自有真空负压专利技术，融合高效吸收与真空脱附、深度冷凝等组合工艺，保障尾气回收治理安全性，并使动力消耗减少40-60%，污水量减少50-80%。": "Chentai combines its patented vacuum negative-pressure technology with efficient absorption, vacuum desorption and deep condensation processes to improve exhaust recovery safety, reduce power consumption by 40-60%, and reduce wastewater by 50-80%.",
+  "颗粒活性炭真空负压（VPS）回收装置": "Granular Activated Carbon Vacuum Negative-pressure (VPS) Recovery Unit",
+  "以吸附、解吸性能优异的真空专用颗粒活性炭作为吸附剂，将有机废气中的有机物吸附，利用真空负压将吸附的有机物脱附，液化回收、再利用。": "Special vacuum granular activated carbon with excellent adsorption and desorption performance adsorbs organics from exhaust gas. Vacuum negative pressure desorbs the organics for liquefaction, recovery and reuse.",
+  "整个脱附再生过程没有外界氧气的参与，无死角脱附，脱附温度更低、更加安全。": "The whole desorption and regeneration process avoids external oxygen, enables dead-zone-free desorption, and operates at lower, safer desorption temperatures.",
+  "节约40%以上的能源消耗，减少50%的污水排放，污水处理压力更小。": "Saves more than 40% energy consumption and reduces wastewater discharge by 50%, lowering wastewater treatment pressure.",
+  "吸附材料的使用寿命增加50-200%。": "Extends adsorbent service life by 50-200%.",
+  "低脱附温度极大降低有机物的分解，从而减少设备的腐蚀性，设备的使用寿命增加50-200%。": "Lower desorption temperature greatly reduces organic decomposition, reducing equipment corrosion and extending equipment life by 50-200%.",
+  "更容易做到环保达标排放。": "Makes compliant environmental discharge easier to achieve.",
+  "颗粒活性炭（GAC）有机尾（废）气吸附净化回收装置：利用吸附、解吸性能优异的颗粒活性炭作为吸附剂，可将有机废气中的有机物吸附，并将有机物予以回收再利用，净化率可达90%~99.99%。": "Granular activated carbon (GAC) organic exhaust adsorption, purification and recovery unit: high-performance GAC adsorbs organics from organic exhaust gas and recovers them for reuse, with purification efficiency reaching 90%-99.99%.",
+  "工艺流程简单，操作方便，自动化程度高。": "Simple process flow, convenient operation and high automation.",
+  "吸附容量大，吸附效率高，有效使用时间长。": "Large adsorption capacity, high adsorption efficiency and long effective service time.",
+  "投资少，见效快。": "Low investment and fast results.",
+  "有卓越的安全性能，适用于易燃易爆场所。": "Excellent safety performance, suitable for flammable and explosive sites.",
+  "性能稳定，技术成熟。": "Stable performance and mature technology.",
+  "设备操作弹性大，可承受风量、浓度的剧烈波动。": "High operating flexibility, able to withstand large fluctuations in air volume and concentration.",
+  "投资回报期短，通常一年内可收回投资成本。": "Short payback period, usually within one year.",
+  "设备使用寿命长达10年，GAC的更换周期为1.5-3年。": "Equipment service life can reach 10 years, with GAC replacement every 1.5-3 years.",
+  "流程图待补充": "Process Flow to Be Added",
+  "后续上传对应图纸后可直接替换此区域": "This area can be replaced directly after the corresponding drawing is uploaded.",
+  "多效蒸发是通过串联多个蒸发器，将前效的二次蒸汽作为下一效加热蒸汽的串联蒸发操作，通过逐级利用蒸汽潜热实现热能节约。在各效中，操作压力、加热蒸汽温度及溶液沸点依次降低，工业应用最常用2～3效。该系统广泛应用于化工、制药、食品等行业，适用于海水淡化、高盐废水处理及物料浓缩等领域。": "Multi-effect evaporation connects multiple evaporators in series, using secondary steam from the previous effect as heating steam for the next effect. Stepwise use of latent heat saves energy. In each effect, operating pressure, heating steam temperature and solution boiling point decrease in sequence. Two to three effects are most common in industrial applications. The system is widely used in chemicals, pharmaceuticals and food, and is suitable for seawater desalination, high-salt wastewater treatment and material concentration.",
+  "混氨技术及装置（氨水调配器图）": "Ammonia Mixing Technology and Equipment (Ammonia Water Blender)",
+  "液氨储存条件严苛，通常需高压或低温储罐，存在安全风险，而实际使用多需稀释为氨水。但传统加水稀释过程中，液氨易剧烈气化，导致氨气挥发、压力波动及浓度难控等问题，还需额外监管液氨储罐，增加安全隐患与成本。": "Liquid ammonia storage requires strict conditions, usually high-pressure or low-temperature tanks, which create safety risks. In use, it often needs to be diluted into ammonia water. Traditional water dilution can cause violent vaporization, ammonia volatilization, pressure fluctuations and difficult concentration control, while still requiring liquid ammonia tank supervision and adding cost.",
+  "我公司自主研发的《氨水调配器》，可在液氨卸车时直接与水按比例混合，一步生成所需浓度的氨水，无需单独设置液氨储罐，既避免液氨储存风险，又精准控制浓度，简化流程，提升安全性与使用效率。": "Chentai's independently developed ammonia water blender mixes liquid ammonia directly with water in proportion during unloading, producing the required concentration in one step. It avoids separate liquid ammonia storage, controls concentration accurately, simplifies the process, and improves safety and efficiency.",
+  "MVR系统（配图）": "MVR System",
+  "MVR系统将低温低压的蒸汽经过压缩机进行压缩，提高蒸汽温度和压力，然后将高温高压的蒸汽传递给蒸发器，用于加热液体，使液体中的水分蒸发分离。蒸发后的蒸汽经过冷凝器冷凝回收，再经过再压缩，形成循环，实现高效能量利用。": "The MVR system compresses low-temperature, low-pressure steam to raise its temperature and pressure, then transfers the high-temperature, high-pressure steam to the evaporator to heat liquid and evaporate water. The vapor is condensed, recovered and recompressed to form a cycle for efficient energy use.",
+  "高效节能：采用机械蒸汽再压缩技术，能够充分利用能量，节约能源消耗。": "High efficiency and energy saving: mechanical vapor recompression fully uses energy and reduces consumption.",
+  "环保节能：蒸发过程中产生的蒸汽可以进行冷凝回收利用，减少能源消耗和环境污染。": "Environmental and energy benefits: vapor generated during evaporation can be condensed and reused, reducing energy consumption and pollution.",
+  "稳定性好：采用循环压缩蒸汽的方式，能够稳定控制蒸发温度和蒸发效率。": "Good stability: circulating compressed vapor helps control evaporation temperature and efficiency.",
+  "自动化程度高：可实现智能控制和远程监控，操作简单方便。": "High automation: intelligent control and remote monitoring make operation simple and convenient.",
+  "营业执照": "Business License",
+  "公司依法登记设立，经营范围覆盖工业工程设计、环保治理、设备制造及相关技术服务。": "The company is legally registered, with business scope covering industrial engineering design, environmental treatment, equipment manufacturing and related technical services.",
+  "开户许可证": "Account Opening Permit",
+  "公司基本账户开户许可资料，用于企业经营往来和项目合作资信资料补充。": "Basic account opening permit materials are used for business transactions and project cooperation credit documentation.",
+  "特种设备生产许可证": "Special Equipment Production License",
+  "具备固定式压力容器相关生产许可，为压力容器类环保设备制造提供资质支撑。": "The company holds production permission for fixed pressure vessels, supporting qualified manufacture of pressure-vessel environmental equipment.",
+  "有机气体回收治理装置取得防爆合格证，适用于化工、医药等安全要求较高的现场。": "Organic gas recovery and treatment equipment has obtained explosion-proof certification, suitable for chemical, pharmaceutical and other high-safety sites.",
+  "安全生产标准化": "Work Safety Standardization",
+  "公司获安全生产标准化达标小微企业证书，强化生产安全和现场管理基础。": "The company has obtained work safety standardization certification for small and micro enterprises, strengthening production safety and site management.",
+  "建筑业企业资质证书": "Construction Enterprise Qualification Certificate",
+  "具备建筑机电安装工程、环保工程等相关承包资质，支撑项目现场安装交付。": "Chentai holds contracting qualifications for building mechanical and electrical installation and environmental engineering, supporting site installation and delivery.",
+  "创新与荣誉证书": "Innovation and Honor Certificates",
+  "公司在创新创业赛事、行业荣誉评选中取得相关奖项，体现持续研发和技术转化能力。": "Awards from innovation competitions and industry honors reflect continuous R&D and technology transformation capability.",
+  "研发机构与荣誉": "R&D Institution and Honors",
+  "公司研发中心及相关荣誉证书，为技术路线验证和工程产品迭代提供组织支撑。": "The R&D center and related honors provide organizational support for technical route verification and engineering product iteration.",
+  "商标注册证": "Trademark Registration Certificate",
+  "公司拥有商标知识产权，形成统一的品牌识别和产品服务标识体系。": "The company owns trademark intellectual property, forming a unified brand identity and product-service marking system.",
+  "实验室环境与基础仪器": "Laboratory Environment and Basic Instruments",
+  "检测分析设备": "Testing and Analysis Equipment",
+  "恒温、称量与辅助实验设备": "Constant-temperature, Weighing and Auxiliary Lab Equipment",
+  "首页板块导航": "Home section navigation",
+  "石家庄辰泰环境科技有限公司公司大门": "Shijiazhuang Chentai company gate",
+  "技术研发中心实验室": "Technology R&D center laboratory",
+  "智能化高端加工设备车间": "Intelligent high-end processing equipment workshop",
+  "资质证书轮播": "Certificate carousel",
+  "高新技术企业证书": "High-tech enterprise certificate",
+  "河北省工业企业研发机构证书": "Hebei industrial enterprise R&D institution certificate",
+  "专精特新牌匾": "Specialized and innovative enterprise plaque",
+  "绿色工厂牌匾": "Green factory plaque",
+  "科技型中小企业证书": "Technology-based SME certificate",
+  "企业荣誉证书": "Corporate honor certificate",
+  "切换到第 1 张": "Go to slide 1",
+  "切换到第 2 张": "Go to slide 2",
+  "切换到第 3 张": "Go to slide 3",
+  "切换到第 4 张": "Go to slide 4",
+  "切换到第 5 张": "Go to slide 5",
+  "切换到第 6 张": "Go to slide 6",
+  "切换到第 7 张": "Go to slide 7",
+  "切换到第 8 张": "Go to slide 8",
+  "切换到第 9 张": "Go to slide 9",
+  "车间设备轮播": "Workshop equipment carousel",
+  "智能化车间设备": "Intelligent workshop equipment",
+  "车间加工设备": "Workshop processing equipment",
+  "车间生产线": "Workshop production line",
+  "大型设备加工": "Large equipment processing",
+  "辰泰风采轮播": "Chentai culture carousel",
+  "辰泰团队风采": "Chentai team culture",
+  "辰泰风采活动": "Chentai company event",
+  "辰泰团队活动": "Chentai team event",
+  "辰泰企业活动": "Chentai corporate event",
+  "车间设备与企业风采轮播": "Workshop equipment and company culture carousel",
+  "辰泰环保厂区": "Chentai factory area",
+  "车间设备": "Workshop equipment",
+  "工程现场": "Engineering site",
+  "公司活动": "Company event",
+  "科研创新能力概览": "R&D innovation capability overview",
+  "科研创新团队": "R&D innovation team",
+  "研发流程": "R&D process",
+  "科研创新流程设计示意图": "R&D process design diagram",
+  "实验平台": "Experimental platform",
+  "业务领域能力概览": "Business fields capability overview",
+  "工艺解决方案能力概览": "Process solutions capability overview",
+  "工艺解决方案目录": "Process solutions directory",
+  "精馏分离技术及装置流程图": "Distillation separation technology and equipment flowchart",
+  "硫化氢尾气综合治理与硫回收流程图": "H2S tail-gas treatment and sulfur recovery flowchart",
+  "VOCs尾气回收治理流程图": "VOCs exhaust recovery and treatment flowchart",
+  "多效蒸发系统流程图": "Multi-effect evaporation system flowchart",
+  "石家庄辰泰环境科技有限公司营业执照": "Shijiazhuang Chentai business license",
+  "ISO9001质量管理体系认证证书": "ISO9001 quality management system certificate",
+  "安全生产标准化证书": "Work safety standardization certificate",
+  "河北省科技型中小企业证书": "Hebei technology-based SME certificate",
+  "河北省专精特新中小企业证书": "Hebei specialized and innovative SME certificate",
+  "创新创业大赛获奖证书": "Innovation and entrepreneurship competition award certificate",
+  "研发中心证书": "R&D center certificate",
+  "专利证书": "Patent certificate",
+  "辰泰环保实验室": "Chentai laboratory",
+  "公司实验室仪器与实验环境": "Company laboratory instruments and environment",
+  "实验室检测设备": "Laboratory testing equipment",
+  "实验室恒温及称量设备": "Laboratory constant-temperature and weighing equipment",
+  "冷冻法回收有机溶剂工艺流程图": "Organic solvent cryogenic recovery process flowchart",
+  "吸收法回收溶剂工艺流程图": "Solvent absorption recovery process flowchart",
+  "白油吸收塔工艺流程图": "White-oil absorption tower process flowchart",
+  "醋酸萃取精馏回收工艺流程图": "Acetic acid extraction distillation recovery process flowchart",
+  "DMSO精馏回收工艺流程图": "DMSO distillation recovery process flowchart",
+  "硫化氢尾气制取单质硫工艺流程图": "Elemental sulfur production from H2S tail gas flowchart",
+  "化工 / 医药 / 涂布 / 新材料": "Chemical / pharmaceutical / coating / new materials",
+  "如丙酮、乙酸乙酯、DMF、VOCs等": "For example: acetone, ethyl acetate, DMF, VOCs, etc.",
+  "如 10000 Nm3/h": "For example: 10000 Nm3/h",
+  "可备注已有检测报告、流程图或现场照片": "You may note existing test reports, flowcharts or site photos.",
+  "请描述项目现状、治理目标、回收介质、现场限制或希望咨询的问题": "Describe the current project status, treatment goals, recovered media, site constraints or questions."
+};
+
+const staticOriginalText = new WeakMap();
+const staticOriginalAttrs = new WeakMap();
+let staticOriginalTitle = "";
+
 function t(key) {
   return labels[currentLang][key] || labels.zh[key] || key;
 }
@@ -521,6 +831,63 @@ function translatedValue(key) {
 
 function localField(item, key, fallback = "") {
   return currentLang === "en" ? item[`${key}En`] || item[key] || fallback : item[key] || fallback;
+}
+
+function withOriginalSpacing(original, replacement) {
+  const leading = original.match(/^\s*/)?.[0] || "";
+  const trailing = original.match(/\s*$/)?.[0] || "";
+  return `${leading}${replacement}${trailing}`;
+}
+
+function applyStaticEnglishOverrides() {
+  if (!staticOriginalTitle) staticOriginalTitle = document.title;
+  const titleSource = staticOriginalTitle.trim();
+  document.title = currentLang === "en" && staticEnglishOverrides[titleSource]
+    ? staticEnglishOverrides[titleSource]
+    : staticOriginalTitle;
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach((node) => {
+    const parent = node.parentElement;
+    if (!parent || parent.closest("script, style, [data-i18n]")) return;
+    if (!staticOriginalText.has(node)) staticOriginalText.set(node, node.nodeValue);
+    const original = staticOriginalText.get(node);
+    const replacement = staticEnglishOverrides[original.trim()];
+    if (currentLang === "en" && replacement) {
+      node.nodeValue = withOriginalSpacing(original, replacement);
+    } else if (currentLang === "zh") {
+      node.nodeValue = original;
+    }
+  });
+
+  const attrConfigs = [
+    ["alt", "data-i18n-alt"],
+    ["aria-label", "data-i18n-aria-label"],
+    ["title", "data-i18n-title"],
+    ["placeholder", "data-i18n-placeholder"]
+  ];
+
+  $$("[alt], [aria-label], [title], [placeholder]").forEach((node) => {
+    attrConfigs.forEach(([attr, i18nAttr]) => {
+      if (!node.hasAttribute(attr) || node.hasAttribute(i18nAttr)) return;
+      let originals = staticOriginalAttrs.get(node);
+      if (!originals) {
+        originals = {};
+        staticOriginalAttrs.set(node, originals);
+      }
+      if (!Object.prototype.hasOwnProperty.call(originals, attr)) originals[attr] = node.getAttribute(attr);
+      const original = originals[attr] || "";
+      const replacement = staticEnglishOverrides[original.trim()];
+      if (currentLang === "en" && replacement) {
+        node.setAttribute(attr, replacement);
+      } else if (currentLang === "zh") {
+        node.setAttribute(attr, original);
+      }
+    });
+  });
 }
 
 function escapeHtml(value) {
@@ -551,6 +918,7 @@ function renderI18n() {
   const toggle = $("[data-lang-toggle]");
   if (toggle) toggle.textContent = currentLang === "zh" ? "EN" : "中";
   document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
+  applyStaticEnglishOverrides();
 }
 
 function articleImage(item) {
