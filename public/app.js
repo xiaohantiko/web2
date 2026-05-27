@@ -1,6 +1,7 @@
 let siteData = {};
 let currentLang = "zh";
 let newsFilter = "all";
+let homeRevealObserver;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -60,6 +61,9 @@ const labels = {
     "hero.land": "占地面积",
     "hero.plant": "建筑厂房",
     "hero.iso": "质量体系认证",
+    "hero.railGas": "尾气治理",
+    "hero.railSolvent": "溶剂回收",
+    "hero.railEnergy": "节能精馏",
     "profile.title": "公司简介",
     "profile.card1Kicker": "Company Overview",
     "profile.card1Title": "资源循环利用一体化供应商",
@@ -309,6 +313,9 @@ const labels = {
     "hero.land": "Land area",
     "hero.plant": "Plant area",
     "hero.iso": "Quality system certification",
+    "hero.railGas": "Exhaust Treatment",
+    "hero.railSolvent": "Solvent Recovery",
+    "hero.railEnergy": "Energy-saving Distillation",
     "profile.title": "Company Profile",
     "profile.card1Kicker": "Company Overview",
     "profile.card1Title": "Integrated Supplier for Resource Recycling",
@@ -945,7 +952,7 @@ function renderNews() {
     const summary = escapeHtml(localField(item, "summary", localField(item, "content", [])[0] || ""));
     const tag = item.sourceType === "company" ? t("news.company") : t("news.industry");
     return `
-      <article class="news-card" data-news-id="${escapeHtml(item.id)}" data-news-type="${item.sourceType}">
+      <article class="news-card card-spotlight" data-spotlight-card data-news-id="${escapeHtml(item.id)}" data-news-type="${item.sourceType}">
         <img src="${articleImage(item)}" alt="${title}" loading="lazy" />
         <div>
           <span>${tag}</span>
@@ -956,6 +963,8 @@ function renderNews() {
       </article>
     `;
   }).join("");
+  initSpotlightCards();
+  initHomeReveals();
 }
 
 function initGalleryCarousel() {
@@ -1210,6 +1219,108 @@ function initSpotlightCards() {
   });
 }
 
+function initInteractiveHero() {
+  const hero = $("[data-interactive-hero]");
+  if (!hero || hero.dataset.interactiveHeroReady === "true") return;
+  hero.dataset.interactiveHeroReady = "true";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  if (prefersReducedMotion || isCoarsePointer) return;
+
+  let raf = 0;
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  const render = () => {
+    currentX += (targetX - currentX) * 0.12;
+    currentY += (targetY - currentY) * 0.12;
+    hero.style.setProperty("--hero-x", currentX.toFixed(2));
+    hero.style.setProperty("--hero-y", currentY.toFixed(2));
+    raf = Math.abs(targetX - currentX) > 0.05 || Math.abs(targetY - currentY) > 0.05
+      ? requestAnimationFrame(render)
+      : 0;
+  };
+
+  hero.addEventListener("pointermove", (event) => {
+    const rect = hero.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    targetX = ((x / rect.width) - 0.5) * 52;
+    targetY = ((y / rect.height) - 0.5) * 38;
+    hero.style.setProperty("--hero-light-x", `${(x / rect.width) * 100}%`);
+    hero.style.setProperty("--hero-light-y", `${(y / rect.height) * 100}%`);
+    if (!raf) raf = requestAnimationFrame(render);
+  });
+
+  hero.addEventListener("pointerleave", () => {
+    targetX = 0;
+    targetY = 0;
+    hero.style.setProperty("--hero-light-x", "62%");
+    hero.style.setProperty("--hero-light-y", "42%");
+    if (!raf) raf = requestAnimationFrame(render);
+  });
+}
+
+function initMagneticButtons() {
+  $$("[data-magnetic-button]").forEach((button) => {
+    if (button.dataset.magneticReady === "true") return;
+    button.dataset.magneticReady = "true";
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    button.addEventListener("mousemove", (event) => {
+      const rect = button.getBoundingClientRect();
+      const x = event.clientX - rect.left - rect.width / 2;
+      const y = event.clientY - rect.top - rect.height / 2;
+      button.style.transform = `translate3d(${(x * 0.16).toFixed(1)}px, ${(y * 0.24 - 2).toFixed(1)}px, 0)`;
+    });
+
+    button.addEventListener("mouseleave", () => {
+      button.style.transform = "";
+    });
+  });
+}
+
+function initHomeReveals() {
+  if (!homeRevealObserver) {
+    homeRevealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        homeRevealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -80px" });
+  }
+
+  const revealSelectors = [
+    ".profile-section .section-head",
+    ".profile-showcase-card",
+    ".stats-band > div",
+    ".news-section .section-head",
+    ".news-card",
+    ".supplement-preview .section-head",
+    ".preview-layout",
+    ".industry-preview-grid a",
+    ".solution-preview-grid article",
+    ".contact-card",
+    ".contact-map-panel"
+  ];
+
+  $$(revealSelectors.join(",")).forEach((node, index) => {
+    if (node.dataset.revealReady === "true") return;
+    node.dataset.revealReady = "true";
+    node.classList.add("home-reveal");
+    node.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 70}ms`);
+    homeRevealObserver.observe(node);
+  });
+
+  $$(".profile-showcase-card, .stats-band > div, .news-card, .preview-copy, .preview-media, .industry-preview-grid a, .solution-preview-grid article").forEach((node) => {
+    node.classList.add("home-interactive-card");
+  });
+}
+
 function initSplitText() {
   $$("[data-split-text]").forEach((element) => {
     const text = element.textContent.trim();
@@ -1240,12 +1351,18 @@ function initSplitText() {
 function initHeroVideo() {
   const video = $(".hero-video");
   if (!video) return;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   video.muted = true;
   video.defaultMuted = true;
   video.volume = 0;
   video.controls = false;
   video.setAttribute("muted", "");
   video.setAttribute("playsinline", "");
+  if (prefersReducedMotion) {
+    video.pause();
+    video.removeAttribute("autoplay");
+    return;
+  }
   const playback = video.play();
   if (playback && typeof playback.catch === "function") {
     playback.catch(() => {});
@@ -1396,6 +1513,9 @@ async function boot() {
   renderNews();
   initSplitText();
   initSpotlightCards();
+  initInteractiveHero();
+  initMagneticButtons();
+  initHomeReveals();
   initGalleryCarousel();
   initMediaCarousels();
   initHeroVideo();
