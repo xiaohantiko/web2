@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>科研创新 - 石家庄辰泰环境科技有限公司</title>
-    <link rel="stylesheet" href="styles.css?v=20260527e" />
+    <link rel="stylesheet" href="styles.css?v=20260527f" />
   </head>
   <body class="innovation-page">
     <header class="site-header">
@@ -17,13 +17,67 @@
       </a>
       <button class="menu-button" type="button" data-menu-button>☰</button>
       <nav class="nav" data-nav>
-        <a href="index.html" data-i18n="nav.home">网站首页</a>
-        <a href="profile.html" data-i18n="nav.profile">关于我们</a>
-        <a href="news.html" data-i18n="nav.news">新闻资讯</a>
-        <a href="innovation.html" data-i18n="nav.innovation">科研创新</a>
-        <a href="industries.html" data-i18n="nav.industries">业务领域</a>
-        <a href="solutions.html" data-i18n="nav.solutions">工艺解决方案</a>
-        <a href="index.html#contact" data-i18n="nav.contact">联系我们</a>
+        <div class="nav-item">
+          <a class="nav-trigger" href="index.html" data-i18n="nav.home">网站首页</a>
+          <div class="nav-dropdown" aria-label="网站首页下拉导航">
+            <a href="index.html#profile">公司简介</a>
+            <a href="index.html#news">新闻资讯</a>
+            <a href="index.html#contact">联系我们</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a class="nav-trigger" href="profile.html" data-i18n="nav.profile">关于我们</a>
+          <div class="nav-dropdown" aria-label="关于我们下拉导航">
+            <a href="profile.html#company-overview">企业定位</a>
+            <a href="profile.html#rd-center">研发制造</a>
+            <a href="profile.html#quality-system">质量体系</a>
+            <a href="qualifications.html">资质能力</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a class="nav-trigger" href="news.html" data-i18n="nav.news">新闻资讯</a>
+          <div class="nav-dropdown" aria-label="新闻资讯下拉导航">
+            <a href="news.html">全部新闻</a>
+            <a href="news.html">公司新闻</a>
+            <a href="news.html">行业资讯</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a class="nav-trigger" href="innovation.html" data-i18n="nav.innovation">科研创新</a>
+          <div class="nav-dropdown" aria-label="科研创新下拉导航">
+            <a href="innovation.html#research-team">科技团队建设</a>
+            <a href="innovation.html#research-process">流程设计</a>
+            <a href="innovation.html#university-cooperation">校企合作</a>
+            <a href="innovation.html#research-infrastructure">研发基础设施</a>
+            <a href="innovation.html#research-results">研发成果展示</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a class="nav-trigger" href="industries.html" data-i18n="nav.industries">业务领域</a>
+          <div class="nav-dropdown" aria-label="业务领域下拉导航">
+            <a href="industries.html#pharma">医药行业</a>
+            <a href="industries.html#chemical">化工行业</a>
+            <a href="industries.html#energy">新能源行业</a>
+            <a href="industries.html#materials">新材料行业</a>
+          </div>
+        </div>
+        <div class="nav-item wide">
+          <a class="nav-trigger" href="solutions.html" data-i18n="nav.solutions">工艺解决方案</a>
+          <div class="nav-dropdown" aria-label="工艺解决方案下拉导航">
+            <a href="solutions.html#solution-distillation">精馏分离</a>
+            <a href="solutions.html#solution-h2s">硫化氢治理</a>
+            <a href="solutions.html#solution-vocs">VOCs回收治理</a>
+            <a href="solutions.html#solution-vps">活性炭VPS回收</a>
+            <a href="solutions.html#solution-mvr">MVR系统</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a class="nav-trigger" href="index.html#contact" data-i18n="nav.contact">联系我们</a>
+          <div class="nav-dropdown" aria-label="联系我们下拉导航">
+            <a href="index.html#contact">联系方式</a>
+            <a href="inquiry.html">客户咨询表</a>
+          </div>
+        </div>
         <button class="lang-toggle" type="button" data-lang-toggle>EN</button>
       </nav>
     </header>
@@ -40,7 +94,7 @@
         </div>
       </section>
 
-      <section class="section research-hero-card">
+      <section class="section research-hero-card" id="research-team">
         <div class="research-copy">
           <p class="eyebrow">Technical Team</p>
           <h2>科技团队建设</h2>
@@ -51,25 +105,46 @@
         <figure><img src="assets/new-content/4-科研创新/banner图.png" alt="科研创新团队" loading="lazy" /></figure>
       </section>
 
-      <section class="section research-two-column">
+      <section class="section research-two-column" id="research-process">
         <div>
           <p class="eyebrow">Process Design</p>
           <h2>流程设计：全链条闭环研发，精准高效可控</h2>
           <p>公司以需求识别、方案模拟、实验验证、工程放大、运行反馈为主线，将实验数据、工艺模型和项目现场反馈闭环管理，确保研发方案在进入工程阶段前完成关键参数校核与风险预判。</p>
+          <div class="research-step-line" aria-label="研发流程">
+            <span>需求识别</span>
+            <span>方案模拟</span>
+            <span>实验验证</span>
+            <span>工程放大</span>
+            <span>运行反馈</span>
+          </div>
         </div>
         <figure><img src="assets/new-content/4-科研创新/简易流程图/简易流程图.png" alt="科研创新流程设计示意图" loading="lazy" /></figure>
       </section>
 
-      <section class="section research-long-copy">
+      <section class="section research-long-copy" id="university-cooperation">
         <p class="eyebrow">University Cooperation</p>
         <h2>校企合作：产学研深度融合，技术协同创新</h2>
         <p>公司坚持产学研协同发展，与国内多所一流高校建立长期稳定合作关系，共建技术研发平台、联合实验室与人才培养基地，打通“高校科研-企业转化-产业应用”链条。</p>
-        <p><strong>1、技术攻关，联合研发：</strong>聚焦新能源、新材料等行业溶剂回收、工业废气治理等关键技术，累计取得多项发明专利与实用新型专利。</p>
-        <p><strong>2、资源共享，优势互补：</strong>共享理论研究成果与企业工程化、产业化优势，加速科研成果转化；高校为企业提供技术咨询与人才培训，企业为高校提供实践平台与项目资金，实现互利共赢。</p>
-        <p><strong>3、人才共育，储备力量：</strong>开展“订单式”人才培养，定向输送技术人才；邀请高校专家驻企指导，提升团队理论水平与创新能力，为技术可持续发展储备人才。</p>
+        <div class="research-pillar-grid">
+          <article>
+            <span>01</span>
+            <h3>技术攻关，联合研发</h3>
+            <p>聚焦新能源、新材料等行业溶剂回收、工业废气治理等关键技术，累计取得多项发明专利与实用新型专利。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>资源共享，优势互补</h3>
+            <p>共享理论研究成果与企业工程化、产业化优势，加速科研成果转化；高校为企业提供技术咨询与人才培训，企业为高校提供实践平台与项目资金，实现互利共赢。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>人才共育，储备力量</h3>
+            <p>开展“订单式”人才培养，定向输送技术人才；邀请高校专家驻企指导，提升团队理论水平与创新能力，为技术可持续发展储备人才。</p>
+          </article>
+        </div>
       </section>
 
-      <section class="section research-carousel-section">
+      <section class="section research-carousel-section" id="research-infrastructure">
         <div class="section-head">
           <p class="eyebrow">R&D Infrastructure</p>
           <h2>研发基础设施介绍</h2>
@@ -90,7 +165,7 @@
         </div>
       </section>
 
-      <section class="section research-carousel-section">
+      <section class="section research-carousel-section" id="research-results">
         <div class="section-head">
           <p class="eyebrow">Patents</p>
           <h2>研发成果展示</h2>
@@ -122,6 +197,6 @@
       <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
     </footer>
 
-    <script src="app.js?v=20260527e"></script>
+    <script src="app.js?v=20260527f"></script>
   </body>
 </html>
