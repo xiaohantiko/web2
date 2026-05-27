@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>石家庄辰泰环境科技有限公司</title>
-    <link rel="stylesheet" href="styles.css?v=20260527h" />
+    <link rel="stylesheet" href="styles.css?v=20260527i" />
   </head>
   <body>
     <header class="site-header">
@@ -88,7 +88,7 @@
       </nav>
     </header>
 
-    <main id="home">
+    <main id="home" class="home-flow">
       <section class="hero interactive-hero" data-interactive-hero>
         <div class="hero-media" aria-hidden="true">
           <video
@@ -137,9 +137,9 @@
           <p class="hero-subtitle" data-i18n="hero.subtitle" data-split-text data-split-type="words">化工行业节能降耗专家</p>
           <p data-i18n="hero.copy">聚焦工业有机尾气治理、液相萃取及精馏分离工艺设备，为化工、医药、涂布、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。</p>
           <div class="hero-tech-rail" aria-label="首页核心能力">
-            <span data-i18n="hero.railGas">尾气治理</span>
-            <span data-i18n="hero.railSolvent">溶剂回收</span>
-            <span data-i18n="hero.railEnergy">节能精馏</span>
+            <button class="is-active" type="button" data-hero-mode-trigger="gas" aria-pressed="true" data-i18n="hero.railGas">尾气治理</button>
+            <button type="button" data-hero-mode-trigger="solvent" aria-pressed="false" data-i18n="hero.railSolvent">溶剂回收</button>
+            <button type="button" data-hero-mode-trigger="manufacturing" aria-pressed="false" data-i18n="hero.railManufacturing">装备制造</button>
           </div>
           <div class="hero-actions">
             <a class="button primary" href="#industries" data-i18n="hero.primary" data-magnetic-button>查看业务领域</a>
@@ -162,7 +162,7 @@
         </div>
       </section>
 
-      <section class="section profile-section" id="profile">
+      <section class="section profile-section home-flow-section" id="profile" data-flow-step="01">
         <div class="section-head with-action">
           <div>
             <p class="eyebrow">Company Profile</p>
@@ -202,6 +202,44 @@
               <p data-i18n="profile.p4">公司同时还拥有多支专业经验丰富的工程安装队伍，配备多种先进的施工机械长期在项目现场进行设备、管道、电气仪表、钢结构、自控系统等工程安装服务，应用严格、全面的质量管理体系，成功完成了多个重大工程项目，施工地域覆盖全国各省市。</p>
             </div>
           </a>
+        </div>
+      </section>
+
+      <section class="section manufacturing-motion-section home-flow-section" id="manufacturing" data-flow-step="02">
+        <div class="section-head with-action">
+          <div>
+            <p class="eyebrow">Manufacturing Motion</p>
+            <h2 data-i18n="manufacturing.title">智能制造与装备交付</h2>
+          </div>
+          <a class="section-more" href="profile.html#smart-manufacturing" data-i18n="manufacturing.more">查看制造能力</a>
+        </div>
+        <div class="manufacturing-motion-layout">
+          <figure class="manufacturing-video-card card-spotlight" data-spotlight-card>
+            <video class="inline-loop-video" autoplay muted loop playsinline preload="metadata" poster="assets/video/industrial-cutting-poster.jpg">
+              <source src="assets/video/industrial-cutting-loop.mp4" type="video/mp4" />
+            </video>
+            <figcaption>
+              <span data-i18n="manufacturing.videoKicker">Laser Cutting</span>
+              <strong data-i18n="manufacturing.videoTitle">高端加工设备动态展示</strong>
+            </figcaption>
+          </figure>
+          <div class="manufacturing-flow-grid">
+            <article class="card-spotlight" data-spotlight-card>
+              <span>01</span>
+              <h3 data-i18n="manufacturing.step1Title">工艺设计</h3>
+              <p data-i18n="manufacturing.step1Text">结合物料性质、风量浓度和回收目标，确定分离与治理路线。</p>
+            </article>
+            <article class="card-spotlight" data-spotlight-card>
+              <span>02</span>
+              <h3 data-i18n="manufacturing.step2Title">装备制造</h3>
+              <p data-i18n="manufacturing.step2Text">依托切割、焊接、机加工和装配能力完成核心设备制造。</p>
+            </article>
+            <article class="card-spotlight" data-spotlight-card>
+              <span>03</span>
+              <h3 data-i18n="manufacturing.step3Title">现场交付</h3>
+              <p data-i18n="manufacturing.step3Text">完成安装、调试、培训与运行维护，形成全流程工程闭环。</p>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -259,7 +297,7 @@
         </div>
       </section>
 
-      <section class="section supplement-preview" id="industries">
+      <section class="section supplement-preview home-flow-section" id="industries" data-flow-step="03">
         <div class="section-head with-action">
           <div>
             <p class="eyebrow">Industries</p>
@@ -276,7 +314,7 @@
         </div>
       </section>
 
-      <section class="section supplement-preview" id="solutions">
+      <section class="section supplement-preview home-flow-section" id="solutions" data-flow-step="04">
         <div class="section-head with-action">
           <div>
             <p class="eyebrow">Process Solutions</p>
@@ -293,7 +331,7 @@
         </div>
       </section>
 
-      <section class="section contact-section" id="contact">
+      <section class="section contact-section home-flow-section" id="contact" data-flow-step="05">
         <div class="contact-card">
           <div class="contact-copy">
             <p class="eyebrow">Contact</p>
@@ -348,6 +386,6 @@
     </footer>
 
     <script type="module" src="darkveil.js?v=20260527b"></script>
-    <script src="app.js?v=20260527h"></script>
+    <script src="app.js?v=20260527i"></script>
   </body>
 </html>

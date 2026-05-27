@@ -2,6 +2,7 @@ let siteData = {};
 let currentLang = "zh";
 let newsFilter = "all";
 let homeRevealObserver;
+let activeHeroMode = "gas";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -64,6 +65,15 @@ const labels = {
     "hero.railGas": "尾气治理",
     "hero.railSolvent": "溶剂回收",
     "hero.railEnergy": "节能精馏",
+    "hero.railManufacturing": "装备制造",
+    "hero.consoleTitle": "工艺交互驾驶舱",
+    "hero.consoleHint": "悬停切换能力焦点",
+    "hero.modeGas": "尾气治理",
+    "hero.modeSolvent": "溶剂回收",
+    "hero.modeManufacturing": "装备制造",
+    "hero.modeGasCopy": "从组分识别、吸附脱附到冷凝回收，形成可落地的尾气治理系统。",
+    "hero.modeSolventCopy": "把回收液精制、萃取精馏和能量回用接入同一套工程方案。",
+    "hero.modeManufacturingCopy": "以切割、焊接、装配和现场安装能力支撑非标设备成套交付。",
     "profile.title": "公司简介",
     "profile.card1Kicker": "Company Overview",
     "profile.card1Title": "资源循环利用一体化供应商",
@@ -76,6 +86,16 @@ const labels = {
     "profile.p3": "公司拥有自动化以及智能化高端加工和检测设备，配备先进的激光切割机、自动等离子焊机、管板自动焊机、法兰焊机、氩弧自动焊机以及铣、刨、磨、镗、钻、折弯成型等专业化机械加工设备。拥有各种非标设备制造及装配工艺的高级技师及中级以上技工数十人，公司成立至今，已成功研发设计并建成运行千余套工业化精馏装置。",
     "profile.p4": "公司同时还拥有多支专业经验丰富的工程安装队伍，配备多种先进的施工机械长期在项目现场进行设备、管道、电气仪表、钢结构、自控系统等工程安装服务，应用严格、全面的质量管理体系，成功完成了多个重大工程项目，施工地域覆盖全国各省市。",
     "profile.more": "查看完整介绍",
+    "manufacturing.title": "智能制造与装备交付",
+    "manufacturing.more": "查看制造能力",
+    "manufacturing.videoKicker": "Laser Cutting",
+    "manufacturing.videoTitle": "高端加工设备动态展示",
+    "manufacturing.step1Title": "工艺设计",
+    "manufacturing.step1Text": "结合物料性质、风量浓度和回收目标，确定分离与治理路线。",
+    "manufacturing.step2Title": "装备制造",
+    "manufacturing.step2Text": "依托切割、焊接、机加工和装配能力完成核心设备制造。",
+    "manufacturing.step3Title": "现场交付",
+    "manufacturing.step3Text": "完成安装、调试、培训与运行维护，形成全流程工程闭环。",
     "profile.pageTitle": "完整公司介绍",
     "profile.pageCopy": "根据公司宣传资料整理企业定位、技术路线、发展历程、研发制造能力和合作方向。",
     "profile.coreTitle": "企业定位",
@@ -316,6 +336,15 @@ const labels = {
     "hero.railGas": "Exhaust Treatment",
     "hero.railSolvent": "Solvent Recovery",
     "hero.railEnergy": "Energy-saving Distillation",
+    "hero.railManufacturing": "Equipment Fabrication",
+    "hero.consoleTitle": "Interactive Process Console",
+    "hero.consoleHint": "Hover to shift focus",
+    "hero.modeGas": "Exhaust Treatment",
+    "hero.modeSolvent": "Solvent Recovery",
+    "hero.modeManufacturing": "Equipment Fabrication",
+    "hero.modeGasCopy": "From composition analysis and adsorption-desorption to condensation recovery, Chentai builds practical exhaust treatment systems.",
+    "hero.modeSolventCopy": "Recovered-liquid refining, extractive distillation and energy reuse are planned as one engineering package.",
+    "hero.modeManufacturingCopy": "Cutting, welding, assembly and site installation capacity support complete non-standard equipment delivery.",
     "profile.title": "Company Profile",
     "profile.card1Kicker": "Company Overview",
     "profile.card1Title": "Integrated Supplier for Resource Recycling",
@@ -328,6 +357,16 @@ const labels = {
     "profile.p3": "The company owns automated and intelligent high-end fabrication and inspection equipment, including advanced laser cutting machines, automatic plasma welding machines, tube-sheet automatic welding machines, flange welding machines, automatic argon arc welding machines, and professional machining equipment for milling, planing, grinding, boring, drilling and bending. It also has senior technicians and intermediate-or-above skilled workers for non-standard equipment manufacturing and assembly. Since its establishment, the company has successfully developed, designed and built more than one thousand industrial distillation units.",
     "profile.p4": "The company also has multiple experienced professional installation teams equipped with advanced construction machinery, providing long-term on-site services for equipment, piping, electrical instrumentation, steel structures and automation systems. With a strict and comprehensive quality management system, Chentai has completed many major engineering projects across China.",
     "profile.more": "Full Profile",
+    "manufacturing.title": "Smart fabrication and equipment delivery",
+    "manufacturing.more": "View fabrication capability",
+    "manufacturing.videoKicker": "Laser Cutting",
+    "manufacturing.videoTitle": "Dynamic display of high-end fabrication equipment",
+    "manufacturing.step1Title": "Process design",
+    "manufacturing.step1Text": "Define the separation and treatment route based on material properties, air volume, concentration and recovery goals.",
+    "manufacturing.step2Title": "Equipment fabrication",
+    "manufacturing.step2Text": "Build core equipment with cutting, welding, machining and assembly capability.",
+    "manufacturing.step3Title": "Site delivery",
+    "manufacturing.step3Text": "Complete installation, commissioning, training and maintenance as a closed-loop engineering service.",
     "profile.pageTitle": "Full Company Profile",
     "profile.pageCopy": "A structured summary of Chentai's positioning, technical route, development milestones, R&D and manufacturing capabilities based on the company presentation.",
     "profile.coreTitle": "Enterprise Positioning",
@@ -926,6 +965,7 @@ function renderI18n() {
   if (toggle) toggle.textContent = currentLang === "zh" ? "EN" : "CN";
   document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
   applyStaticEnglishOverrides();
+  updateHeroMode(activeHeroMode);
 }
 
 function articleImage(item) {
@@ -1263,6 +1303,37 @@ function initInteractiveHero() {
   });
 }
 
+function updateHeroMode(mode = activeHeroMode) {
+  const hero = $("[data-interactive-hero]");
+  const copy = $("[data-hero-mode-copy]");
+  const modeKey = ["gas", "solvent", "manufacturing"].includes(mode) ? mode : "gas";
+  activeHeroMode = modeKey;
+  if (hero) hero.dataset.heroMode = modeKey;
+  $$("[data-hero-mode-trigger]").forEach((button) => {
+    const isActive = button.dataset.heroModeTrigger === modeKey;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+  if (copy) {
+    const labelKey = `hero.mode${modeKey[0].toUpperCase()}${modeKey.slice(1)}Copy`;
+    copy.textContent = t(labelKey);
+  }
+}
+
+function initHeroModeControls() {
+  const triggers = $$("[data-hero-mode-trigger]");
+  if (!triggers.length) return;
+  triggers.forEach((button) => {
+    if (button.dataset.heroModeReady === "true") return;
+    button.dataset.heroModeReady = "true";
+    const mode = button.dataset.heroModeTrigger;
+    button.addEventListener("mouseenter", () => updateHeroMode(mode));
+    button.addEventListener("focus", () => updateHeroMode(mode));
+    button.addEventListener("click", () => updateHeroMode(mode));
+  });
+  updateHeroMode(activeHeroMode);
+}
+
 function initMagneticButtons() {
   $$("[data-magnetic-button]").forEach((button) => {
     if (button.dataset.magneticReady === "true") return;
@@ -1297,6 +1368,9 @@ function initHomeReveals() {
   const revealSelectors = [
     ".profile-section .section-head",
     ".profile-showcase-card",
+    ".manufacturing-motion-section .section-head",
+    ".manufacturing-video-card",
+    ".manufacturing-flow-grid article",
     ".stats-band > div",
     ".news-section .section-head",
     ".news-card",
@@ -1316,7 +1390,7 @@ function initHomeReveals() {
     homeRevealObserver.observe(node);
   });
 
-  $$(".profile-showcase-card, .stats-band > div, .news-card, .preview-copy, .preview-media, .industry-preview-grid a, .solution-preview-grid article").forEach((node) => {
+  $$(".profile-showcase-card, .manufacturing-video-card, .manufacturing-flow-grid article, .stats-band > div, .news-card, .preview-copy, .preview-media, .industry-preview-grid a, .solution-preview-grid article").forEach((node) => {
     node.classList.add("home-interactive-card");
   });
 }
@@ -1349,24 +1423,26 @@ function initSplitText() {
 }
 
 function initHeroVideo() {
-  const video = $(".hero-video");
-  if (!video) return;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  video.muted = true;
-  video.defaultMuted = true;
-  video.volume = 0;
-  video.controls = false;
-  video.setAttribute("muted", "");
-  video.setAttribute("playsinline", "");
-  if (prefersReducedMotion) {
-    video.pause();
-    video.removeAttribute("autoplay");
-    return;
-  }
-  const playback = video.play();
-  if (playback && typeof playback.catch === "function") {
-    playback.catch(() => {});
-  }
+  $$(".hero-video, .inline-loop-video").forEach((video) => {
+    if (video.dataset.loopVideoReady === "true") return;
+    video.dataset.loopVideoReady = "true";
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+    video.controls = false;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    if (prefersReducedMotion) {
+      video.pause();
+      video.removeAttribute("autoplay");
+      return;
+    }
+    const playback = video.play();
+    if (playback && typeof playback.catch === "function") {
+      playback.catch(() => {});
+    }
+  });
 }
 
 function initSideNav() {
@@ -1514,6 +1590,7 @@ async function boot() {
   initSplitText();
   initSpotlightCards();
   initInteractiveHero();
+  initHeroModeControls();
   initMagneticButtons();
   initHomeReveals();
   initGalleryCarousel();
