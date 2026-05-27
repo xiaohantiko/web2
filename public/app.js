@@ -916,7 +916,7 @@ function renderI18n() {
     if (value) node.setAttribute("aria-label", value);
   });
   const toggle = $("[data-lang-toggle]");
-  if (toggle) toggle.textContent = currentLang === "zh" ? "EN" : "中";
+  if (toggle) toggle.textContent = currentLang === "zh" ? "EN" : "CN";
   document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
   applyStaticEnglishOverrides();
 }
