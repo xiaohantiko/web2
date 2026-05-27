@@ -384,16 +384,16 @@ a {
 
 .interactive-hero::before {
   background:
-    linear-gradient(90deg, rgba(0, 12, 12, 0.86) 0%, rgba(3, 28, 24, 0.62) 38%, rgba(8, 62, 54, 0.22) 70%, rgba(8, 62, 54, 0.08) 100%),
+    linear-gradient(90deg, rgba(0, 12, 12, 0.78) 0%, rgba(3, 28, 24, 0.48) 38%, rgba(8, 62, 54, 0.14) 70%, rgba(8, 62, 54, 0.04) 100%),
     radial-gradient(circle at var(--hero-light-x) var(--hero-light-y), rgba(var(--hero-mode-rgb), 0.15), transparent 28%),
     radial-gradient(circle at 18% 52%, rgba(92, 184, 170, 0.11), transparent 36%);
 }
 
 .interactive-hero::after {
   background:
-    linear-gradient(180deg, rgba(1, 18, 24, 0.12), rgba(2, 24, 20, 0.54)),
-    linear-gradient(0deg, rgba(0, 9, 11, 0.82), rgba(0, 9, 11, 0.08) 45%, transparent 70%),
-    linear-gradient(115deg, rgba(0, 0, 0, 0.38), transparent 44%, rgba(0, 0, 0, 0.32)),
+    linear-gradient(180deg, rgba(1, 18, 24, 0.08), rgba(2, 24, 20, 0.42)),
+    linear-gradient(0deg, rgba(0, 9, 11, 0.74), rgba(0, 9, 11, 0.04) 45%, transparent 70%),
+    linear-gradient(115deg, rgba(0, 0, 0, 0.3), transparent 44%, rgba(0, 0, 0, 0.22)),
     radial-gradient(circle at 78% 30%, rgba(90, 190, 255, 0.12), transparent 36%);
 }
 
@@ -409,7 +409,7 @@ a {
   width: 104%;
   height: 104%;
   object-fit: cover;
-  filter: saturate(1.08) contrast(1.12) brightness(0.62);
+  filter: saturate(1.12) contrast(1.08) brightness(0.78);
   transform:
     translate3d(
       calc(var(--hero-x) * 0.12px),
@@ -442,7 +442,7 @@ a {
   --hero-depth: 0.7;
   background-image: url("assets/new-content/2-关于我们/公司大门-图.jpg");
   filter: saturate(1.04) contrast(1.05) brightness(0.88);
-  opacity: 0.28;
+  opacity: 0.18;
   mix-blend-mode: soft-light;
 }
 
@@ -453,41 +453,6 @@ a {
   background:
     linear-gradient(90deg, rgba(1, 15, 13, 0.64), rgba(1, 15, 13, 0.2) 48%, rgba(1, 15, 13, 0.34)),
     linear-gradient(180deg, rgba(1, 14, 12, 0.12), rgba(1, 14, 12, 0.78));
-}
-
-.hero-photo-layer-workshop {
-  --hero-depth: -0.9;
-  inset: auto clamp(36px, 7vw, 110px) clamp(62px, 10vh, 116px) auto;
-  width: min(420px, 30vw);
-  height: min(260px, 24vh);
-  z-index: 3;
-  border: 1px solid rgba(214, 255, 234, 0.18);
-  border-radius: 8px;
-  background-image: url("assets/new-content/2-关于我们/车间设备（需修图）/厂房图片IMG_20191007_131857(1).jpg");
-  box-shadow:
-    0 28px 90px rgba(0, 10, 8, 0.46),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  opacity: 0.62;
-  overflow: hidden;
-  mix-blend-mode: screen;
-  transform:
-    translate3d(
-      calc(var(--hero-x) * var(--hero-depth, 0.02) * 1px),
-      calc(var(--hero-y) * var(--hero-depth, 0.02) * 1px),
-      0
-    )
-    rotateX(0.01deg);
-}
-
-.hero-photo-layer-workshop::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(rgba(189, 243, 94, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(91, 208, 173, 0.08) 1px, transparent 1px);
-  background-size: 34px 34px;
-  opacity: 0.42;
 }
 
 .hero-scan-system {
@@ -3989,7 +3954,6 @@ a {
     background-position: 52% center;
   }
 
-  .hero-photo-layer-workshop,
   .hero-scan-system {
     display: none;
   }
