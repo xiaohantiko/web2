@@ -237,6 +237,58 @@ a {
   transform: translateX(3px);
 }
 
+.nav-contact-dropdown {
+  width: 248px;
+  max-width: min(248px, 92vw);
+}
+
+.nav-wechat-card {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  margin: 8px 2px;
+  padding: 13px;
+  border: 1px solid rgba(213, 255, 236, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.nav-wechat-card img {
+  width: 112px;
+  height: 112px;
+  padding: 6px;
+  border-radius: 8px;
+  background: #fff;
+  object-fit: contain;
+}
+
+.nav-wechat-card strong {
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.nav-wechat-card span {
+  color: rgba(232, 255, 247, 0.66);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.nav-dropdown a.nav-map-link {
+  justify-content: center;
+  margin-top: 4px;
+  color: #071813;
+  background: var(--lime);
+}
+
+.nav-dropdown a.nav-map-link:hover,
+.nav-dropdown a.nav-map-link:focus-visible {
+  color: #071813;
+  background: #d6ff7d;
+}
+
 .nav-item:hover .nav-dropdown,
 .nav-item:focus-within .nav-dropdown {
   opacity: 1;
@@ -2054,6 +2106,11 @@ a {
   list-style: none;
 }
 
+.contact-info-panel {
+  display: grid;
+  gap: 20px;
+}
+
 .contact-card li {
   display: grid;
   gap: 5px;
@@ -2063,6 +2120,92 @@ a {
 
 .contact-card strong {
   color: var(--lime);
+}
+
+.contact-wechat {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  align-items: center;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.contact-wechat img {
+  width: 116px;
+  height: 116px;
+  padding: 7px;
+  border-radius: 8px;
+  background: #fff;
+  object-fit: contain;
+}
+
+.contact-wechat div {
+  display: grid;
+  gap: 8px;
+}
+
+.contact-wechat span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.contact-map-panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(320px, 1.2fr);
+  gap: 0;
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(183, 255, 223, 0.16);
+  border-radius: 8px;
+  background: #061613;
+  box-shadow: var(--shadow);
+}
+
+.contact-map-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 340px;
+  padding: clamp(26px, 4vw, 44px);
+  background:
+    linear-gradient(145deg, rgba(7, 31, 27, 0.98), rgba(12, 88, 70, 0.9)),
+    radial-gradient(circle at 18% 12%, rgba(189, 243, 94, 0.12), transparent 32%);
+}
+
+.contact-map-copy h3 {
+  margin: 8px 0 12px;
+  color: #fff;
+  font-size: clamp(26px, 3vw, 42px);
+  line-height: 1.12;
+}
+
+.contact-map-copy p:not(.eyebrow) {
+  margin: 0;
+  color: rgba(234, 255, 247, 0.78);
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.75;
+}
+
+.contact-map-copy .button {
+  margin-top: 22px;
+}
+
+.contact-map-frame {
+  width: 100%;
+  min-height: 340px;
+  border: 0;
+  background:
+    linear-gradient(90deg, rgba(91, 208, 173, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(91, 208, 173, 0.08) 1px, transparent 1px),
+    #eaf2ef;
+  background-size: 28px 28px;
 }
 
 .footer {
@@ -3214,6 +3357,30 @@ a {
     font-size: 12px;
   }
 
+  .nav-contact-dropdown {
+    width: 100%;
+    max-width: none;
+  }
+
+  .nav-wechat-card {
+    justify-items: start;
+    grid-template-columns: 78px 1fr;
+    gap: 10px 12px;
+    margin: 6px 10px 8px;
+    padding: 10px;
+    text-align: left;
+  }
+
+  .nav-wechat-card img {
+    grid-row: span 2;
+    width: 78px;
+    height: 78px;
+  }
+
+  .nav-wechat-card span {
+    font-size: 10px;
+  }
+
   .hero,
   .profile-grid,
   .profile-showcase-card.is-wide,
@@ -3222,6 +3389,7 @@ a {
   .product-intro,
   .lab-layout,
   .contact-card,
+  .contact-map-panel,
   .form-grid {
     grid-template-columns: 1fr;
   }
@@ -3325,6 +3493,30 @@ a {
   .hero-metric p {
     margin-top: 8px;
     font-size: 12px;
+  }
+
+  .contact-card {
+    padding: 24px;
+  }
+
+  .contact-wechat {
+    grid-template-columns: 86px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .contact-wechat img {
+    width: 86px;
+    height: 86px;
+  }
+
+  .contact-map-copy {
+    min-height: 0;
+    padding: 24px;
+  }
+
+  .contact-map-frame {
+    min-height: 300px;
   }
 
   .factory-carousel {
