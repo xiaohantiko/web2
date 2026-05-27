@@ -615,10 +615,16 @@ function initMediaCarousels() {
     const dotsWrap = carousel.querySelector("[data-media-dots]");
     if (!slides.length || !dotsWrap) return;
     carousel.dataset.mediaCarouselReady = "true";
+    carousel.setAttribute("role", "region");
+    carousel.setAttribute("aria-roledescription", "carousel");
 
     let active = 0;
     let paused = false;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let isDragging = false;
     let timer;
+    const autoplayDelay = Number(carousel.dataset.interval || carousel.dataset.autoplay || 3800);
 
     dotsWrap.innerHTML = slides.map((_, index) => `
       <button type="button" data-media-dot="${index}" aria-label="切换到第 ${index + 1} 张"></button>
@@ -638,6 +644,7 @@ function initMediaCarousels() {
         slide.style.setProperty("--media-offset", signedOffset);
         slide.style.zIndex = String(20 - absOffset);
         slide.setAttribute("aria-hidden", isActive ? "false" : "true");
+        slide.toggleAttribute("inert", !isActive);
       });
       dots.forEach((dot, index) => {
         dot.classList.toggle("is-active", index === active);
@@ -649,7 +656,7 @@ function initMediaCarousels() {
       window.clearInterval(timer);
       timer = window.setInterval(() => {
         if (!paused) go(1);
-      }, Number(carousel.dataset.interval || 3800));
+      }, Number.isFinite(autoplayDelay) && autoplayDelay > 0 ? autoplayDelay : 3800);
     };
 
     const goTo = (index, shouldReset = false) => {
@@ -676,6 +683,33 @@ function initMediaCarousels() {
     carousel.addEventListener("mouseleave", () => { paused = false; });
     carousel.addEventListener("focusin", () => { paused = true; });
     carousel.addEventListener("focusout", () => { paused = false; });
+    carousel.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      go(event.key === "ArrowRight" ? 1 : -1, true);
+    });
+    carousel.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("[data-media-prev], [data-media-next], [data-media-dot]")) return;
+      pointerStartX = event.clientX;
+      pointerStartY = event.clientY;
+      isDragging = true;
+      paused = true;
+      carousel.setPointerCapture?.(event.pointerId);
+    });
+    carousel.addEventListener("pointerup", (event) => {
+      if (!isDragging) return;
+      isDragging = false;
+      const deltaX = event.clientX - pointerStartX;
+      const deltaY = event.clientY - pointerStartY;
+      if (Math.abs(deltaX) > 46 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15) {
+        go(deltaX < 0 ? 1 : -1, true);
+      }
+      paused = false;
+    });
+    carousel.addEventListener("pointercancel", () => {
+      isDragging = false;
+      paused = false;
+    });
 
     update();
     restart();
