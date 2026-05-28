@@ -5643,28 +5643,91 @@ a {
   --detail-hero-image: url("assets/new-content/6-工艺解决方案/banner图1.jpg");
 }
 
+.profile-hero {
+  --detail-hero-image: url("assets/new-content/2-关于我们/高端加工设备.jpg");
+  --detail-hero-position: center 46%;
+}
+
+.qual-hero {
+  --detail-hero-image: url("assets/new-content/4-科研创新/2-研发基础设施/检测仪器/IMG_20220625_121501.jpg");
+  --detail-hero-position: center 54%;
+}
+
+.products-hero {
+  --detail-hero-image: url("assets/equipment/four-views.png");
+  --detail-hero-position: center;
+}
+
+.news-hero {
+  --detail-hero-image: url("assets/products/h2s.jpg");
+  --detail-hero-position: center 42%;
+}
+
+.inquiry-hero {
+  --detail-hero-image: url("assets/about/smart-workshop.png");
+  --detail-hero-position: center;
+}
+
+.innovation-hero {
+  --detail-hero-image: url("assets/new-content/4-科研创新/2-研发基础设施/中小试验平台/ChatGPT_Image_2026年5月27日_02_23_09.png");
+  --detail-hero-position: center;
+}
+
+.industries-hero {
+  --detail-hero-image: url("assets/new-content/5-业务领域/2-化工行业/尾气吸附.png");
+  --detail-hero-position: center;
+}
+
+.solutions-hero {
+  --detail-hero-image: url("assets/products/distillation.jpg");
+  --detail-hero-position: center;
+}
+
+.profile-hero,
+.qual-hero,
+.products-hero,
+.news-hero,
+.inquiry-hero,
 .innovation-page .page-hero,
 .industries-page .page-hero,
 .solutions-page .page-hero {
   display: grid;
   align-content: end;
-  min-height: clamp(620px, 74dvh, 840px);
-  padding-bottom: clamp(92px, 10vw, 150px);
-  background:
-    linear-gradient(115deg, rgba(2, 18, 15, 0.96) 0%, rgba(4, 35, 29, 0.84) 42%, rgba(9, 67, 54, 0.46) 100%),
-    var(--detail-hero-image, url("assets/hero/factory-realistic.png")) center/cover no-repeat;
-}
-
-.innovation-page .page-hero > *,
-.industries-page .page-hero > *,
-.solutions-page .page-hero > * {
   position: relative;
-  z-index: 1;
+  min-height: clamp(560px, 68dvh, 820px);
+  overflow: hidden;
+  padding-top: clamp(130px, 13vw, 190px);
+  padding-bottom: clamp(86px, 9vw, 142px);
+  background:
+    linear-gradient(112deg, rgba(2, 18, 15, 0.98) 0%, rgba(4, 35, 29, 0.9) 42%, rgba(5, 35, 31, 0.38) 100%),
+    var(--detail-hero-image, url("assets/hero/factory-realistic.png")) var(--detail-hero-position, center)/cover no-repeat;
 }
 
+.profile-hero > :not(.hero-flow-strip),
+.qual-hero > :not(.hero-flow-strip),
+.products-hero > :not(.hero-flow-strip),
+.news-hero > :not(.hero-flow-strip),
+.inquiry-hero > :not(.hero-flow-strip),
+.innovation-page .page-hero > :not(.hero-flow-strip),
+.industries-page .page-hero > :not(.hero-flow-strip),
+.solutions-page .page-hero > :not(.hero-flow-strip) {
+  position: relative;
+  z-index: 2;
+}
+
+.profile-hero::before,
+.qual-hero::before,
+.products-hero::before,
+.news-hero::before,
+.inquiry-hero::before,
 .innovation-page .page-hero::before,
 .industries-page .page-hero::before,
 .solutions-page .page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
   background:
     radial-gradient(circle at 76% 18%, rgba(128, 221, 212, 0.2), transparent 32%),
     linear-gradient(120deg, rgba(186, 255, 85, 0.1), transparent 34%),
@@ -5673,13 +5736,99 @@ a {
   background-size: auto, auto, 86px 86px, 86px 86px;
 }
 
+.profile-hero::after,
+.qual-hero::after,
+.products-hero::after,
+.news-hero::after,
+.inquiry-hero::after,
 .innovation-page .page-hero::after,
 .industries-page .page-hero::after,
 .solutions-page .page-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px;
+  z-index: 1;
+  pointer-events: none;
   height: clamp(210px, 26vw, 340px);
   background:
     linear-gradient(180deg, rgba(234, 245, 239, 0), rgba(234, 245, 239, 0.72) 58%, #eaf5ef 100%),
     radial-gradient(ellipse at 50% 100%, rgba(186, 255, 85, 0.12), transparent 68%);
+}
+
+.hero-flow-strip {
+  position: absolute;
+  top: 50%;
+  right: clamp(-220px, -10vw, -90px);
+  z-index: 1;
+  width: min(840px, 55vw);
+  height: min(390px, 34vw);
+  overflow: hidden;
+  opacity: 0.68;
+  transform: translateY(-45%) rotate(-4deg);
+  pointer-events: none;
+  mask-image: linear-gradient(90deg, transparent, #000 13%, #000 78%, transparent);
+}
+
+.hero-flow-strip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 1px solid rgba(222, 255, 239, 0.12);
+  border-radius: 18px;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.hero-flow-track {
+  width: max-content;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: detailHeroFlow 34s linear infinite;
+  will-change: transform;
+}
+
+.hero-flow-track img {
+  width: clamp(260px, 21vw, 390px);
+  height: clamp(170px, 14vw, 250px);
+  object-fit: cover;
+  border: 1px solid rgba(218, 255, 238, 0.16);
+  border-radius: 14px;
+  background: rgba(242, 250, 246, 0.92);
+  box-shadow: 0 26px 70px rgba(0, 10, 8, 0.36);
+  filter: saturate(0.92) contrast(1.05);
+}
+
+.hero-flow-track img:nth-child(2n) {
+  transform: translateY(42px);
+}
+
+.hero-flow-track img:nth-child(3n) {
+  transform: translateY(-30px);
+}
+
+@keyframes detailHeroFlow {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(-50% - 8px), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-flow-track {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-flow-strip {
+    display: none;
+  }
 }
 
 .page-hero-proof {
