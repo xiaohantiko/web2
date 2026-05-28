@@ -2,7 +2,7 @@ let siteData = {};
 let currentLang = "zh";
 let newsFilter = "all";
 let homeRevealObserver;
-let activeHeroMode = "gas";
+let activeHeroMode = "distillation";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -57,15 +57,15 @@ const labels = {
     "hero.eyebrow": "石家庄辰泰环境科技有限公司",
     "hero.title": "资源循环利用一体化供应商",
     "hero.subtitle": "化工行业节能降耗专家",
-    "hero.copy": "聚焦工业有机尾气治理、液相萃取及精馏分离工艺设备，为化工、医药、涂布、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。",
+    "hero.copy": "聚焦化工、新能源、新材料等行业精馏分离提纯、含硫化氢尾气治理及硫回收工艺、有机尾气治理等，为化工、医药、新能源、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。",
     "hero.primary": "查看业务领域",
     "hero.secondary": "联系我们",
     "hero.land": "占地面积",
     "hero.plant": "建筑厂房",
     "hero.iso": "质量体系认证",
-    "hero.railGas": "尾气治理",
+    "hero.railDistillation": "精馏分离",
     "hero.railSolvent": "溶剂回收",
-    "hero.railEnergy": "节能精馏",
+    "hero.railGas": "尾气治理",
     "hero.railManufacturing": "装备制造",
     "hero.consoleTitle": "工艺交互驾驶舱",
     "hero.consoleHint": "悬停切换能力焦点",
@@ -329,15 +329,15 @@ const labels = {
     "hero.eyebrow": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
     "hero.title": "Integrated Supplier for Resource Recycling",
     "hero.subtitle": "Energy-saving and consumption-reduction specialist for the chemical industry",
-    "hero.copy": "Chentai focuses on industrial organic waste gas treatment, liquid extraction and distillation separation equipment, providing technical consulting, engineering design, equipment manufacturing, installation, commissioning and after-sales service.",
+    "hero.copy": "Chentai focuses on distillation separation and purification, H2S-containing tail-gas treatment and sulfur recovery, and organic exhaust treatment for chemical, new energy and new materials industries, providing technical consulting, engineering design, equipment manufacturing, installation, commissioning and after-sales service for chemical, pharmaceutical, new energy and new materials customers.",
     "hero.primary": "Business Fields",
     "hero.secondary": "Contact Us",
     "hero.land": "Land area",
     "hero.plant": "Plant area",
     "hero.iso": "Quality system certification",
-    "hero.railGas": "Exhaust Treatment",
+    "hero.railDistillation": "Distillation Separation",
     "hero.railSolvent": "Solvent Recovery",
-    "hero.railEnergy": "Energy-saving Distillation",
+    "hero.railGas": "Exhaust Treatment",
     "hero.railManufacturing": "Equipment Fabrication",
     "hero.consoleTitle": "Interactive Process Console",
     "hero.consoleHint": "Hover to shift focus",
@@ -1308,7 +1308,7 @@ function initInteractiveHero() {
 function updateHeroMode(mode = activeHeroMode) {
   const hero = $("[data-interactive-hero]");
   const copy = $("[data-hero-mode-copy]");
-  const modeKey = ["gas", "solvent", "manufacturing"].includes(mode) ? mode : "gas";
+  const modeKey = ["distillation", "solvent", "gas", "manufacturing"].includes(mode) ? mode : "distillation";
   activeHeroMode = modeKey;
   if (hero) hero.dataset.heroMode = modeKey;
   $$("[data-hero-mode-trigger]").forEach((button) => {
