@@ -5212,6 +5212,19 @@ a {
   border-radius: 18px;
 }
 
+.solutions-page #solution-vps.process-solution-card.text-heavy {
+  grid-template-columns: 96px minmax(0, 0.88fr) minmax(520px, 1.12fr);
+}
+
+.solutions-page #solution-vps .solution-flow {
+  padding: clamp(16px, 2vw, 28px);
+}
+
+.solutions-page #solution-vps .solution-flow img {
+  height: auto;
+  max-height: none;
+}
+
 .solutions-page .solution-subgrid article {
   position: relative;
   overflow: hidden;
