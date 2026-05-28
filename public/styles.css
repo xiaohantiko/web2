@@ -1208,9 +1208,37 @@ a {
   --home-section-position: center;
 }
 
-.contact-section.home-flow-section {
+.home-news {
+  --home-section-image: url("assets/news/industry-carbon.jpg");
+  --home-section-position: center;
+}
+
+.home-contact-section {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: #02110f;
+}
+
+.home-contact-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   --home-section-image: url("assets/new-content/2-关于我们/公司大门-图.jpg");
   --home-section-position: center;
+  background:
+    linear-gradient(90deg, rgba(2, 17, 15, 0.86) 0%, rgba(3, 25, 21, 0.58) 42%, rgba(3, 28, 24, 0.12) 100%),
+    linear-gradient(180deg, rgba(2, 17, 15, 0.66) 0%, rgba(2, 17, 15, 0.28) 48%, rgba(2, 17, 15, 0.76) 100%),
+    radial-gradient(circle at 78% 28%, rgba(189, 243, 94, 0.2), transparent 34%),
+    var(--home-section-image) var(--home-section-position, center)/cover no-repeat;
+  filter: saturate(1.08) contrast(1.08) brightness(1.16);
+}
+
+.home-contact-section > * {
+  position: relative;
+  z-index: 1;
 }
 
 .capability-lane {
