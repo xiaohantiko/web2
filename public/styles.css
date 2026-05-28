@@ -1086,6 +1086,8 @@ a {
 .home-flow-section {
   position: relative;
   z-index: 1;
+  overflow: hidden;
+  background: #02110f;
 }
 
 .home-flow-section::before {
@@ -1109,6 +1111,20 @@ a {
     0 0 32px rgba(91, 208, 173, 0.18);
   font-size: 11px;
   font-weight: 900;
+}
+
+.home-flow-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(2, 17, 15, 0.96) 0%, rgba(3, 25, 21, 0.8) 42%, rgba(3, 28, 24, 0.42) 100%),
+    linear-gradient(180deg, rgba(2, 17, 15, 0.94) 0%, rgba(2, 17, 15, 0.72) 48%, rgba(2, 17, 15, 0.96) 100%),
+    radial-gradient(circle at 78% 28%, rgba(189, 243, 94, 0.16), transparent 30%),
+    var(--home-section-image) var(--home-section-position, center)/cover no-repeat;
+  filter: saturate(0.92) contrast(1.05);
 }
 
 .home-flow-section .section-head,
@@ -1175,6 +1191,26 @@ a {
 .home-delivery,
 .home-industries {
   isolation: isolate;
+}
+
+.home-capabilities {
+  --home-section-image: url("assets/equipment/four-views.png");
+  --home-section-position: center;
+}
+
+.home-delivery {
+  --home-section-image: url("assets/about/smart-workshop.png");
+  --home-section-position: center;
+}
+
+.home-industries {
+  --home-section-image: url("assets/new-content/5-业务领域/2-化工行业/尾气吸附.png");
+  --home-section-position: center;
+}
+
+.contact-section.home-flow-section {
+  --home-section-image: url("assets/new-content/2-关于我们/公司大门-图.jpg");
+  --home-section-position: center;
 }
 
 .capability-lane {
@@ -5703,14 +5739,14 @@ a {
     var(--detail-hero-image, url("assets/hero/factory-realistic.png")) var(--detail-hero-position, center)/cover no-repeat;
 }
 
-.profile-hero > :not(.hero-flow-strip),
-.qual-hero > :not(.hero-flow-strip),
-.products-hero > :not(.hero-flow-strip),
-.news-hero > :not(.hero-flow-strip),
-.inquiry-hero > :not(.hero-flow-strip),
-.innovation-page .page-hero > :not(.hero-flow-strip),
-.industries-page .page-hero > :not(.hero-flow-strip),
-.solutions-page .page-hero > :not(.hero-flow-strip) {
+.profile-hero > *,
+.qual-hero > *,
+.products-hero > *,
+.news-hero > *,
+.inquiry-hero > *,
+.innovation-page .page-hero > *,
+.industries-page .page-hero > *,
+.solutions-page .page-hero > * {
   position: relative;
   z-index: 2;
 }
@@ -5753,82 +5789,6 @@ a {
   background:
     linear-gradient(180deg, rgba(234, 245, 239, 0), rgba(234, 245, 239, 0.72) 58%, #eaf5ef 100%),
     radial-gradient(ellipse at 50% 100%, rgba(186, 255, 85, 0.12), transparent 68%);
-}
-
-.hero-flow-strip {
-  position: absolute;
-  top: 50%;
-  right: clamp(-220px, -10vw, -90px);
-  z-index: 1;
-  width: min(840px, 55vw);
-  height: min(390px, 34vw);
-  overflow: hidden;
-  opacity: 0.68;
-  transform: translateY(-45%) rotate(-4deg);
-  pointer-events: none;
-  mask-image: linear-gradient(90deg, transparent, #000 13%, #000 78%, transparent);
-}
-
-.hero-flow-strip::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border: 1px solid rgba(222, 255, 239, 0.12);
-  border-radius: 18px;
-  pointer-events: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.hero-flow-track {
-  width: max-content;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  animation: detailHeroFlow 34s linear infinite;
-  will-change: transform;
-}
-
-.hero-flow-track img {
-  width: clamp(260px, 21vw, 390px);
-  height: clamp(170px, 14vw, 250px);
-  object-fit: cover;
-  border: 1px solid rgba(218, 255, 238, 0.16);
-  border-radius: 14px;
-  background: rgba(242, 250, 246, 0.92);
-  box-shadow: 0 26px 70px rgba(0, 10, 8, 0.36);
-  filter: saturate(0.92) contrast(1.05);
-}
-
-.hero-flow-track img:nth-child(2n) {
-  transform: translateY(42px);
-}
-
-.hero-flow-track img:nth-child(3n) {
-  transform: translateY(-30px);
-}
-
-@keyframes detailHeroFlow {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(calc(-50% - 8px), 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-flow-track {
-    animation: none;
-  }
-}
-
-@media (max-width: 900px) {
-  .hero-flow-strip {
-    display: none;
-  }
 }
 
 .page-hero-proof {
