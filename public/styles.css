@@ -1194,8 +1194,8 @@ a {
 }
 
 .home-capabilities {
-  --home-section-image: url("assets/equipment/four-views.png");
-  --home-section-position: center;
+  --home-section-image: url("assets/products/distillation.jpg");
+  --home-section-position: center 46%;
 }
 
 .home-delivery {
