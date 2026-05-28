@@ -91,12 +91,9 @@
     <main id="home" class="home-flow">
       <nav class="hero-side-nav" aria-label="首页板块导航">
         <a href="#home" class="is-active"><span data-i18n="nav.home">网站首页</span></a>
-        <a href="#profile"><span data-i18n="nav.profile">关于我们</span></a>
-        <a href="#manufacturing"><span data-i18n="nav.manufacturing">智能制造</span></a>
-        <a href="#news"><span data-i18n="nav.news">新闻资讯</span></a>
-        <a href="#innovation"><span data-i18n="nav.innovation">科研创新</span></a>
+        <a href="#capabilities"><span data-i18n="home.capabilitiesNav">核心能力</span></a>
+        <a href="#delivery"><span data-i18n="home.deliveryNav">工程交付</span></a>
         <a href="#industries"><span data-i18n="nav.industries">业务领域</span></a>
-        <a href="#solutions"><span data-i18n="nav.solutions">工艺解决方案</span></a>
         <a href="#contact"><span data-i18n="nav.contact">联系我们</span></a>
       </nav>
       <section class="hero interactive-hero" data-interactive-hero>
@@ -163,172 +160,72 @@
         </div>
       </section>
 
-      <section class="section profile-section home-flow-section" id="profile" data-flow-step="01">
-        <div class="section-head with-action">
-          <div>
-            <p class="eyebrow">Company Profile</p>
-            <h2 data-i18n="profile.title">公司简介</h2>
-          </div>
-          <a class="section-more" href="profile.html" data-i18n="profile.more">查看完整介绍</a>
+      <section class="section home-capabilities home-flow-section" id="capabilities" data-flow-step="01">
+        <div class="home-section-kicker">
+          <p class="eyebrow">Core Capabilities</p>
+          <a class="section-more" href="solutions.html" data-i18n="home.capabilitiesMore">查看完整工艺</a>
         </div>
-        <div class="profile-showcase-grid">
-          <a class="profile-showcase-card is-wide" href="profile.html#company-overview">
-            <figure>
-              <img src="assets/about/company-gate.jpg" alt="石家庄辰泰环境科技有限公司公司大门" loading="lazy" />
-            </figure>
-            <div>
-              <span data-i18n="profile.card1Kicker">Company Overview</span>
-              <h3 data-i18n="profile.card1Title">资源循环利用一体化供应商</h3>
-              <p data-i18n="profile.p1">石家庄辰泰环境科技有限公司是一家专注有机溶剂回收治理的高新技术企业。可为不同类型行业提供绿色化工分离技术一一数智化的液相和气相能源耦合利用一体化工艺系统，包括精馏分离、萃取分离绿色能源回收系统，含硫化氢尾气综合治理及硫回收技术，有机尾气能源回收系统，数智化蒸发结晶系统等，并承接EPC总包（技术咨询、工程设计、生产制造、安装调试、培训及售后）一站式服务。公司技术团队不断开发新工艺包的应用，能完美解决各行业所有溶剂的循环回收利用。自主创新的气相与液相分离系统融合设计，实现“废水、废气”都达标排放的双赢效果，能耗节省高达40-70%以上，行业技术国内领先。</p>
-            </div>
+        <div class="home-statement">
+          <h2 data-i18n="home.capabilitiesTitle">把复杂分离与治理工程，收束为可交付的成套系统。</h2>
+          <p data-i18n="home.capabilitiesCopy">首页只呈现方向，完整工艺参数、流程图和案例说明在详情页展开，便于客户快速判断需求入口。</p>
+        </div>
+        <div class="capability-lane" aria-label="核心能力入口">
+          <a class="capability-tile is-primary" href="solutions.html#solution-distillation">
+            <span>01</span>
+            <strong data-i18n="hero.railDistillation">精馏分离</strong>
+            <p data-i18n="home.capabilityDistillation">面向提纯、分离、节能精馏和溶剂精制。</p>
           </a>
-          <a class="profile-showcase-card" href="profile.html#rd-center">
-            <figure>
-              <img src="assets/about/rd-center.png" alt="技术研发中心实验室" loading="lazy" />
-            </figure>
-            <div>
-              <span data-i18n="profile.card2Kicker">R&D Center</span>
-              <h3 data-i18n="profile.card2Title">技术研发中心</h3>
-              <p data-i18n="profile.p2">公司拥有化工专业硕士、高级工程师数人，拥有压力容器制造（含安装、改造）许可证，属于国家级高新技术企业、河北省“专精特新”企业、河北省创新型企业。公司设立精馏技术研发中心，是河北省工业企业研发机构B级研发中心，公司组建了“化工节能过程集成与资源利用研究室”，针对多家大中型化工企业，尤其是超高分子量聚乙烯材料、隔膜材料、PE新材料等行业的技术难题，创造了显著的经济效益和社会效益。</p>
-            </div>
+          <a class="capability-tile" href="solutions.html#solution-vocs">
+            <span>02</span>
+            <strong data-i18n="hero.railSolvent">溶剂回收</strong>
+            <p data-i18n="home.capabilitySolvent">围绕冷凝、吸收、吸附、解析与资源化回用。</p>
           </a>
-          <a class="profile-showcase-card" href="profile.html#smart-manufacturing">
-            <figure>
-              <img src="assets/about/smart-workshop.png" alt="智能化高端加工设备车间" loading="lazy" />
-            </figure>
-            <div>
-              <span data-i18n="profile.card3Kicker">Smart Manufacturing</span>
-              <h3 data-i18n="profile.card3Title">智能化高端加工设备</h3>
-              <p data-i18n="profile.p3">公司拥有自动化以及智能化高端加工和检测设备，配备先进的激光切割机、自动等离子焊机、管板自动焊机、法兰焊机、氩弧自动焊机以及铣、刨、磨、镗、钻、折弯成型等专业化机械加工设备。拥有各种非标设备制造及装配工艺的高级技师及中级以上技工数十人，公司成立至今，已成功研发设计并建成运行千余套工业化精馏装置。</p>
-              <p data-i18n="profile.p4">公司同时还拥有多支专业经验丰富的工程安装队伍，配备多种先进的施工机械长期在项目现场进行设备、管道、电气仪表、钢结构、自控系统等工程安装服务，应用严格、全面的质量管理体系，成功完成了多个重大工程项目，施工地域覆盖全国各省市。</p>
-            </div>
+          <a class="capability-tile" href="solutions.html#solution-h2s">
+            <span>03</span>
+            <strong data-i18n="hero.railGas">尾气治理</strong>
+            <p data-i18n="home.capabilityGas">覆盖有机尾气、含硫尾气和达标排放治理。</p>
+          </a>
+          <a class="capability-tile" href="profile.html#smart-manufacturing">
+            <span>04</span>
+            <strong data-i18n="hero.railManufacturing">装备制造</strong>
+            <p data-i18n="home.capabilityManufacturing">配套非标设备制造、安装调试与现场服务。</p>
           </a>
         </div>
       </section>
 
-      <section class="section manufacturing-motion-section home-flow-section" id="manufacturing" data-flow-step="02">
-        <div class="section-head with-action">
-          <div>
-            <p class="eyebrow">Manufacturing Motion</p>
-            <h2 data-i18n="manufacturing.title">智能制造与装备交付</h2>
+      <section class="section home-delivery home-flow-section" id="delivery" data-flow-step="02">
+        <div class="home-delivery-copy">
+          <p class="eyebrow">Delivery Line</p>
+          <h2 data-i18n="home.deliveryTitle">从实验验证到现场运行，按工程链路推进。</h2>
+          <p data-i18n="home.deliveryCopy">首页保留一条清晰交付线，客户需要技术细节时再进入关于我们、科研创新与工艺解决方案页面查看完整说明。</p>
+          <div class="home-delivery-actions">
+            <a class="button primary" href="profile.html" data-i18n="profile.more" data-magnetic-button>查看完整介绍</a>
+            <a class="button ghost" href="innovation.html" data-i18n="innovation.more" data-magnetic-button>展开科研创新</a>
           </div>
-          <a class="section-more" href="profile.html#smart-manufacturing" data-i18n="manufacturing.more">查看制造能力</a>
         </div>
-        <div class="manufacturing-motion-layout">
-          <figure class="manufacturing-video-card card-spotlight" data-spotlight-card>
-            <video class="inline-loop-video" autoplay muted loop playsinline preload="metadata" poster="assets/video/industrial-cutting-poster.jpg">
-              <source src="assets/video/industrial-cutting-loop.mp4" type="video/mp4" />
-            </video>
-            <figcaption>
-              <span data-i18n="manufacturing.videoKicker">Laser Cutting</span>
-              <strong data-i18n="manufacturing.videoTitle">高端加工设备动态展示</strong>
-            </figcaption>
-          </figure>
-          <div class="manufacturing-flow-grid">
-            <article class="card-spotlight" data-spotlight-card>
-              <span>01</span>
-              <h3 data-i18n="manufacturing.step1Title">工艺设计</h3>
-              <p data-i18n="manufacturing.step1Text">结合物料性质、风量浓度和回收目标，确定分离与治理路线。</p>
-            </article>
-            <article class="card-spotlight" data-spotlight-card>
-              <span>02</span>
-              <h3 data-i18n="manufacturing.step2Title">装备制造</h3>
-              <p data-i18n="manufacturing.step2Text">依托切割、焊接、机加工和装配能力完成核心设备制造。</p>
-            </article>
-            <article class="card-spotlight" data-spotlight-card>
-              <span>03</span>
-              <h3 data-i18n="manufacturing.step3Title">现场交付</h3>
-              <p data-i18n="manufacturing.step3Text">完成安装、调试、培训与运行维护，形成全流程工程闭环。</p>
-            </article>
-          </div>
+        <div class="delivery-track" aria-label="工程交付流程">
+          <a href="innovation.html#research-process"><span>01</span><strong data-i18n="home.deliveryStep1">实验验证</strong></a>
+          <a href="solutions.html"><span>02</span><strong data-i18n="home.deliveryStep2">工艺设计</strong></a>
+          <a href="profile.html#smart-manufacturing"><span>03</span><strong data-i18n="home.deliveryStep3">设备制造</strong></a>
+          <a href="profile.html#quality-system"><span>04</span><strong data-i18n="home.deliveryStep4">安装调试</strong></a>
+          <a href="inquiry.html"><span>05</span><strong data-i18n="home.deliveryStep5">售后服务</strong></a>
         </div>
       </section>
 
-      <section class="section stats-band">
-        <div class="card-spotlight" data-spotlight-card>
-          <strong>14334m<sup>2</sup></strong>
-          <span data-i18n="stats.land">占地面积</span>
-        </div>
-        <div class="card-spotlight" data-spotlight-card>
-          <strong>5923m<sup>2</sup></strong>
-          <span data-i18n="stats.plant">建筑厂房</span>
-        </div>
-        <div class="card-spotlight" data-spotlight-card>
-          <strong data-i18n="stats.labValue">市级</strong>
-          <span data-i18n="stats.lab">实验室与研发中心</span>
-        </div>
-        <div class="card-spotlight" data-spotlight-card>
-          <strong data-i18n="stats.serviceValue">全流程</strong>
-          <span data-i18n="stats.service">设计制造安装调试</span>
-        </div>
-      </section>
-
-      <section class="section news-section" id="news">
-        <div class="section-head with-action">
-          <div>
-            <p class="eyebrow">News Center</p>
-            <h2 data-i18n="news.title">新闻资讯</h2>
-          </div>
-          <a class="section-more" href="news.html" data-i18n="news.more">查看更多新闻</a>
-        </div>
-        <div class="news-grid home-news-grid" data-news-grid data-news-limit="4"></div>
-      </section>
-
-      <section class="section supplement-preview" id="innovation">
-        <div class="section-head with-action">
-          <div>
-            <p class="eyebrow">R&D Innovation</p>
-            <h2 data-i18n="innovation.title">科研创新</h2>
-          </div>
-          <a class="section-more" href="innovation.html" data-i18n="innovation.more">展开科研创新</a>
-        </div>
-        <div class="preview-layout">
-          <article class="preview-copy card-spotlight" data-spotlight-card>
-            <h3 data-i18n="innovation.previewTitle">流程模拟、实验验证、工程放大</h3>
-            <p data-i18n="innovation.copy">以流程模拟、实验验证和工程放大为核心，形成从技术团队、研发平台到专利成果的持续创新能力。</p>
-          </article>
-          <figure class="preview-media">
-            <img src="assets/new-content/4-科研创新/banner图.png" alt="科研创新" data-i18n-alt="nav.innovation" loading="lazy" />
-          </figure>
-          <div class="mini-grid">
-            <span data-i18n="innovation.previewTeam">技术团队</span>
-            <span data-i18n="innovation.previewPilot">中小试平台</span>
-            <span data-i18n="innovation.previewResults">研发成果</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="section supplement-preview home-flow-section" id="industries" data-flow-step="03">
-        <div class="section-head with-action">
-          <div>
-            <p class="eyebrow">Industries</p>
-            <h2 data-i18n="industries.title">业务领域</h2>
-          </div>
+      <section class="section home-industries home-flow-section" id="industries" data-flow-step="03">
+        <div class="home-section-kicker">
+          <p class="eyebrow">Industries</p>
           <a class="section-more" href="industries.html" data-i18n="industries.more">查看业务领域</a>
         </div>
-        <p class="section-lead" data-i18n="industries.copy">服务医药、化工、新能源、新材料等行业，围绕溶剂回收、尾气治理和节能分离提供行业化方案。</p>
-        <div class="industry-preview-grid">
-          <a href="industries.html#pharma"><img src="assets/new-content/1-网站首页/上下拉背景图/医药行业.jpg" alt="医药行业" data-i18n-alt="industries.pharma" loading="lazy" /><span data-i18n="industries.pharma">医药行业</span></a>
+        <div class="home-statement">
+          <h2 data-i18n="industries.title">业务领域</h2>
+          <p data-i18n="home.industriesCopy">聚焦化工、医药、新能源、新材料项目，把行业介绍留给详情页，首页只给出清晰入口。</p>
+        </div>
+        <div class="industry-strip">
           <a href="industries.html#chemical"><img src="assets/new-content/1-网站首页/上下拉背景图/化工行业.jpg" alt="化工行业" data-i18n-alt="industries.chemical" loading="lazy" /><span data-i18n="industries.chemical">化工行业</span></a>
+          <a href="industries.html#pharma"><img src="assets/new-content/1-网站首页/上下拉背景图/医药行业.jpg" alt="医药行业" data-i18n-alt="industries.pharma" loading="lazy" /><span data-i18n="industries.pharma">医药行业</span></a>
           <a href="industries.html#energy"><img src="assets/new-content/1-网站首页/上下拉背景图/新能源.jpg" alt="新能源行业" data-i18n-alt="industries.energy" loading="lazy" /><span data-i18n="industries.energy">新能源行业</span></a>
           <a href="industries.html#materials"><img src="assets/new-content/1-网站首页/上下拉背景图/新材料行业.jpeg" alt="新材料行业" data-i18n-alt="industries.materials" loading="lazy" /><span data-i18n="industries.materials">新材料行业</span></a>
-        </div>
-      </section>
-
-      <section class="section supplement-preview home-flow-section" id="solutions" data-flow-step="04">
-        <div class="section-head with-action">
-          <div>
-            <p class="eyebrow">Process Solutions</p>
-            <h2 data-i18n="solutions.title">工艺解决方案</h2>
-          </div>
-          <a class="section-more" href="solutions.html" data-i18n="solutions.more">查看工艺解决方案</a>
-        </div>
-        <p class="section-lead" data-i18n="solutions.copy">覆盖精馏分离、硫化氢制硫、VOCs治理、多效蒸发、混氨及MVR等成套工艺路线。</p>
-        <div class="solution-preview-grid">
-          <article><strong data-i18n="solutions.previewDistillation">精馏分离</strong><span data-i18n="solutions.previewDistillationText">热泵、多效、变压与隔壁塔节能方案</span></article>
-          <article><strong data-i18n="solutions.previewVocs">VOCs治理</strong><span data-i18n="solutions.previewVocsText">吸附、脱附、深冷、吸收和回收组合</span></article>
-          <article><strong data-i18n="solutions.previewH2s">硫化氢制硫</strong><span data-i18n="solutions.previewH2sText">湿法吸收反应再生与单质硫回收</span></article>
-          <article><strong data-i18n="solutions.previewMvr">MVR / 蒸发</strong><span data-i18n="solutions.previewMvrText">面向母液浓缩、废水减量和资源化</span></article>
         </div>
       </section>
 

@@ -54,6 +54,8 @@ const labels = {
     "nav.solutions.mvr": "MVR系统",
     "nav.contact.details": "联系方式",
     "nav.contact.inquiry": "客户咨询表",
+    "home.capabilitiesNav": "核心能力",
+    "home.deliveryNav": "工程交付",
     "hero.eyebrow": "石家庄辰泰环境科技有限公司",
     "hero.title": "资源循环利用一体化供应商",
     "hero.subtitle": "化工行业节能降耗专家",
@@ -75,6 +77,21 @@ const labels = {
     "hero.modeGasCopy": "从组分识别、吸附脱附到冷凝回收，形成可落地的尾气治理系统。",
     "hero.modeSolventCopy": "把回收液精制、萃取精馏和能量回用接入同一套工程方案。",
     "hero.modeManufacturingCopy": "以切割、焊接、装配和现场安装能力支撑非标设备成套交付。",
+    "home.capabilitiesMore": "查看完整工艺",
+    "home.capabilitiesTitle": "把复杂分离与治理工程，收束为可交付的成套系统。",
+    "home.capabilitiesCopy": "首页只呈现方向，完整工艺参数、流程图和案例说明在详情页展开，便于客户快速判断需求入口。",
+    "home.capabilityDistillation": "面向提纯、分离、节能精馏和溶剂精制。",
+    "home.capabilitySolvent": "围绕冷凝、吸收、吸附、解析与资源化回用。",
+    "home.capabilityGas": "覆盖有机尾气、含硫尾气和达标排放治理。",
+    "home.capabilityManufacturing": "配套非标设备制造、安装调试与现场服务。",
+    "home.deliveryTitle": "从实验验证到现场运行，按工程链路推进。",
+    "home.deliveryCopy": "首页保留一条清晰交付线，客户需要技术细节时再进入关于我们、科研创新与工艺解决方案页面查看完整说明。",
+    "home.deliveryStep1": "实验验证",
+    "home.deliveryStep2": "工艺设计",
+    "home.deliveryStep3": "设备制造",
+    "home.deliveryStep4": "安装调试",
+    "home.deliveryStep5": "售后服务",
+    "home.industriesCopy": "聚焦化工、医药、新能源、新材料项目，把行业介绍留给详情页，首页只给出清晰入口。",
     "profile.title": "公司简介",
     "profile.card1Kicker": "Company Overview",
     "profile.card1Title": "资源循环利用一体化供应商",
@@ -326,6 +343,8 @@ const labels = {
     "nav.solutions.mvr": "MVR System",
     "nav.contact.details": "Contact Details",
     "nav.contact.inquiry": "Inquiry Form",
+    "home.capabilitiesNav": "Core Capabilities",
+    "home.deliveryNav": "Delivery Line",
     "hero.eyebrow": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
     "hero.title": "Integrated Supplier for Resource Recycling",
     "hero.subtitle": "Energy-saving and consumption-reduction specialist for the chemical industry",
@@ -347,6 +366,21 @@ const labels = {
     "hero.modeGasCopy": "From composition analysis and adsorption-desorption to condensation recovery, Chentai builds practical exhaust treatment systems.",
     "hero.modeSolventCopy": "Recovered-liquid refining, extractive distillation and energy reuse are planned as one engineering package.",
     "hero.modeManufacturingCopy": "Cutting, welding, assembly and site installation capacity support complete non-standard equipment delivery.",
+    "home.capabilitiesMore": "View Process Details",
+    "home.capabilitiesTitle": "Complex separation and treatment work, organized into deliverable engineering systems.",
+    "home.capabilitiesCopy": "The homepage shows only the main directions. Full process parameters, flow diagrams and case details unfold on the detail pages so visitors can quickly find the right entry point.",
+    "home.capabilityDistillation": "For purification, separation, energy-saving distillation and solvent refining.",
+    "home.capabilitySolvent": "Condensation, absorption, adsorption, desorption and resource reuse.",
+    "home.capabilityGas": "Organic exhaust, sulfur-containing exhaust and compliant emission treatment.",
+    "home.capabilityManufacturing": "Non-standard equipment fabrication, installation, commissioning and site service.",
+    "home.deliveryTitle": "From lab validation to site operation, delivered along one engineering line.",
+    "home.deliveryCopy": "The homepage keeps the delivery path clear. Technical detail lives on the profile, R&D innovation and process solution pages.",
+    "home.deliveryStep1": "Validation",
+    "home.deliveryStep2": "Process Design",
+    "home.deliveryStep3": "Fabrication",
+    "home.deliveryStep4": "Commissioning",
+    "home.deliveryStep5": "After-sales",
+    "home.industriesCopy": "Focused entries for chemical, pharmaceutical, new energy and new materials projects, with full industry details on the dedicated page.",
     "profile.title": "Company Profile",
     "profile.card1Kicker": "Company Overview",
     "profile.card1Title": "Integrated Supplier for Resource Recycling",
@@ -1368,18 +1402,12 @@ function initHomeReveals() {
   }
 
   const revealSelectors = [
-    ".profile-section .section-head",
-    ".profile-showcase-card",
-    ".manufacturing-motion-section .section-head",
-    ".manufacturing-video-card",
-    ".manufacturing-flow-grid article",
-    ".stats-band > div",
-    ".news-section .section-head",
-    ".news-card",
-    ".supplement-preview .section-head",
-    ".preview-layout",
-    ".industry-preview-grid a",
-    ".solution-preview-grid article",
+    ".home-section-kicker",
+    ".home-statement",
+    ".capability-tile",
+    ".home-delivery-copy",
+    ".delivery-track a",
+    ".industry-strip a",
     ".contact-card",
     ".contact-map-panel"
   ];
@@ -1392,7 +1420,7 @@ function initHomeReveals() {
     homeRevealObserver.observe(node);
   });
 
-  $$(".profile-showcase-card, .manufacturing-video-card, .manufacturing-flow-grid article, .stats-band > div, .news-card, .preview-copy, .preview-media, .industry-preview-grid a, .solution-preview-grid article").forEach((node) => {
+  $$(".capability-tile, .delivery-track a, .industry-strip a").forEach((node) => {
     node.classList.add("home-interactive-card");
   });
 }
