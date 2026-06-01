@@ -6339,46 +6339,55 @@ html[data-theme="light"] .contact-card p {
 
 .page-channel-tabs,
 .solution-anchor-grid[data-channel-tabs] {
-  position: relative;
+  position: sticky;
+  top: 82px;
   z-index: 4;
   width: min(1260px, calc(100% - 44px));
   margin: clamp(-42px, -3vw, -26px) auto clamp(46px, 6vw, 84px);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid rgba(183, 255, 223, 0.16);
-  border-radius: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(142px, 1fr));
+  gap: 1px;
+  padding: 7px;
+  border: 1px solid rgba(183, 255, 223, 0.18);
+  border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(236, 255, 248, 0.08), rgba(236, 255, 248, 0.02)),
-    rgba(3, 23, 20, 0.82);
+    linear-gradient(180deg, rgba(236, 255, 248, 0.1), rgba(236, 255, 248, 0.025)),
+    rgba(3, 19, 17, 0.9);
   box-shadow:
-    0 24px 74px rgba(0, 12, 10, 0.32),
+    0 20px 60px rgba(0, 12, 10, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(20px);
+  counter-reset: channel-tab;
   scroll-margin-top: 104px;
 }
 
 .solution-anchor-grid[data-channel-tabs] {
+  position: relative;
+  top: auto;
   width: 100%;
   margin: 24px 0 0;
 }
 
 .page-channel-tabs a,
 .solution-anchor-grid[data-channel-tabs] a {
-  min-height: 58px;
+  position: relative;
+  min-height: 62px;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 13px 16px;
-  border: 1px solid rgba(183, 255, 223, 0.12);
-  border-radius: 7px;
+  gap: 5px;
+  padding: 13px 14px 12px;
+  border: 1px solid transparent;
+  border-radius: 5px;
   color: rgba(234, 250, 244, 0.84);
-  background: rgba(255, 255, 255, 0.045);
-  font-size: clamp(14px, 0.9vw, 16px);
-  font-weight: 850;
+  background: rgba(255, 255, 255, 0.035);
+  font-size: clamp(13px, 0.82vw, 15px);
+  font-weight: 760;
   line-height: 1.25;
   text-align: center;
+  text-wrap: balance;
+  isolation: isolate;
   transition:
     transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 240ms ease,
@@ -6387,17 +6396,57 @@ html[data-theme="light"] .contact-card p {
     box-shadow 240ms ease;
 }
 
+.page-channel-tabs a::before,
+.solution-anchor-grid[data-channel-tabs] a::before {
+  counter-increment: channel-tab;
+  content: counter(channel-tab, decimal-leading-zero);
+  color: rgba(189, 243, 94, 0.76);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.page-channel-tabs a::after,
+.solution-anchor-grid[data-channel-tabs] a::after {
+  position: absolute;
+  inset: auto 12px 8px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(189, 243, 94, 0.76), transparent);
+  opacity: 0;
+  transform: scaleX(0.42);
+  transform-origin: center;
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
 .page-channel-tabs a:hover,
 .page-channel-tabs a:focus-visible,
 .page-channel-tabs a.is-active,
 .solution-anchor-grid[data-channel-tabs] a:hover,
 .solution-anchor-grid[data-channel-tabs] a:focus-visible,
 .solution-anchor-grid[data-channel-tabs] a.is-active {
-  color: #071713;
-  border-color: rgba(189, 243, 94, 0.78);
-  background: linear-gradient(135deg, var(--lime), var(--mint));
-  box-shadow: 0 18px 42px rgba(79, 193, 137, 0.22);
+  color: #f7fff9;
+  border-color: rgba(189, 243, 94, 0.46);
+  background:
+    linear-gradient(180deg, rgba(65, 134, 96, 0.45), rgba(15, 65, 52, 0.56)),
+    rgba(189, 243, 94, 0.08);
+  box-shadow:
+    0 16px 34px rgba(0, 18, 12, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   transform: translateY(-2px);
+}
+
+.page-channel-tabs a:hover::after,
+.page-channel-tabs a:focus-visible::after,
+.page-channel-tabs a.is-active::after,
+.solution-anchor-grid[data-channel-tabs] a:hover::after,
+.solution-anchor-grid[data-channel-tabs] a:focus-visible::after,
+.solution-anchor-grid[data-channel-tabs] a.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .page-channel-tabs a:focus-visible,
@@ -6426,16 +6475,20 @@ html[data-theme="light"] .page-channel-tabs,
 html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] {
   border-color: rgba(11, 90, 70, 0.16);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(237, 249, 243, 0.76)),
-    rgba(244, 250, 246, 0.88);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(238, 249, 244, 0.82)),
+    rgba(244, 250, 246, 0.94);
   box-shadow: 0 24px 74px rgba(20, 68, 56, 0.14);
 }
 
 html[data-theme="light"] .page-channel-tabs a,
 html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a {
   color: rgba(11, 42, 35, 0.78);
-  border-color: rgba(11, 90, 70, 0.12);
-  background: rgba(255, 255, 255, 0.66);
+  background: rgba(255, 255, 255, 0.54);
+}
+
+html[data-theme="light"] .page-channel-tabs a::before,
+html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a::before {
+  color: rgba(12, 112, 84, 0.82);
 }
 
 html[data-theme="light"] .page-channel-tabs a:hover,
@@ -6444,18 +6497,34 @@ html[data-theme="light"] .page-channel-tabs a.is-active,
 html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a:hover,
 html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a:focus-visible,
 html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a.is-active {
-  color: #071713;
-  background: linear-gradient(135deg, var(--lime), var(--mint));
+  color: #082019;
+  border-color: rgba(11, 114, 82, 0.24);
+  background:
+    linear-gradient(180deg, rgba(212, 245, 222, 0.92), rgba(236, 255, 247, 0.82)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 14px 34px rgba(38, 109, 81, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 @media (max-width: 720px) {
   .page-channel-tabs,
   .solution-anchor-grid[data-channel-tabs] {
+    top: 72px;
     width: calc(100% - 28px);
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    padding: 10px;
+    display: flex;
+    gap: 1px;
+    padding: 7px;
     margin-top: -34px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .page-channel-tabs::-webkit-scrollbar,
+  .solution-anchor-grid[data-channel-tabs]::-webkit-scrollbar {
+    display: none;
   }
 
   .solution-anchor-grid[data-channel-tabs] {
@@ -6465,8 +6534,10 @@ html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a.is-active {
 
   .page-channel-tabs a,
   .solution-anchor-grid[data-channel-tabs] a {
-    min-height: 48px;
-    padding: 10px 8px;
-    font-size: 13px;
+    flex: 0 0 clamp(126px, 42vw, 168px);
+    min-height: 54px;
+    padding: 10px 12px 11px;
+    font-size: 12px;
+    scroll-snap-align: start;
   }
 }

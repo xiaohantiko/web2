@@ -1465,9 +1465,20 @@ function resolveChannelTarget(rawHash, panels, links) {
   return firstLocalLink ? firstLocalLink.hash.slice(1) : channelPanelKey(panels[0]);
 }
 
+function centerActiveChannelLink(activeLink, smooth = false) {
+  const tabs = activeLink?.closest("[data-channel-tabs]");
+  if (!tabs || tabs.scrollWidth <= tabs.clientWidth) return;
+  activeLink.scrollIntoView({
+    block: "nearest",
+    inline: "center",
+    behavior: smooth ? "smooth" : "auto",
+  });
+}
+
 function setActiveChannel(target, panels, links, options = {}) {
   const activePanel = panels.find((panel) => channelPanelKey(panel) === target);
   if (!activePanel) return;
+  let activeLink = null;
   panels.forEach((panel) => {
     panel.hidden = channelPanelKey(panel) !== target;
   });
@@ -1476,12 +1487,15 @@ function setActiveChannel(target, panels, links, options = {}) {
     const isActive = linkTarget === target;
     link.classList.toggle("is-active", isActive);
     link.setAttribute("aria-current", isActive ? "true" : "false");
+    if (isActive) activeLink = link;
   });
+  const tabs = activeLink?.closest("[data-channel-tabs]");
+  centerActiveChannelLink(activeLink, options.scroll);
+  requestAnimationFrame(() => centerActiveChannelLink(activeLink, options.scroll));
   if (options.updateHash && window.location.hash !== `#${target}`) {
     history.pushState(null, "", `#${target}`);
   }
   if (options.scroll) {
-    const tabs = activePanel.ownerDocument.querySelector("[data-channel-tabs]");
     (tabs || activePanel).scrollIntoView({ block: "start", behavior: "smooth" });
   }
 }
