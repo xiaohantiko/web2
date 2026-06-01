@@ -96,7 +96,13 @@
         <p data-i18n="qual.pageCopy">把资质、研发、实验验证和工程交付能力独立呈现，首页保持简洁，详细资料在本页集中查看。</p>
       </section>
 
-      <section class="section cert-section" id="certificates">
+      <nav class="page-channel-tabs" aria-label="资质能力频道导航" data-channel-tabs>
+        <a href="#certificates" data-i18n="qual.certTitle">资质证书</a>
+        <a href="#laboratory" data-i18n="qual.labTitle">实验室与研发中心</a>
+        <a href="#engineering-team" data-i18n="qual.teamTitle">研发与工程服务能力</a>
+      </nav>
+
+      <section class="section cert-section" id="certificates" data-channel-panel>
         <div class="section-head">
           <p class="eyebrow">Certificates</p>
           <h2 data-i18n="qual.certTitle">资质证书</h2>
@@ -189,7 +195,7 @@
         </div>
       </section>
 
-      <section class="section lab-section">
+      <section class="section lab-section" id="laboratory" data-channel-panel>
         <div class="section-head">
           <p class="eyebrow">Laboratory</p>
           <h2 data-i18n="qual.labTitle">实验室与研发中心</h2>
@@ -225,7 +231,7 @@
         </div>
       </section>
 
-      <section class="section team-section">
+      <section class="section team-section" id="engineering-team" data-channel-panel>
         <div class="section-head">
           <p class="eyebrow">Engineering Team</p>
           <h2 data-i18n="qual.teamTitle">研发与工程服务能力</h2>
@@ -256,6 +262,6 @@
       <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
     </footer>
 
-    <script src="app.js?v=20260527g"></script>
+    <script src="app.js?v=20260602a"></script>
   </body>
 </html>

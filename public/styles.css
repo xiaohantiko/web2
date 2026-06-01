@@ -6332,3 +6332,141 @@ html[data-theme="light"] .contact-card p {
     padding: 16px 18px;
   }
 }
+
+[data-channel-panel][hidden] {
+  display: none !important;
+}
+
+.page-channel-tabs,
+.solution-anchor-grid[data-channel-tabs] {
+  position: relative;
+  z-index: 4;
+  width: min(1260px, calc(100% - 44px));
+  margin: clamp(-42px, -3vw, -26px) auto clamp(46px, 6vw, 84px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(183, 255, 223, 0.16);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(236, 255, 248, 0.08), rgba(236, 255, 248, 0.02)),
+    rgba(3, 23, 20, 0.82);
+  box-shadow:
+    0 24px 74px rgba(0, 12, 10, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  scroll-margin-top: 104px;
+}
+
+.solution-anchor-grid[data-channel-tabs] {
+  width: 100%;
+  margin: 24px 0 0;
+}
+
+.page-channel-tabs a,
+.solution-anchor-grid[data-channel-tabs] a {
+  min-height: 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 16px;
+  border: 1px solid rgba(183, 255, 223, 0.12);
+  border-radius: 7px;
+  color: rgba(234, 250, 244, 0.84);
+  background: rgba(255, 255, 255, 0.045);
+  font-size: clamp(14px, 0.9vw, 16px);
+  font-weight: 850;
+  line-height: 1.25;
+  text-align: center;
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 240ms ease,
+    background 240ms ease,
+    color 240ms ease,
+    box-shadow 240ms ease;
+}
+
+.page-channel-tabs a:hover,
+.page-channel-tabs a:focus-visible,
+.page-channel-tabs a.is-active,
+.solution-anchor-grid[data-channel-tabs] a:hover,
+.solution-anchor-grid[data-channel-tabs] a:focus-visible,
+.solution-anchor-grid[data-channel-tabs] a.is-active {
+  color: #071713;
+  border-color: rgba(189, 243, 94, 0.78);
+  background: linear-gradient(135deg, var(--lime), var(--mint));
+  box-shadow: 0 18px 42px rgba(79, 193, 137, 0.22);
+  transform: translateY(-2px);
+}
+
+.page-channel-tabs a:focus-visible,
+.solution-anchor-grid[data-channel-tabs] a:focus-visible {
+  outline: 2px solid rgba(189, 243, 94, 0.72);
+  outline-offset: 3px;
+}
+
+.page-channel-tabs + [data-channel-panel],
+.process-solution-stack [data-channel-panel]:not([hidden]) {
+  animation: channelPanelIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes channelPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html[data-theme="light"] .page-channel-tabs,
+html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] {
+  border-color: rgba(11, 90, 70, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(237, 249, 243, 0.76)),
+    rgba(244, 250, 246, 0.88);
+  box-shadow: 0 24px 74px rgba(20, 68, 56, 0.14);
+}
+
+html[data-theme="light"] .page-channel-tabs a,
+html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a {
+  color: rgba(11, 42, 35, 0.78);
+  border-color: rgba(11, 90, 70, 0.12);
+  background: rgba(255, 255, 255, 0.66);
+}
+
+html[data-theme="light"] .page-channel-tabs a:hover,
+html[data-theme="light"] .page-channel-tabs a:focus-visible,
+html[data-theme="light"] .page-channel-tabs a.is-active,
+html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a:hover,
+html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a:focus-visible,
+html[data-theme="light"] .solution-anchor-grid[data-channel-tabs] a.is-active {
+  color: #071713;
+  background: linear-gradient(135deg, var(--lime), var(--mint));
+}
+
+@media (max-width: 720px) {
+  .page-channel-tabs,
+  .solution-anchor-grid[data-channel-tabs] {
+    width: calc(100% - 28px);
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 10px;
+    margin-top: -34px;
+  }
+
+  .solution-anchor-grid[data-channel-tabs] {
+    width: 100%;
+    margin-top: 18px;
+  }
+
+  .page-channel-tabs a,
+  .solution-anchor-grid[data-channel-tabs] a {
+    min-height: 48px;
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+}

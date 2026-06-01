@@ -96,7 +96,16 @@
         <p data-i18n="profile.pageCopy">根据公司宣传资料整理企业定位、技术路线、发展历程、研发制造能力和合作方向。</p>
       </section>
 
-      <section class="section supplement-split" id="company-overview">
+      <nav class="page-channel-tabs" aria-label="关于我们频道导航" data-channel-tabs>
+        <a href="#company-overview" data-i18n="channel.companyOverview">公司简介</a>
+        <a href="#rd-center" data-i18n="channel.rdCenter">研发中心</a>
+        <a href="#smart-manufacturing" data-i18n="channel.workshop">车间设备</a>
+        <a href="#subsidiaries" data-i18n="channel.subsidiaries">子公司介绍</a>
+        <a href="#quality-system" data-i18n="channel.qualitySystem">质量管理体系</a>
+        <a href="#company-history" data-i18n="channel.companyHistory">发展进程</a>
+      </nav>
+
+      <section class="section supplement-split" id="company-overview" data-channel-panel>
         <div class="split-copy">
           <p class="eyebrow">Company Overview</p>
           <h2 data-i18n="profile.card1Title">资源循环利用一体化供应商</h2>
@@ -105,7 +114,7 @@
         <figure><img src="assets/about/company-gate.jpg" alt="石家庄辰泰环境科技有限公司公司大门" loading="lazy" /></figure>
       </section>
 
-      <section class="section supplement-split reverse" id="rd-center">
+      <section class="section supplement-split reverse" id="rd-center" data-channel-panel>
         <div class="split-copy">
           <p class="eyebrow">R&D Center</p>
           <h2 data-i18n="profile.card2Title">技术研发中心</h2>
@@ -114,7 +123,7 @@
         <figure><img src="assets/about/rd-center.png" alt="技术研发中心实验室" loading="lazy" /></figure>
       </section>
 
-      <section class="section supplement-split" id="smart-manufacturing">
+      <section class="section supplement-split" id="smart-manufacturing" data-channel-panel>
         <div class="split-copy">
           <p class="eyebrow">Manufacturing</p>
           <h2 data-i18n="profile.card3Title">智能化高端加工设备</h2>
@@ -124,7 +133,7 @@
         <figure><img src="assets/about/smart-workshop.png" alt="智能化高端加工设备车间" loading="lazy" /></figure>
       </section>
 
-      <section class="section profile-longform" id="subsidiaries">
+      <section class="section profile-longform" id="subsidiaries" data-channel-panel>
         <div class="profile-section-head">
           <p class="eyebrow">Subsidiaries</p>
           <h2>子公司介绍</h2>
@@ -159,7 +168,7 @@
         </div>
       </section>
 
-      <section class="section profile-longform" id="quality-system">
+      <section class="section profile-longform" id="quality-system" data-channel-panel>
         <div class="quality-intro-panel">
           <div class="profile-section-head">
             <p class="eyebrow">Quality System</p>
@@ -247,7 +256,7 @@
         </div>
       </section>
 
-      <section class="section stats-band profile-stats">
+      <section class="section stats-band profile-stats" data-channel-panel="company-history">
         <div>
           <strong>2007</strong>
           <span data-i18n="profile.founded">成立时间</span>
@@ -266,7 +275,7 @@
         </div>
       </section>
 
-      <section class="section history-section" id="company-history">
+      <section class="section history-section" id="company-history" data-channel-panel>
         <div class="section-head">
           <p class="eyebrow">Milestones</p>
           <h2 data-i18n="profile.historyTitle">发展进程</h2>
@@ -312,6 +321,6 @@
       <span>Shijiazhuang Chentai Environmental Technology Co., Ltd.</span>
     </footer>
 
-    <script src="app.js?v=20260527g"></script>
+    <script src="app.js?v=20260602a"></script>
   </body>
 </html>

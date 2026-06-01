@@ -57,6 +57,12 @@ const labels = {
     "nav.contact.inquiry": "客户咨询表",
     "home.capabilitiesNav": "核心能力",
     "home.deliveryNav": "工程交付",
+    "channel.companyOverview": "公司简介",
+    "channel.rdCenter": "研发中心",
+    "channel.workshop": "车间设备",
+    "channel.subsidiaries": "子公司介绍",
+    "channel.qualitySystem": "质量管理体系",
+    "channel.companyHistory": "发展进程",
     "hero.eyebrow": "石家庄辰泰环境科技有限公司",
     "theme.light": "亮",
     "theme.dark": "暗",
@@ -357,6 +363,12 @@ const labels = {
     "nav.contact.inquiry": "Inquiry Form",
     "home.capabilitiesNav": "Core Capabilities",
     "home.deliveryNav": "Delivery Line",
+    "channel.companyOverview": "Company Profile",
+    "channel.rdCenter": "R&D Center",
+    "channel.workshop": "Workshop Equipment",
+    "channel.subsidiaries": "Subsidiaries",
+    "channel.qualitySystem": "Quality System",
+    "channel.companyHistory": "Milestones",
     "hero.eyebrow": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
     "theme.light": "Light",
     "theme.dark": "Dark",
@@ -1437,6 +1449,64 @@ function initHeroModeControls() {
   updateHeroMode(activeHeroMode);
 }
 
+function channelPanelKey(panel) {
+  return panel?.dataset.channelPanel || panel?.id || "";
+}
+
+function resolveChannelTarget(rawHash, panels, links) {
+  const cleanHash = String(rawHash || "").replace(/^#/, "");
+  if (cleanHash) {
+    const directPanel = panels.find((panel) => channelPanelKey(panel) === cleanHash);
+    if (directPanel) return channelPanelKey(directPanel);
+    const nestedTarget = document.getElementById(cleanHash)?.closest("[data-channel-panel]");
+    if (nestedTarget) return channelPanelKey(nestedTarget);
+  }
+  const firstLocalLink = links.find((link) => link.hash);
+  return firstLocalLink ? firstLocalLink.hash.slice(1) : channelPanelKey(panels[0]);
+}
+
+function setActiveChannel(target, panels, links, options = {}) {
+  const activePanel = panels.find((panel) => channelPanelKey(panel) === target);
+  if (!activePanel) return;
+  panels.forEach((panel) => {
+    panel.hidden = channelPanelKey(panel) !== target;
+  });
+  links.forEach((link) => {
+    const linkTarget = resolveChannelTarget(link.hash, panels, links);
+    const isActive = linkTarget === target;
+    link.classList.toggle("is-active", isActive);
+    link.setAttribute("aria-current", isActive ? "true" : "false");
+  });
+  if (options.updateHash && window.location.hash !== `#${target}`) {
+    history.pushState(null, "", `#${target}`);
+  }
+  if (options.scroll) {
+    const tabs = activePanel.ownerDocument.querySelector("[data-channel-tabs]");
+    (tabs || activePanel).scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+}
+
+function initChannelTabs() {
+  const panels = $$("[data-channel-panel]");
+  const links = $$("[data-channel-tabs] a[href^='#']");
+  if (!panels.length || !links.length) return;
+  const activateFromHash = (options = {}) => {
+    const target = resolveChannelTarget(window.location.hash, panels, links);
+    setActiveChannel(target, panels, links, options);
+  };
+  links.forEach((link) => {
+    if (link.dataset.channelReady === "true") return;
+    link.dataset.channelReady = "true";
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const target = resolveChannelTarget(link.hash, panels, links);
+      setActiveChannel(target, panels, links, { updateHash: true, scroll: true });
+    });
+  });
+  window.addEventListener("hashchange", () => activateFromHash({ scroll: true }));
+  activateFromHash();
+}
+
 function initMagneticButtons() {
   $$("[data-magnetic-button]").forEach((button) => {
     if (button.dataset.magneticReady === "true") return;
@@ -1693,6 +1763,7 @@ async function boot() {
   initHomeReveals();
   initGalleryCarousel();
   initMediaCarousels();
+  initChannelTabs();
   initHeroVideo();
   initSideNav();
   bind();
