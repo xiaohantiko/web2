@@ -3,6 +3,7 @@ let currentLang = "zh";
 let newsFilter = "all";
 let homeRevealObserver;
 let activeHeroMode = "distillation";
+let currentTheme = "dark";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -57,7 +58,11 @@ const labels = {
     "home.capabilitiesNav": "核心能力",
     "home.deliveryNav": "工程交付",
     "hero.eyebrow": "石家庄辰泰环境科技有限公司",
-    "hero.title": "资源循环利用一体化供应商",
+    "theme.light": "亮",
+    "theme.dark": "暗",
+    "theme.toLight": "切换为亮色主题",
+    "theme.toDark": "切换为暗色主题",
+    "hero.title": "资源循环利用一体化工艺技术供应商",
     "hero.subtitle": "化工行业节能降耗专家",
     "hero.copy": "聚焦化工、新能源、新材料等行业精馏分离提纯、含硫化氢尾气治理及硫回收工艺、有机尾气治理等，为化工、医药、新能源、新材料等行业提供技术咨询、工程设计、设备制造、安装调试和售后服务。",
     "hero.primary": "查看业务领域",
@@ -65,6 +70,12 @@ const labels = {
     "hero.land": "占地面积",
     "hero.plant": "建筑厂房",
     "hero.iso": "质量体系认证",
+    "hero.ip": "知识产权",
+    "hero.ipValue": "50+",
+    "hero.expertise": "深耕",
+    "hero.expertiseValue": "20年+",
+    "hero.clients": "客户",
+    "hero.clientsValue": "1000+",
     "hero.railDistillation": "精馏分离",
     "hero.railSolvent": "溶剂回收",
     "hero.railGas": "尾气治理",
@@ -115,7 +126,7 @@ const labels = {
     "manufacturing.step2Text": "依托切割、焊接、机加工和装配能力完成核心设备制造。",
     "manufacturing.step3Title": "现场交付",
     "manufacturing.step3Text": "完成安装、调试、培训与运行维护，形成全流程工程闭环。",
-    "profile.pageTitle": "完整公司介绍",
+    "profile.pageTitle": "关于我们",
     "profile.pageCopy": "根据公司宣传资料整理企业定位、技术路线、发展历程、研发制造能力和合作方向。",
     "profile.coreTitle": "企业定位",
     "profile.coreText": "辰泰环保以有机溶媒回收治理为核心，面向化工、医药、高分子材料、锂电隔膜、纤维、涂布等行业，提供从工艺路线判断到装备制造、现场安装、系统调试和运行培训的全流程服务。",
@@ -271,7 +282,7 @@ const labels = {
     "news.more": "查看更多新闻",
     "news.pageTitle": "新闻资讯",
     "news.pageCopy": "集中查看公司新闻与行业资讯，保留旧网站新闻内容，并以更清晰的阅读方式呈现。",
-    "news.allTitle": "全部新闻资讯",
+    "news.allTitle": "新闻动态",
     "contact.title": "联系我们",
     "contact.copy": "欢迎围绕有机尾气治理、溶剂回收、液相分离和精馏节能改造需求进行项目咨询。",
     "contact.inquiry": "填写客户咨询表",
@@ -347,7 +358,11 @@ const labels = {
     "home.capabilitiesNav": "Core Capabilities",
     "home.deliveryNav": "Delivery Line",
     "hero.eyebrow": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
-    "hero.title": "Integrated Supplier for Resource Recycling",
+    "theme.light": "Light",
+    "theme.dark": "Dark",
+    "theme.toLight": "Switch to light theme",
+    "theme.toDark": "Switch to dark theme",
+    "hero.title": "Integrated Process Technology Supplier for Resource Recycling",
     "hero.subtitle": "Energy-saving and consumption-reduction specialist for the chemical industry",
     "hero.copy": "Chentai focuses on distillation separation and purification, H2S-containing tail-gas treatment and sulfur recovery, and organic exhaust treatment for chemical, new energy and new materials industries, providing technical consulting, engineering design, equipment manufacturing, installation, commissioning and after-sales service for chemical, pharmaceutical, new energy and new materials customers.",
     "hero.primary": "Business Fields",
@@ -355,6 +370,12 @@ const labels = {
     "hero.land": "Land area",
     "hero.plant": "Plant area",
     "hero.iso": "Quality system certification",
+    "hero.ip": "Intellectual Properties",
+    "hero.ipValue": "50+",
+    "hero.expertise": "Years of Expertise",
+    "hero.expertiseValue": "20+",
+    "hero.clients": "Clients",
+    "hero.clientsValue": "1000+",
     "hero.railDistillation": "Distillation Separation",
     "hero.railSolvent": "Solvent Recovery",
     "hero.railGas": "Exhaust Treatment",
@@ -405,7 +426,7 @@ const labels = {
     "manufacturing.step2Text": "Build core equipment with cutting, welding, machining and assembly capability.",
     "manufacturing.step3Title": "Site delivery",
     "manufacturing.step3Text": "Complete installation, commissioning, training and maintenance as a closed-loop engineering service.",
-    "profile.pageTitle": "Full Company Profile",
+    "profile.pageTitle": "About Us",
     "profile.pageCopy": "A structured summary of Chentai's positioning, technical route, development milestones, R&D and manufacturing capabilities based on the company presentation.",
     "profile.coreTitle": "Enterprise Positioning",
     "profile.coreText": "Chentai focuses on organic solvent recovery and treatment for chemical, pharmaceutical, polymer material, lithium battery separator, fiber and coating industries, delivering process assessment, equipment manufacturing, installation, commissioning and operation training.",
@@ -561,7 +582,7 @@ const labels = {
     "news.more": "More News",
     "news.pageTitle": "News Center",
     "news.pageCopy": "Browse company updates and industry articles preserved from the previous website in a cleaner reading layout.",
-    "news.allTitle": "All News and Articles",
+    "news.allTitle": "News Updates",
     "contact.title": "Contact",
     "contact.copy": "Contact us for organic waste gas treatment, solvent recovery, liquid separation and energy-saving distillation projects.",
     "contact.inquiry": "Fill Inquiry Form",
@@ -913,6 +934,49 @@ function translatedValue(key) {
   return labels[currentLang]?.[key] || labels.zh?.[key] || "";
 }
 
+function setStoredTheme(theme) {
+  try {
+    localStorage.setItem("chentai-theme", theme);
+  } catch (error) {
+    // Theme still works for this visit when storage is unavailable.
+  }
+}
+
+function getStoredTheme() {
+  try {
+    return localStorage.getItem("chentai-theme");
+  } catch (error) {
+    return null;
+  }
+}
+
+function applyTheme(theme = currentTheme) {
+  currentTheme = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = currentTheme;
+  document.body.dataset.theme = currentTheme;
+  updateThemeToggle();
+}
+
+function updateThemeToggle() {
+  const toggle = $("[data-theme-toggle]");
+  if (!toggle) return;
+  const isDark = currentTheme === "dark";
+  toggle.textContent = isDark ? t("theme.light") : t("theme.dark");
+  toggle.setAttribute("aria-label", isDark ? t("theme.toLight") : t("theme.toDark"));
+}
+
+function initThemeToggle() {
+  applyTheme(getStoredTheme() || "dark");
+  const toggle = $("[data-theme-toggle]");
+  if (!toggle || toggle.dataset.themeReady === "true") return;
+  toggle.dataset.themeReady = "true";
+  toggle.addEventListener("click", () => {
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+    setStoredTheme(nextTheme);
+  });
+}
+
 function localField(item, key, fallback = "") {
   return currentLang === "en" ? item[`${key}En`] || item[key] || fallback : item[key] || fallback;
 }
@@ -1001,6 +1065,7 @@ function renderI18n() {
   });
   const toggle = $("[data-lang-toggle]");
   if (toggle) toggle.textContent = currentLang === "zh" ? "EN" : "CN";
+  updateThemeToggle();
   document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
   applyStaticEnglishOverrides();
   updateHeroMode(activeHeroMode);
@@ -1620,6 +1685,7 @@ async function boot() {
   renderI18n();
   renderNews();
   initSplitText();
+  initThemeToggle();
   initSpotlightCards();
   initInteractiveHero();
   initHeroModeControls();
