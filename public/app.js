@@ -1,6 +1,6 @@
 let siteData = {};
 let currentLang = "zh";
-let newsFilter = "all";
+let newsFilter = "company";
 let homeRevealObserver;
 let activeHeroMode = "distillation";
 let currentTheme = "dark";
@@ -36,8 +36,7 @@ const labels = {
     "nav.profile.rd": "研发制造",
     "nav.profile.quality": "质量体系",
     "nav.profile.qualifications": "资质能力",
-    "nav.news.all": "全部新闻",
-    "nav.news.company": "公司新闻",
+    "nav.news.company": "新闻资讯",
     "nav.news.industry": "行业资讯",
     "nav.innovation.team": "科技团队建设",
     "nav.innovation.process": "流程设计",
@@ -281,8 +280,7 @@ const labels = {
     "products.h2sScene": "化工、制药、污水及含硫尾气治理和资源化回收。",
     "gallery.title": "工厂与工程现场",
     "news.title": "新闻资讯",
-    "news.all": "全部",
-    "news.company": "公司新闻",
+    "news.company": "新闻资讯",
     "news.industry": "行业资讯",
     "news.read": "阅读详情",
     "news.more": "查看更多新闻",
@@ -342,8 +340,7 @@ const labels = {
     "nav.profile.rd": "R&D and Manufacturing",
     "nav.profile.quality": "Quality System",
     "nav.profile.qualifications": "Qualifications",
-    "nav.news.all": "All News",
-    "nav.news.company": "Company News",
+    "nav.news.company": "News",
     "nav.news.industry": "Industry News",
     "nav.innovation.team": "Technology Team",
     "nav.innovation.process": "Process Design",
@@ -587,8 +584,7 @@ const labels = {
     "solutions.previewMvr": "MVR / Evaporation",
     "solutions.previewMvrText": "For mother-liquor concentration, wastewater reduction and resource recovery.",
     "news.title": "News Center",
-    "news.all": "All",
-    "news.company": "Company",
+    "news.company": "News",
     "news.industry": "Industry",
     "news.read": "Read More",
     "news.more": "More News",
@@ -1063,6 +1059,9 @@ function renderI18n() {
     const value = translatedValue(node.dataset.i18n);
     if (value) node.textContent = value;
   });
+  $$(".brand strong[data-i18n='company.name']").forEach((node) => {
+    node.textContent = currentLang === "en" ? "Chentai Environmental" : t("company.name");
+  });
   $$("[data-i18n-alt]").forEach((node) => {
     const value = translatedValue(node.dataset.i18nAlt);
     if (value) node.setAttribute("alt", value);
@@ -1094,7 +1093,16 @@ function allNews() {
 }
 
 function filteredNews() {
-  return allNews().filter((item) => newsFilter === "all" || item.sourceType === newsFilter);
+  return allNews().filter((item) => item.sourceType === newsFilter);
+}
+
+function syncNewsFilterFromHash() {
+  if (!$("[data-news-grid]")) return;
+  const hash = window.location.hash.replace(/^#/, "");
+  newsFilter = hash === "industry" ? "industry" : "company";
+  $$("[data-news-filter]").forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.newsFilter === newsFilter);
+  });
 }
 
 function renderNews() {
@@ -1269,9 +1277,12 @@ function initMediaCarousels() {
     let isDragging = false;
     let timer;
     const autoplayDelay = Number(carousel.dataset.interval || carousel.dataset.autoplay || 3800);
+    const visibleCount = Math.max(1, Number(carousel.dataset.visibleCount || 1));
+    const step = Math.max(1, Number(carousel.dataset.step || visibleCount));
+    const dotCount = visibleCount > 1 ? Math.ceil(slides.length / step) : slides.length;
 
-    dotsWrap.innerHTML = slides.map((_, index) => `
-      <button type="button" data-media-dot="${index}" aria-label="切换到第 ${index + 1} 张"></button>
+    dotsWrap.innerHTML = Array.from({ length: dotCount }, (_, index) => `
+      <button type="button" data-media-dot="${index * step}" aria-label="切换到第 ${index + 1} ${visibleCount > 1 ? "组" : "张"}"></button>
     `).join("");
     const dots = $$("[data-media-dot]", dotsWrap);
 
@@ -1280,19 +1291,24 @@ function initMediaCarousels() {
         const offset = (index - active + slides.length) % slides.length;
         const signedOffset = offset > slides.length / 2 ? offset - slides.length : offset;
         const absOffset = Math.abs(signedOffset);
+        const isVisibleGroup = offset >= 0 && offset < visibleCount;
         const isActive = signedOffset === 0;
         slide.classList.toggle("is-active", isActive);
-        slide.classList.toggle("is-prev", signedOffset === -1);
-        slide.classList.toggle("is-next", signedOffset === 1);
-        slide.classList.toggle("is-hidden", absOffset > 1);
+        slide.classList.toggle("is-prev", visibleCount === 1 && signedOffset === -1);
+        slide.classList.toggle("is-next", visibleCount === 1 ? signedOffset === 1 : offset === 1);
+        slide.classList.toggle("is-visible-group", isVisibleGroup);
+        slide.classList.toggle("is-hidden", visibleCount === 1 ? absOffset > 1 : !isVisibleGroup);
         slide.style.setProperty("--media-offset", signedOffset);
+        slide.style.setProperty("--media-group-offset", offset);
         slide.style.zIndex = String(20 - absOffset);
-        slide.setAttribute("aria-hidden", isActive ? "false" : "true");
-        slide.toggleAttribute("inert", !isActive);
+        slide.setAttribute("aria-hidden", isVisibleGroup ? "false" : "true");
+        slide.toggleAttribute("inert", !isVisibleGroup);
       });
       dots.forEach((dot, index) => {
-        dot.classList.toggle("is-active", index === active);
-        dot.setAttribute("aria-current", index === active ? "true" : "false");
+        const dotTarget = Number(dot.dataset.mediaDot || 0);
+        const isDotActive = dotTarget === active;
+        dot.classList.toggle("is-active", isDotActive);
+        dot.setAttribute("aria-current", isDotActive ? "true" : "false");
       });
     };
 
@@ -1309,7 +1325,7 @@ function initMediaCarousels() {
       if (shouldReset) restart();
     };
 
-    const go = (direction, shouldReset = false) => goTo(active + direction, shouldReset);
+    const go = (direction, shouldReset = false) => goTo(active + direction * step, shouldReset);
 
     carousel.addEventListener("click", (event) => {
       const prev = event.target.closest("[data-media-prev]");
@@ -1320,7 +1336,7 @@ function initMediaCarousels() {
       event.stopPropagation();
       if (prev) go(-1, true);
       if (next) go(1, true);
-      if (dot) goTo(Number(dot.dataset.mediaDot), true);
+      if (dot) goTo(Number(dot.dataset.mediaDot || 0), true);
     }, true);
 
     carousel.addEventListener("mouseenter", () => { paused = true; });
@@ -1726,6 +1742,8 @@ function bind() {
     if (filter) {
       newsFilter = filter.dataset.newsFilter;
       $$("[data-news-filter]").forEach((btn) => btn.classList.toggle("is-active", btn === filter));
+      const nextHash = newsFilter === "industry" ? "#industry" : "#news";
+      if (window.location.hash !== nextHash) history.pushState(null, "", nextHash);
       renderNews();
     }
     if (event.target.closest("[data-close-modal]") || event.target.matches("[data-modal]")) closeModal();
@@ -1767,6 +1785,7 @@ async function boot() {
   const response = await fetch("data/site.json", { cache: "no-store" });
   siteData = await response.json();
   renderI18n();
+  syncNewsFilterFromHash();
   renderNews();
   initSplitText();
   initThemeToggle();
@@ -1781,6 +1800,10 @@ async function boot() {
   initHeroVideo();
   initSideNav();
   bind();
+  window.addEventListener("hashchange", () => {
+    syncNewsFilterFromHash();
+    renderNews();
+  });
 }
 
 boot().catch((error) => {
