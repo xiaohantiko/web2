@@ -1484,26 +1484,20 @@ function initCapabilityCardSwap() {
     });
   };
 
-  const bringToFront = (index) => {
-    if (mediaQuery.matches) return;
-    isPaused = true;
-    order = [index, ...order.filter((item) => item !== index)];
-    applyOrder();
-  };
-
   const rotate = () => {
     if (isPaused || mediaQuery.matches) return;
     order = [...order.slice(1), order[0]];
     applyOrder();
   };
 
-  cards.forEach((card, index) => {
-    card.addEventListener("mouseenter", () => bringToFront(index));
-    card.addEventListener("focus", () => bringToFront(index));
+  lane.addEventListener("mouseenter", () => {
+    isPaused = true;
   });
-
   lane.addEventListener("mouseleave", () => {
     isPaused = false;
+  });
+  lane.addEventListener("focusin", () => {
+    isPaused = true;
   });
   lane.addEventListener("focusout", () => {
     isPaused = false;
