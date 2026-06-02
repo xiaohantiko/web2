@@ -7249,3 +7249,80 @@ html[data-theme="light"] .contact-section .button.ghost {
   border-color: rgba(11, 90, 70, 0.2) !important;
   background: rgba(255, 255, 255, 0.72) !important;
 }
+
+/* Delivery cards: reveal the matching project image only on hover/focus. */
+@media (min-width: 981px) {
+  .home-delivery .delivery-track a {
+    transform-origin: center;
+    transition:
+      transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 260ms ease,
+      color 260ms ease,
+      background 260ms ease,
+      border-color 260ms ease,
+      box-shadow 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .home-delivery .delivery-track a img {
+    display: block;
+    z-index: -1;
+    opacity: 0;
+    transform: scale(1.08);
+    filter: saturate(0.98) contrast(1.1) brightness(0.74);
+  }
+
+  .home-delivery .delivery-track:has(a:hover) a:not(:hover),
+  .home-delivery .delivery-track:has(a:focus-visible) a:not(:focus-visible) {
+    opacity: 0.62;
+    transform: scale(0.92);
+  }
+
+  .home-delivery .delivery-track:has(a:hover) a:hover,
+  .home-delivery .delivery-track:has(a:focus-visible) a:focus-visible,
+  .home-delivery .delivery-track a:hover,
+  .home-delivery .delivery-track a:focus-visible {
+    z-index: 4;
+    opacity: 1;
+    color: #f7fff9;
+    border-color: rgba(189, 243, 94, 0.42);
+    background:
+      linear-gradient(180deg, rgba(2, 17, 15, 0.18), rgba(2, 17, 15, 0.72)),
+      radial-gradient(circle at 24% 12%, rgba(189, 243, 94, 0.18), transparent 34%);
+    box-shadow:
+      0 28px 70px rgba(0, 10, 8, 0.34),
+      0 0 0 1px rgba(189, 243, 94, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transform: scale(1.12);
+  }
+
+  .home-delivery .delivery-track a:hover img,
+  .home-delivery .delivery-track a:focus-visible img {
+    opacity: 0.82;
+    transform: scale(1);
+  }
+
+  html[data-theme="light"] .home-delivery .delivery-track:has(a:hover) a:not(:hover),
+  html[data-theme="light"] .home-delivery .delivery-track:has(a:focus-visible) a:not(:focus-visible) {
+    opacity: 0.66;
+  }
+
+  html[data-theme="light"] .home-delivery .delivery-track:has(a:hover) a:hover,
+  html[data-theme="light"] .home-delivery .delivery-track:has(a:focus-visible) a:focus-visible,
+  html[data-theme="light"] .home-delivery .delivery-track a:hover,
+  html[data-theme="light"] .home-delivery .delivery-track a:focus-visible {
+    color: #f7fff9 !important;
+    border-color: rgba(13, 111, 85, 0.3);
+    background:
+      linear-gradient(180deg, rgba(5, 42, 34, 0.12), rgba(5, 42, 34, 0.58)),
+      radial-gradient(circle at 24% 12%, rgba(189, 243, 94, 0.16), transparent 34%);
+    box-shadow:
+      0 26px 64px rgba(20, 68, 56, 0.22),
+      0 0 0 1px rgba(13, 111, 85, 0.1);
+  }
+
+  html[data-theme="light"] .home-delivery .delivery-track a:hover img,
+  html[data-theme="light"] .home-delivery .delivery-track a:focus-visible img {
+    opacity: 0.72;
+    filter: saturate(1.04) contrast(1.04) brightness(0.86);
+  }
+}
