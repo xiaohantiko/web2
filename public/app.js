@@ -34,7 +34,7 @@ const labels = {
     "nav.home.contact": "联系我们",
     "nav.profile.positioning": "企业定位",
     "nav.profile.rd": "研发制造",
-    "nav.profile.quality": "质量体系",
+    "nav.profile.quality": "资质荣誉",
     "nav.profile.qualifications": "资质能力",
     "nav.news.company": "新闻资讯",
     "nav.news.industry": "行业资讯",
@@ -60,7 +60,7 @@ const labels = {
     "channel.rdCenter": "研发中心",
     "channel.workshop": "车间设备",
     "channel.subsidiaries": "子公司介绍",
-    "channel.qualitySystem": "质量管理体系",
+    "channel.qualitySystem": "资质荣誉",
     "channel.companyHistory": "发展进程",
     "hero.eyebrow": "石家庄辰泰环境科技有限公司",
     "theme.light": "亮",
@@ -132,7 +132,7 @@ const labels = {
     "manufacturing.step3Title": "现场交付",
     "manufacturing.step3Text": "完成安装、调试、培训与运行维护，形成全流程工程闭环。",
     "profile.pageTitle": "关于我们",
-    "profile.pageCopy": "根据公司宣传资料整理企业定位、技术路线、发展历程、研发制造能力和合作方向。",
+    "profile.pageCopy": "根据公司宣传资料整理企业定位、技术路线、发展历程、资质荣誉和合作方向。",
     "profile.coreTitle": "企业定位",
     "profile.coreText": "辰泰环保以有机溶媒回收治理为核心，面向化工、医药、高分子材料、锂电隔膜、纤维、涂布等行业，提供从工艺路线判断到装备制造、现场安装、系统调试和运行培训的全流程服务。",
     "profile.techTitle": "关键技术路线",
@@ -154,7 +154,7 @@ const labels = {
     "profile.founded": "成立时间",
     "profile.rdInvest": "年度研发投入",
     "profile.greenFactory": "市级绿色工厂",
-    "profile.factoryTitle": "研发制造能力",
+    "profile.factoryTitle": "车间设备与企业风采",
     "stats.land": "占地面积",
     "stats.plant": "建筑厂房",
     "stats.labValue": "市级",
@@ -338,7 +338,7 @@ const labels = {
     "nav.home.contact": "Contact",
     "nav.profile.positioning": "Positioning",
     "nav.profile.rd": "R&D and Manufacturing",
-    "nav.profile.quality": "Quality System",
+    "nav.profile.quality": "Honors & Qualifications",
     "nav.profile.qualifications": "Qualifications",
     "nav.news.company": "News",
     "nav.news.industry": "Industry News",
@@ -364,7 +364,7 @@ const labels = {
     "channel.rdCenter": "R&D Center",
     "channel.workshop": "Workshop Equipment",
     "channel.subsidiaries": "Subsidiaries",
-    "channel.qualitySystem": "Quality System",
+    "channel.qualitySystem": "Honors & Qualifications",
     "channel.companyHistory": "Milestones",
     "hero.eyebrow": "Shijiazhuang Chentai Environmental Technology Co., Ltd.",
     "theme.light": "Light",
@@ -436,7 +436,7 @@ const labels = {
     "manufacturing.step3Title": "Site delivery",
     "manufacturing.step3Text": "Complete installation, commissioning, training and maintenance as a closed-loop engineering service.",
     "profile.pageTitle": "About Us",
-    "profile.pageCopy": "A structured summary of Chentai's positioning, technical route, development milestones, R&D and manufacturing capabilities based on the company presentation.",
+    "profile.pageCopy": "A structured summary of Chentai's positioning, technical route, development milestones, honors, qualifications and cooperation direction based on the company presentation.",
     "profile.coreTitle": "Enterprise Positioning",
     "profile.coreText": "Chentai focuses on organic solvent recovery and treatment for chemical, pharmaceutical, polymer material, lithium battery separator, fiber and coating industries, delivering process assessment, equipment manufacturing, installation, commissioning and operation training.",
     "profile.techTitle": "Core Technical Route",
@@ -458,7 +458,7 @@ const labels = {
     "profile.founded": "Founded",
     "profile.rdInvest": "Annual R&D investment",
     "profile.greenFactory": "Municipal green factory",
-    "profile.factoryTitle": "R&D and Manufacturing Capability",
+    "profile.factoryTitle": "Workshop Equipment and Company Moments",
     "stats.land": "Land area",
     "stats.plant": "Plant area",
     "stats.labValue": "Municipal",
@@ -658,9 +658,19 @@ const staticEnglishOverrides = {
   "租赁厂房1000平方米，办公楼200㎡，拥有设备约500万元，负责珠三角及海南项目的开发与生产、维护及售后服务等。": "Leases a 1,000 m2 workshop and a 200 m2 office building, with equipment valued at about RMB 5 million. It supports project development, production, maintenance and after-sales service in the Pearl River Delta and Hainan.",
   "美国 Syntech Chemical 分公司": "Syntech Chemical U.S. Branch",
   "用于开拓美国市场，承担部分组装、售后服务等工作，租用厂房1000㎡，设备约1000万元。": "Established to develop the U.S. market, undertake partial assembly and after-sales service, with a leased 1,000 m2 workshop and equipment valued at about RMB 10 million.",
-  "质量体系管理": "Quality System Management",
-  "石家庄辰泰环境科技有限公司依托ISO9001 质量管理体系认证，构建覆盖设计研发、材料工艺、生产制造、安装调试、售后服务全链条的闭环质量管理体系，以“技术创新为核心、过程管控为关键、客户满意为目标”，实现产品质量稳定可靠、技术服务专业高效，为客户提供节能降耗与资源循环利用综合解决方案。": "With ISO9001 quality management certification, Chentai has built a closed-loop quality system covering design and R&D, materials and processes, manufacturing, installation and commissioning, and after-sales service. With technical innovation at the core, process control as the key, and customer satisfaction as the goal, the system supports stable product quality, efficient technical service, and integrated solutions for energy saving and resource recycling.",
+  "资质荣誉": "Honors & Qualifications",
+  "石家庄辰泰环境科技有限公司持续完善企业资质、技术成果和知识产权体系，已取得高新技术企业、专精特新企业、创新型企业、ISO9001认证、防爆合格证、压力容器制造许可及多项知识产权成果，为项目设计、设备制造和工程交付提供可信支撑。": "Chentai continues to build its qualifications, technical achievements and intellectual property system, with recognition as a high-tech enterprise, specialized and innovative enterprise, innovative enterprise, ISO9001 certification, explosion-proof certificates, pressure-vessel manufacturing license and multiple intellectual property achievements, supporting project design, equipment fabrication and engineering delivery.",
   "ISO9001质量管理体系认证": "ISO9001 Quality Management System Certification",
+  "企业资质": "Enterprise Qualifications",
+  "公司已获得国家级高新技术企业、河北省“专精特新”企业、河北省创新型企业等认定，并持续完善研发中心、绿色工厂和工程服务相关能力，为客户项目提供稳定的企业资信基础。": "The company has been recognized as a national high-tech enterprise, Hebei Specialized and Innovative Enterprise and Hebei Innovative Enterprise, while continuously improving R&D center, green factory and engineering service capabilities.",
+  "体系认证": "System Certification",
+  "通过ISO9001质量管理体系认证，形成覆盖设计、制造、安装调试和售后服务的规范化管理基础，确保工艺方案和成套装备交付具备可追溯、可复核的质量依据。": "ISO9001 certification provides a standardized management basis covering design, manufacturing, installation, commissioning and after-sales service, supporting traceable and reviewable delivery.",
+  "许可与合格证": "Licenses and Certificates",
+  "公司具备压力容器制造许可、防爆合格证及工程服务相关资质，支撑有机尾气治理、溶剂回收、精馏分离和非标设备制造等项目的合规实施。": "The company holds pressure-vessel manufacturing permission, explosion-proof certificates and related engineering-service qualifications, supporting compliant delivery of exhaust treatment, solvent recovery, distillation and non-standard equipment projects.",
+  "知识产权": "Intellectual Property",
+  "围绕精馏分离、尾气治理、溶剂回收和资源循环利用方向，公司持续沉淀专利、商标及相关知识产权成果，为核心工艺包和工程方案提供技术积累。": "Around distillation separation, tail-gas treatment, solvent recovery and resource recycling, the company continues to accumulate patents, trademarks and related intellectual property achievements.",
+  "荣誉沉淀": "Honor Accumulation",
+  "凭借研发创新、绿色制造和工程交付能力，公司逐步形成面向化工、医药、新能源和新材料客户的品牌信誉与项目经验。": "Through R&D innovation, green manufacturing and engineering delivery capability, the company has built brand credibility and project experience for chemical, pharmaceutical, new energy and new materials customers.",
   "防爆合格证": "Explosion-proof Certificate",
   "压力容器制造许可证": "Pressure Vessel Manufacturing License",
   "高新技术企业": "High-tech Enterprise",
@@ -1538,6 +1548,20 @@ function centerActiveChannelLink(activeLink, smooth = false) {
   });
 }
 
+function channelScrollOffset() {
+  const header = $(".site-header");
+  return (header?.getBoundingClientRect().height || 82) + 18;
+}
+
+function scrollToChannelPanelTop(panel) {
+  if (!panel) return;
+  const top = panel.getBoundingClientRect().top + window.scrollY - channelScrollOffset();
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: "smooth",
+  });
+}
+
 function setActiveChannel(target, panels, links, options = {}) {
   const activePanel = panels.find((panel) => channelPanelKey(panel) === target);
   if (!activePanel) return;
@@ -1559,7 +1583,7 @@ function setActiveChannel(target, panels, links, options = {}) {
     history.pushState(null, "", `#${target}`);
   }
   if (options.scroll) {
-    (tabs || activePanel).scrollIntoView({ block: "start", behavior: "smooth" });
+    requestAnimationFrame(() => scrollToChannelPanelTop(activePanel));
   }
 }
 
