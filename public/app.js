@@ -1554,7 +1554,13 @@ function centerActiveChannelLink(activeLink, smooth = false) {
 
 function channelScrollOffset() {
   const header = $(".site-header");
-  return (header?.getBoundingClientRect().height || 82) + 18;
+  const tabs = $("[data-channel-tabs]");
+  const headerHeight = header?.getBoundingClientRect().height || 82;
+  const tabsStyle = tabs ? window.getComputedStyle(tabs) : null;
+  const tabsHeight = tabs && tabsStyle?.position === "sticky"
+    ? tabs.getBoundingClientRect().height + 14
+    : 0;
+  return headerHeight + tabsHeight + 18;
 }
 
 function scrollToChannelPanelTop(panel) {
@@ -1609,7 +1615,10 @@ function initChannelTabs() {
     });
   });
   window.addEventListener("hashchange", () => activateFromHash({ scroll: true }));
-  activateFromHash();
+  activateFromHash({ scroll: Boolean(window.location.hash) });
+  if (window.location.hash) {
+    window.setTimeout(() => activateFromHash({ scroll: true }), 180);
+  }
 }
 
 function initMagneticButtons() {

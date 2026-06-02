@@ -5783,16 +5783,33 @@ a {
 }
 
 .solutions-page #solution-vocs.process-solution-card.text-heavy {
-  grid-template-columns: 96px minmax(0, 0.88fr) minmax(520px, 1.12fr);
+  grid-template-columns: 76px minmax(420px, 0.98fr) minmax(420px, 1.02fr);
+  min-height: auto;
+  align-items: stretch;
+}
+
+.solutions-page #solution-vocs .anchor-alias {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.solutions-page #solution-vocs .solution-content {
+  padding-block: clamp(28px, 3.4vw, 46px);
 }
 
 .solutions-page #solution-vocs .solution-flow {
   padding: clamp(16px, 2vw, 28px);
+  min-height: 0;
 }
 
 .solutions-page #solution-vocs .solution-flow img {
+  width: min(100%, 680px);
   height: auto;
-  max-height: none;
+  max-height: clamp(320px, 42vw, 560px);
+  object-fit: contain;
 }
 
 .solutions-page .solution-subgrid article {
@@ -7512,9 +7529,9 @@ html[data-theme="light"] .home-contact-section .contact-map-copy {
 
 .page-channel-tabs,
 .solution-anchor-grid[data-channel-tabs] {
-  position: relative;
-  top: auto;
-  z-index: 3;
+  position: sticky;
+  top: 104px;
+  z-index: 32;
   margin: 20px auto clamp(22px, 3vw, 40px);
   overflow: visible;
 }
@@ -7528,7 +7545,7 @@ html[data-theme="light"] .home-contact-section .contact-map-copy {
 @media (max-width: 720px) {
   .page-channel-tabs,
   .solution-anchor-grid[data-channel-tabs] {
-    top: auto;
+    top: 86px;
     width: calc(100% - 28px);
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
