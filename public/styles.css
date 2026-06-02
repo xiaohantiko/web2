@@ -7142,21 +7142,21 @@ html[data-theme="light"] body .solutions-page .solution-subgrid article {
 /* Light-mode legibility pass: keep section imagery visible and force card text back to ink colors. */
 html[data-theme="light"] .home-flow-section::after {
   background:
-    linear-gradient(90deg, rgba(247, 251, 248, 0.82) 0%, rgba(239, 248, 244, 0.58) 46%, rgba(230, 242, 235, 0.28) 100%),
-    linear-gradient(180deg, rgba(247, 251, 248, 0.72) 0%, rgba(244, 250, 247, 0.28) 46%, rgba(231, 242, 235, 0.62) 100%),
-    radial-gradient(circle at 78% 28%, rgba(91, 208, 173, 0.16), transparent 34%),
+    linear-gradient(90deg, rgba(247, 251, 248, 0.58) 0%, rgba(239, 248, 244, 0.34) 46%, rgba(230, 242, 235, 0.14) 100%),
+    linear-gradient(180deg, rgba(247, 251, 248, 0.42) 0%, rgba(244, 250, 247, 0.12) 46%, rgba(231, 242, 235, 0.34) 100%),
+    radial-gradient(circle at 78% 28%, rgba(91, 208, 173, 0.1), transparent 34%),
     var(--home-section-image) var(--home-section-position, center)/cover no-repeat;
-  filter: saturate(1.04) contrast(1.04) brightness(1.04);
+  filter: saturate(1.08) contrast(1.06) brightness(0.98);
   opacity: 1;
 }
 
 html[data-theme="light"] .home-contact-section::after {
   background:
-    linear-gradient(90deg, rgba(247, 251, 248, 0.86) 0%, rgba(239, 248, 244, 0.6) 46%, rgba(230, 242, 235, 0.24) 100%),
-    linear-gradient(180deg, rgba(247, 251, 248, 0.7) 0%, rgba(244, 250, 247, 0.3) 46%, rgba(231, 242, 235, 0.64) 100%),
-    radial-gradient(circle at 78% 28%, rgba(91, 208, 173, 0.16), transparent 34%),
+    linear-gradient(90deg, rgba(247, 251, 248, 0.62) 0%, rgba(239, 248, 244, 0.36) 46%, rgba(230, 242, 235, 0.12) 100%),
+    linear-gradient(180deg, rgba(247, 251, 248, 0.44) 0%, rgba(244, 250, 247, 0.12) 46%, rgba(231, 242, 235, 0.36) 100%),
+    radial-gradient(circle at 78% 28%, rgba(91, 208, 173, 0.1), transparent 34%),
     var(--home-section-image) var(--home-section-position, center)/cover no-repeat;
-  filter: saturate(1.04) contrast(1.04) brightness(1.04);
+  filter: saturate(1.08) contrast(1.06) brightness(0.98);
 }
 
 html[data-theme="light"] .news-card h3,
