@@ -49,8 +49,8 @@ const labels = {
     "nav.industries.materials": "新材料行业",
     "nav.solutions.distillation": "精馏分离",
     "nav.solutions.h2s": "硫化氢治理",
-    "nav.solutions.vocs": "VOCs回收治理",
-    "nav.solutions.vps": "活性炭VPS回收",
+    "nav.solutions.vocs": "VOCs/VPS回收治理",
+    "nav.solutions.vps": "VOCs/VPS回收治理",
     "nav.solutions.mvr": "MVR系统",
     "nav.contact.details": "联系方式",
     "nav.contact.inquiry": "客户咨询表",
@@ -63,8 +63,8 @@ const labels = {
     "channel.qualitySystem": "资质荣誉",
     "channel.companyHistory": "发展进程",
     "hero.eyebrow": "石家庄辰泰环境科技有限公司",
-    "theme.light": "亮",
-    "theme.dark": "暗",
+    "theme.light": "亮色",
+    "theme.dark": "暗色",
     "theme.toLight": "切换为亮色主题",
     "theme.toDark": "切换为暗色主题",
     "hero.title": "资源循环利用一体化工艺技术供应商",
@@ -353,8 +353,8 @@ const labels = {
     "nav.industries.materials": "New Materials",
     "nav.solutions.distillation": "Distillation Separation",
     "nav.solutions.h2s": "H2S Treatment",
-    "nav.solutions.vocs": "VOCs Recovery",
-    "nav.solutions.vps": "Activated Carbon VPS",
+    "nav.solutions.vocs": "VOCs / VPS Recovery",
+    "nav.solutions.vps": "VOCs / VPS Recovery",
     "nav.solutions.mvr": "MVR System",
     "nav.contact.details": "Contact Details",
     "nav.contact.inquiry": "Inquiry Form",
@@ -802,6 +802,10 @@ const staticEnglishOverrides = {
   "硫化氢尾气综合治理": "Comprehensive H2S Tail-gas Treatment",
   "脱硫 / 再生 / 后处理": "Desulfurization / Regeneration / Post-treatment",
   "VOCs尾气回收治理": "VOCs Exhaust Recovery and Treatment",
+  "VOCs/VPS回收治理": "VOCs / VPS Recovery",
+  "VOCs尾气回收治理 / 活性炭VPS回收": "VOCs Exhaust Recovery / Activated Carbon VPS Recovery",
+  "VOCs尾气回收治理与颗粒活性炭VPS回收装置": "VOCs Exhaust Recovery and Granular Activated Carbon VPS Recovery System",
+  "我们通过自有真空负压专利技术，融合高效吸收、真空脱附、深度冷凝与颗粒活性炭吸附回收等组合工艺，保障尾气回收治理安全性，并降低动力消耗与污水排放压力。": "Using proprietary vacuum negative-pressure technology, Chentai combines efficient absorption, vacuum desorption, deep condensation and granular activated carbon adsorption recovery to improve exhaust recovery safety while reducing power consumption and wastewater treatment pressure.",
   "颗粒活性炭VPS回收": "Granular Activated Carbon VPS Recovery",
   "多效蒸发系统": "Multi-effect Evaporation System",
   "混氨技术及装置": "Ammonia Mixing Technology and Equipment",
@@ -984,7 +988,7 @@ function updateThemeToggle() {
 }
 
 function initThemeToggle() {
-  applyTheme(getStoredTheme() || "dark");
+  applyTheme("light");
   const toggle = $("[data-theme-toggle]");
   if (!toggle || toggle.dataset.themeReady === "true") return;
   toggle.dataset.themeReady = "true";
@@ -1567,7 +1571,7 @@ function setActiveChannel(target, panels, links, options = {}) {
   if (!activePanel) return;
   let activeLink = null;
   panels.forEach((panel) => {
-    panel.hidden = channelPanelKey(panel) !== target;
+    panel.hidden = false;
   });
   links.forEach((link) => {
     const linkTarget = resolveChannelTarget(link.hash, panels, links);
@@ -1736,6 +1740,16 @@ function initSideNav() {
   window.addEventListener("resize", setActive);
 }
 
+function initHomeStartPosition() {
+  if (!$(".home-flow") || window.location.hash) return;
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  reset();
+  requestAnimationFrame(reset);
+  [120, 650, 1200, 2200, 3400, 4800].forEach((delay) => window.setTimeout(reset, delay));
+  window.addEventListener("load", reset, { once: true });
+}
+
 function openNews(id, type) {
   const item = allNews().find((entry) => entry.id === id && entry.sourceType === type);
   if (!item) return;
@@ -1871,6 +1885,7 @@ async function boot() {
   initChannelTabs();
   initHeroVideo();
   initSideNav();
+  initHomeStartPosition();
   bind();
   window.addEventListener("hashchange", () => {
     syncNewsFilterFromHash();
