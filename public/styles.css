@@ -7218,6 +7218,11 @@ html[data-theme="light"] body .solutions-page .solution-subgrid article {
 
   .home-capabilities .card-swap-lane .capability-tile.is-flow:hover,
   .home-capabilities .card-swap-lane .capability-tile.is-flow:focus-visible {
+    transform:
+      translate(-50%, -50%)
+      translate3d(var(--swap-x), var(--swap-y), var(--swap-z))
+      scale(var(--swap-scale))
+      skewY(var(--swap-skew));
     box-shadow:
       0 42px 104px rgba(0, 13, 10, 0.46),
       0 0 0 1px rgba(189, 243, 94, 0.16),
