@@ -1465,6 +1465,59 @@ function initHeroModeControls() {
   updateHeroMode(activeHeroMode);
 }
 
+function initCapabilityCardSwap() {
+  const lane = $("[data-card-swap]");
+  if (!lane || lane.dataset.cardSwapReady === "true") return;
+  const cards = $$(".capability-tile", lane);
+  if (cards.length < 2) return;
+
+  lane.dataset.cardSwapReady = "true";
+  let order = cards.map((_, index) => index);
+  let isPaused = false;
+  const mediaQuery = window.matchMedia("(max-width: 980px)");
+
+  const applyOrder = () => {
+    cards.forEach((card, index) => {
+      const slot = order.indexOf(index);
+      card.dataset.swapSlot = String(slot);
+      card.style.zIndex = String(cards.length - slot);
+    });
+  };
+
+  const bringToFront = (index) => {
+    if (mediaQuery.matches) return;
+    isPaused = true;
+    order = [index, ...order.filter((item) => item !== index)];
+    applyOrder();
+  };
+
+  const rotate = () => {
+    if (isPaused || mediaQuery.matches) return;
+    order = [...order.slice(1), order[0]];
+    applyOrder();
+  };
+
+  cards.forEach((card, index) => {
+    card.addEventListener("mouseenter", () => bringToFront(index));
+    card.addEventListener("focus", () => bringToFront(index));
+  });
+
+  lane.addEventListener("mouseleave", () => {
+    isPaused = false;
+  });
+  lane.addEventListener("focusout", () => {
+    isPaused = false;
+  });
+
+  if (typeof mediaQuery.addEventListener === "function") {
+    mediaQuery.addEventListener("change", applyOrder);
+  }
+
+  applyOrder();
+  const timer = window.setInterval(rotate, 4800);
+  window.addEventListener("beforeunload", () => window.clearInterval(timer), { once: true });
+}
+
 function channelPanelKey(panel) {
   return panel?.dataset.channelPanel || panel?.id || "";
 }
@@ -1792,6 +1845,7 @@ async function boot() {
   initSpotlightCards();
   initInteractiveHero();
   initHeroModeControls();
+  initCapabilityCardSwap();
   initMagneticButtons();
   initHomeReveals();
   initGalleryCarousel();
