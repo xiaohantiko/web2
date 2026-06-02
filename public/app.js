@@ -81,10 +81,10 @@ const labels = {
     "hero.expertiseValue": "20年+",
     "hero.clients": "客户",
     "hero.clientsValue": "1000+",
-    "hero.railDistillation": "精馏分离",
-    "hero.railSolvent": "溶剂回收",
-    "hero.railGas": "尾气治理",
-    "hero.railManufacturing": "装备制造",
+    "hero.railDistillation": "精馏分离技术",
+    "hero.railSolvent": "尾气回收治理技术",
+    "hero.railGas": "硫化氢回收技术",
+    "hero.railManufacturing": "EPC总包服务",
     "hero.consoleTitle": "工艺交互驾驶舱",
     "hero.consoleHint": "悬停切换能力焦点",
     "hero.modeGas": "尾气治理",
@@ -385,10 +385,10 @@ const labels = {
     "hero.expertiseValue": "20+",
     "hero.clients": "Clients",
     "hero.clientsValue": "1000+",
-    "hero.railDistillation": "Distillation Separation",
-    "hero.railSolvent": "Solvent Recovery",
-    "hero.railGas": "Exhaust Treatment",
-    "hero.railManufacturing": "Equipment Fabrication",
+    "hero.railDistillation": "Distillation Technology",
+    "hero.railSolvent": "Exhaust Recovery Treatment",
+    "hero.railGas": "H2S Recovery Technology",
+    "hero.railManufacturing": "EPC Turnkey Service",
     "hero.consoleTitle": "Interactive Process Console",
     "hero.consoleHint": "Hover to shift focus",
     "hero.modeGas": "Exhaust Treatment",
@@ -1571,7 +1571,7 @@ function setActiveChannel(target, panels, links, options = {}) {
   if (!activePanel) return;
   let activeLink = null;
   panels.forEach((panel) => {
-    panel.hidden = false;
+    panel.hidden = panel !== activePanel;
   });
   links.forEach((link) => {
     const linkTarget = resolveChannelTarget(link.hash, panels, links);

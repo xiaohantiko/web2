@@ -7487,7 +7487,7 @@ html[data-theme="light"] .home-contact-section .contact-map-copy {
   border-width: 0 1px 0 0;
 }
 
-/* 20260602s: default-light refinements and full-channel detail pages. */
+/* 20260602t: default-light refinements and single-channel detail pages. */
 .profile-page main,
 .innovation-page main,
 .industries-page main,
@@ -7692,6 +7692,10 @@ html[data-theme="light"] .certificate-wall figcaption {
 
 .profile-certificate-wall img {
   height: clamp(150px, 17vw, 238px);
+}
+
+.research-infrastructure-grid {
+  margin-top: clamp(18px, 2.4vw, 28px);
 }
 
 .process-solution-card {
