@@ -1752,11 +1752,54 @@ function initSideNav() {
 function initHomeStartPosition() {
   if (!$(".home-flow") || window.location.hash) return;
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-  const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  let userScrolled = false;
+  const markUserScroll = () => {
+    if (window.scrollY > 24) userScrolled = true;
+  };
+  const reset = () => {
+    if (userScrolled) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+  window.addEventListener("scroll", markUserScroll, { passive: true, once: true });
   reset();
   requestAnimationFrame(reset);
-  [120, 650, 1200, 2200, 3400, 4800].forEach((delay) => window.setTimeout(reset, delay));
+  [120, 650].forEach((delay) => window.setTimeout(reset, delay));
   window.addEventListener("load", reset, { once: true });
+}
+
+function initDeferredMapFrames() {
+  const frames = $$("iframe[data-map-src]");
+  if (!frames.length) return;
+
+  const loadFrame = (frame) => {
+    if (!frame?.dataset.mapSrc || frame.dataset.mapLoaded === "true") return;
+    frame.dataset.mapLoaded = "true";
+    const restoreY = window.scrollY;
+    frame.addEventListener("load", () => {
+      const wasFocused = document.activeElement === frame;
+      frame.blur();
+      if (wasFocused && Math.abs(window.scrollY - restoreY) > 80) {
+        document.body.focus({ preventScroll: true });
+        window.scrollTo({ top: restoreY, left: 0, behavior: "auto" });
+      }
+    }, { once: true });
+    frame.src = frame.dataset.mapSrc;
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    frames.forEach(loadFrame);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadFrame(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.18 });
+
+  frames.forEach((frame) => observer.observe(frame));
 }
 
 function openNews(id, type) {
@@ -1895,6 +1938,7 @@ async function boot() {
   initHeroVideo();
   initSideNav();
   initHomeStartPosition();
+  initDeferredMapFrames();
   bind();
   window.addEventListener("hashchange", () => {
     syncNewsFilterFromHash();
