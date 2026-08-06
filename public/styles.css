@@ -963,6 +963,11 @@ a {
   will-change: transform, opacity, filter;
 }
 
+.split-line {
+  display: block;
+  white-space: nowrap;
+}
+
 .is-split-visible .split-unit {
   opacity: 1;
   transform: translateY(0);

@@ -1680,14 +1680,28 @@ function initSplitText() {
   $$("[data-split-text]").forEach((element) => {
     const text = element.textContent.trim();
     if (!text) return;
+    const manualLines = currentLang === "zh" ? element.dataset.splitLinesZh : element.dataset.splitLinesEn;
     const splitType = element.dataset.splitType || "chars";
-    const units = splitType === "words" ? text.split(/(\s+)/) : Array.from(text);
     element.setAttribute("aria-label", text);
-    element.innerHTML = units.map((unit, index) => {
-      const isSpace = /^\s+$/.test(unit);
-      const safe = isSpace ? "&nbsp;" : escapeHtml(unit);
-      return `<span class="split-unit" aria-hidden="true" style="--split-index:${index};">${safe}</span>`;
-    }).join("");
+    if (manualLines) {
+      let splitIndex = 0;
+      element.innerHTML = manualLines.split("|").map((line) => {
+        const units = splitType === "words" ? line.split(/(\s+)/) : Array.from(line);
+        const content = units.map((unit) => {
+          const isSpace = /^\s+$/.test(unit);
+          const safe = isSpace ? "&nbsp;" : escapeHtml(unit);
+          return `<span class="split-unit" aria-hidden="true" style="--split-index:${splitIndex++};">${safe}</span>`;
+        }).join("");
+        return `<span class="split-line">${content}</span>`;
+      }).join("");
+    } else {
+      const units = splitType === "words" ? text.split(/(\s+)/) : Array.from(text);
+      element.innerHTML = units.map((unit, index) => {
+        const isSpace = /^\s+$/.test(unit);
+        const safe = isSpace ? "&nbsp;" : escapeHtml(unit);
+        return `<span class="split-unit" aria-hidden="true" style="--split-index:${index};">${safe}</span>`;
+      }).join("");
+    }
     element.classList.remove("is-split-visible");
   });
 
