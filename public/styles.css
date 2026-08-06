@@ -7830,3 +7830,31 @@ html[data-theme="light"] .certificate-wall figcaption {
     filter: saturate(1.04) contrast(1.04) brightness(0.86);
   }
 }
+
+/* Delivery section: processed laser-cutting photography supplied by the client. */
+.home-delivery {
+  --home-section-image: url("assets/home/delivery-laser-cutting.jpg");
+  --home-section-position: center 52%;
+}
+
+.home-delivery::after {
+  background:
+    linear-gradient(90deg, rgba(2, 17, 15, 0.76) 0%, rgba(2, 17, 15, 0.46) 48%, rgba(2, 17, 15, 0.72) 100%),
+    linear-gradient(180deg, rgba(2, 17, 15, 0.34) 0%, rgba(2, 17, 15, 0.08) 48%, rgba(2, 17, 15, 0.62) 100%),
+    var(--home-section-image) var(--home-section-position)/cover no-repeat;
+  filter: saturate(0.96) contrast(1.08) brightness(0.9);
+}
+
+html[data-theme="light"] .home-delivery::after {
+  background:
+    linear-gradient(90deg, rgba(237, 247, 242, 0.18) 0%, rgba(245, 250, 247, 0.04) 48%, rgba(229, 241, 235, 0.16) 100%),
+    linear-gradient(180deg, rgba(244, 250, 247, 0.1) 0%, transparent 54%, rgba(229, 241, 235, 0.12) 100%),
+    var(--home-section-image) var(--home-section-position)/cover no-repeat;
+  filter: saturate(0.94) contrast(1.02) brightness(1.04);
+}
+
+@media (max-width: 720px) {
+  .home-delivery {
+    --home-section-position: 52% center;
+  }
+}
