@@ -44,3 +44,18 @@ python3 bootstrap_access.py
 
 脚本保留内置超级管理员，创建内容编辑、新闻编辑、留言客服和只读审阅
 四个角色。它不会修改 Public 策略，并会在发现匿名留言权限时主动停止。
+
+## 运营发布体验
+
+角色权限验证完成后，运行 `bootstrap_editor_experience.py`：
+
+```bash
+cd /opt/chentai-cms
+chmod 700 bootstrap_editor_experience.py
+python3 bootstrap_editor_experience.py
+```
+
+脚本会把文章和证书翻译嵌入主编辑表单，配置封面、正文图片和证书图片
+上传位置，隐藏运营人员不需要直接维护的技术集合与字段，并创建“辰泰官网素材”
+文件夹树。脚本只更新 Directus 展示元数据和虚拟文件夹，不删除内容、不移动
+已有文件，也不会修改 Public 策略。
