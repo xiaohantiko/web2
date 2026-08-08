@@ -795,32 +795,33 @@ def authenticate(env: dict[str, str]) -> str:
     return token
 
 
-def exists(token: str, path: str) -> bool:
-    try:
-        request("GET", path, token=token)
-        return True
-    except ApiError as exc:
-        if exc.status == 404:
-            return False
-        raise
-
-
 def create_collections(token: str) -> None:
+    _, result = request("GET", "/collections", token=token)
+    existing = {
+        item.get("collection")
+        for item in result.get("data", [])
+        if isinstance(item, dict)
+    }
     for definition in schema_definitions():
         name = definition["collection"]
-        if exists(token, f"/collections/{urllib.parse.quote(name)}"):
+        if name in existing:
             print(f"[skip] collection {name}")
             continue
         request("POST", "/collections", token=token, payload=definition)
         print(f"[ok]   collection {name}")
+        existing.add(name)
 
 
 def create_relations(token: str) -> None:
+    _, result = request("GET", "/relations", token=token)
+    existing = {
+        (item.get("collection"), item.get("field"))
+        for item in result.get("data", [])
+        if isinstance(item, dict)
+    }
     for collection_name, field, related, related_field, on_delete in RELATIONS:
-        relation_path = (
-            f"/relations/{urllib.parse.quote(collection_name)}/{urllib.parse.quote(field)}"
-        )
-        if exists(token, relation_path):
+        relation_key = (collection_name, field)
+        if relation_key in existing:
             print(f"[skip] relation {collection_name}.{field} -> {related}.{related_field}")
             continue
         payload = {
@@ -845,6 +846,7 @@ def create_relations(token: str) -> None:
         }
         request("POST", "/relations", token=token, payload=payload)
         print(f"[ok]   relation {collection_name}.{field} -> {related}.{related_field}")
+        existing.add(relation_key)
 
 
 def deterministic_id(kind: str, key: str) -> str:
