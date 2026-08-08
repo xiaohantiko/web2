@@ -18,7 +18,16 @@ import urllib.parse
 import uuid
 from typing import Any
 
-from bootstrap_core_schema import ApiError, ENV_PATH, authenticate, load_env, request, zh
+from bootstrap_core_schema import (
+    ApiError,
+    CONTENT_STATUS,
+    ENV_PATH,
+    TRANSLATION_STATUS,
+    authenticate,
+    load_env,
+    request,
+    zh,
+)
 
 
 IMAGE_MIME_TYPES = [
@@ -288,7 +297,28 @@ def ensure_translation_interfaces(token: str) -> None:
             "PATCH",
             f"/relations/{collection_path(junction)}/{collection_path(reverse_field)}",
             token=token,
-            payload={"meta": {"one_field": "translations"}},
+            payload={
+                "meta": {
+                    "one_field": "translations",
+                    "junction_field": "language_code",
+                }
+            },
+        )
+        request(
+            "PATCH",
+            f"/relations/{collection_path(junction)}/language_code",
+            token=token,
+            payload={"meta": {"junction_field": reverse_field}},
+        )
+        # The parent foreign key is populated by Directus when the nested
+        # translation is saved. Keeping it required in the hidden child form
+        # makes new parent items fail client-side validation before that
+        # automatic relation value can be injected.
+        request(
+            "PATCH",
+            f"/fields/{collection_path(junction)}/{collection_path(reverse_field)}",
+            token=token,
+            payload={"meta": {"required": False, "hidden": True}},
         )
     print("[ok]     translation relations embedded in parent forms")
 
@@ -395,6 +425,7 @@ def field_meta(
     readonly: bool | None = None,
     interface: str | None = None,
     options: dict[str, Any] | None = None,
+    display: str | None = None,
     note: str | None = None,
 ) -> dict[str, Any]:
     meta: dict[str, Any] = {"sort": sort, "width": width, "hidden": hidden}
@@ -404,9 +435,32 @@ def field_meta(
         meta["interface"] = interface
     if options is not None:
         meta["options"] = options
+    if display is not None:
+        meta["display"] = display
     if note is not None:
         meta["note"] = note
     return meta
+
+
+def localized_select_meta(
+    sort: int,
+    choices: list[tuple[str, str]],
+    *,
+    note: str | None = None,
+) -> dict[str, Any]:
+    return field_meta(
+        sort,
+        width="half",
+        interface="select-dropdown",
+        options={
+            "choices": [
+                {"text": label, "value": value}
+                for value, label in choices
+            ]
+        },
+        display="labels",
+        note=note,
+    )
 
 
 def form_field_updates(folders: dict[str, str]) -> dict[str, dict[str, dict[str, Any]]]:
@@ -415,7 +469,11 @@ def form_field_updates(folders: dict[str, str]) -> dict[str, dict[str, dict[str,
 
     return {
         "articles": {
-            "status": field_meta(1, width="half", note="先保存为草稿，确认后再改为已发布"),
+            "status": localized_select_meta(
+                1,
+                CONTENT_STATUS,
+                note="先保存为草稿，确认后再改为已发布",
+            ),
             "category": field_meta(
                 2,
                 width="half",
@@ -466,7 +524,7 @@ def form_field_updates(folders: dict[str, str]) -> dict[str, dict[str, dict[str,
                 options={"toolbar": ARTICLE_TOOLBAR, "folder": news_folder},
                 note="支持排版、链接、表格和正文图片上传",
             ),
-            "translation_status": field_meta(4, width="half"),
+            "translation_status": localized_select_meta(4, TRANSLATION_STATUS),
             "seo_title": field_meta(5, width="half", note="可留空，后续统一优化"),
             "seo_description": field_meta(6, note="可留空，后续统一优化"),
             "article_id": field_meta(90, hidden=True),
@@ -474,7 +532,11 @@ def form_field_updates(folders: dict[str, str]) -> dict[str, dict[str, dict[str,
             "id": field_meta(92, hidden=True, readonly=True),
         },
         "certificates": {
-            "status": field_meta(1, width="half", note="确认资料无误后再改为已发布"),
+            "status": localized_select_meta(
+                1,
+                CONTENT_STATUS,
+                note="确认资料无误后再改为已发布",
+            ),
             "category": field_meta(
                 2,
                 width="half",
@@ -522,7 +584,7 @@ def form_field_updates(folders: dict[str, str]) -> dict[str, dict[str, dict[str,
             "title": field_meta(1, note="证书、专利、商标或荣誉的正式名称"),
             "issuer": field_meta(2),
             "summary": field_meta(3, note="可填写证书用途或简要说明"),
-            "translation_status": field_meta(4, width="half"),
+            "translation_status": localized_select_meta(4, TRANSLATION_STATUS),
             "certificate_id": field_meta(90, hidden=True),
             "language_code": field_meta(91, hidden=True),
             "id": field_meta(92, hidden=True, readonly=True),

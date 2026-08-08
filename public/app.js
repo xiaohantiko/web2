@@ -3,7 +3,10 @@ let currentLang = "zh";
 let newsFilter = "company";
 let homeRevealObserver;
 let activeHeroMode = "distillation";
-let currentTheme = "dark";
+let currentTheme = "light";
+let cmsNews = [];
+let cmsSiteSettings = null;
+let cmsManagedPage = null;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -315,7 +318,8 @@ const labels = {
     "form.submit": "提交咨询",
     "form.download": "下载咨询表",
     "form.success": "咨询已提交，我们会尽快联系您。",
-    "form.savedNoEmail": "咨询已提交并保存。当前后台邮件尚未配置，请部署时设置 SMTP 邮箱参数。",
+    "form.savedNoEmail": "咨询已提交，我们会尽快与您联系。",
+    "form.consent": "我同意所填信息仅用于本次项目咨询与联系。",
     "form.staticError": "当前 GitHub Pages 为静态演示，无法直接提交表单。请部署 Node 后台后使用，或下载咨询表发送至邮箱。"
   },
   en: {
@@ -619,7 +623,8 @@ const labels = {
     "form.submit": "Submit Inquiry",
     "form.download": "Download Form",
     "form.success": "Your inquiry has been submitted. We will contact you soon.",
-    "form.savedNoEmail": "Your inquiry has been saved. Email delivery is not configured on the backend yet.",
+    "form.savedNoEmail": "Your inquiry has been submitted. We will contact you shortly.",
+    "form.consent": "I agree that the information provided may be used for this project inquiry and follow-up.",
     "form.staticError": "GitHub Pages is a static demo and cannot submit forms directly. Deploy the Node backend or download the form and email it to us."
   }
 };
@@ -1096,14 +1101,499 @@ function renderI18n() {
   updateHeroMode(activeHeroMode);
 }
 
+function currentCmsPageKey() {
+  const file = window.location.pathname.split("/").pop() || "index.html";
+  return {
+    "index.html": "home",
+    "profile.html": "profile",
+    "news.html": "news",
+    "innovation.html": "innovation",
+    "industries.html": "industries",
+    "solutions.html": "solutions",
+    "products.html": "products",
+    "qualifications.html": "qualifications",
+    "inquiry.html": "inquiry"
+  }[file] || "home";
+}
+
+function cmsLocalized(record, field) {
+  if (!record) return "";
+  const suffix = currentLang === "en" ? "en" : "zh";
+  return String(record[`${field}_${suffix}`] || "").trim();
+}
+
+function cmsPlainText(value) {
+  if (!value) return "";
+  const parsed = new DOMParser().parseFromString(String(value), "text/html");
+  return parsed.body.textContent?.replace(/\s+/g, " ").trim() || "";
+}
+
+function sanitizeCmsHtml(value) {
+  if (!value) return "";
+  const parsed = new DOMParser().parseFromString(String(value), "text/html");
+  const allowed = new Set(["P", "H2", "H3", "UL", "OL", "LI", "STRONG", "EM", "B", "I", "BR", "BLOCKQUOTE", "A"]);
+  Array.from(parsed.body.querySelectorAll("*")).forEach((node) => {
+    if (!allowed.has(node.tagName)) {
+      node.replaceWith(...node.childNodes);
+      return;
+    }
+    Array.from(node.attributes).forEach((attribute) => {
+      const keepHref = node.tagName === "A" && attribute.name === "href";
+      if (!keepHref) node.removeAttribute(attribute.name);
+    });
+    if (node.tagName === "A") {
+      const href = node.getAttribute("href") || "";
+      if (!/^(https?:|mailto:|tel:|#|\/)/i.test(href)) node.removeAttribute("href");
+      node.setAttribute("rel", "noopener");
+    }
+  });
+  return parsed.body.innerHTML;
+}
+
+function cmsFileId(value) {
+  return typeof value === "string" ? value : value?.id || "";
+}
+
+function cmsSafeUrl(value) {
+  const url = String(value || "").trim();
+  if (!url) return "";
+  return /^(https?:|mailto:|tel:|#|\/)/i.test(url) ? url : "";
+}
+
+function applyCmsSettings() {
+  const settings = cmsSiteSettings;
+  if (!settings) return;
+
+  const labelOverrides = [
+    ["company.name", "company_name"],
+    ["hero.eyebrow", "company_name"],
+    ["hero.title", "tagline"],
+    ["hero.copy", "summary"],
+    ["contact.phoneValue", "phone"],
+    ["contact.emailValue", "email"],
+    ["contact.addressValue", "address"]
+  ];
+  labelOverrides.forEach(([labelKey, field]) => {
+    const zhValue = String(settings[`${field}_zh`] || settings[field] || "").trim();
+    const enValue = String(settings[`${field}_en`] || settings[field] || "").trim();
+    if (zhValue) labels.zh[labelKey] = zhValue;
+    if (enValue) labels.en[labelKey] = enValue;
+  });
+
+  const companyNameZh = String(settings.company_name_zh || "").trim();
+  const companyNameEn = String(settings.company_name_en || "").trim();
+  const shortNameEn = String(settings.short_name_en || companyNameEn).trim();
+  const taglineEn = String(settings.tagline_en || "").trim();
+  $$(".brand strong").forEach((node) => {
+    const value = currentLang === "en" ? shortNameEn : companyNameZh;
+    if (value) node.textContent = value;
+  });
+  $$(".brand small").forEach((node) => {
+    const value = currentLang === "en" ? taglineEn : companyNameEn;
+    if (value) node.textContent = value;
+  });
+
+  const logo = cmsFileId(settings.logo_file);
+  if (logo) {
+    $$(".brand img").forEach((image) => {
+      image.src = cmsAssetUrl(logo, { transform: false });
+    });
+  }
+  const qr = cmsFileId(settings.wechat_qr_file);
+  if (qr) {
+    $$(".nav-wechat-card img, .contact-wechat img, .contact-qr img").forEach((image) => {
+      image.src = cmsAssetUrl(qr, { transform: false });
+    });
+  }
+  const mapUrl = cmsSafeUrl(settings.map_url);
+  if (mapUrl) {
+    $$(".nav-map-link, [data-cms-map-link]").forEach((link) => {
+      link.href = mapUrl;
+    });
+    $$(".contact-map-panel .button").forEach((link) => {
+      link.href = mapUrl;
+    });
+    $$(".contact-map-frame").forEach((frame) => {
+      frame.dataset.mapSrc = mapUrl;
+      if (frame.src && frame.src !== "about:blank") frame.src = mapUrl;
+    });
+  }
+  const contactValues = [
+    ["contact.phone", String(settings.phone || "").trim()],
+    ["contact.email", String(settings.email || "").trim()],
+    ["contact.address", cmsLocalized(settings, "address")]
+  ];
+  contactValues.forEach(([labelKey, value]) => {
+    if (!value) return;
+    $$(`[data-i18n="${labelKey}"]`).forEach((label) => {
+      const valueNode = label.nextElementSibling;
+      if (valueNode) valueNode.textContent = value;
+    });
+  });
+  const address = cmsLocalized(settings, "address");
+  if (address) {
+    $$('[data-i18n="contact.addressValue"], [data-i18n="contact.mapCopy"]').forEach((node) => {
+      node.textContent = address;
+    });
+  }
+  const footerText = cmsLocalized(settings, "footer");
+  if (footerText) {
+    const footer = $(".footer span:first-child");
+    if (footer) footer.textContent = footerText;
+  }
+}
+
+function cmsSectionTarget(section) {
+  if (!section?.dom_selector) return null;
+  try {
+    return document.querySelector(section.dom_selector);
+  } catch (error) {
+    console.warn(`Invalid CMS selector: ${section.dom_selector}`, error);
+    return null;
+  }
+}
+
+function cmsSectionBodyTarget(root) {
+  return root.querySelector(".solution-body")
+    || root.querySelector("[data-cms-body]")
+    || Array.from(root.querySelectorAll("p")).find((node) => (
+      !node.classList.contains("eyebrow")
+      && !node.classList.contains("section-kicker")
+      && !node.classList.contains("hero-subtitle")
+    ));
+}
+
+function renderCmsItems(section, root) {
+  root.querySelector(":scope > .cms-managed-items")?.remove();
+  const items = (section.items || [])
+    .filter((item) => item.enabled !== false)
+    .sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0));
+  if (!items.length) return;
+
+  const list = document.createElement("div");
+  list.className = "cms-managed-items";
+  items.forEach((item) => {
+    const linkUrl = cmsSafeUrl(item.link_url);
+    const card = document.createElement(linkUrl ? "a" : "article");
+    card.className = "cms-managed-item";
+    if (linkUrl) card.href = linkUrl;
+    const imageId = cmsFileId(item.image_file);
+    if (imageId) {
+      const image = document.createElement("img");
+      image.src = cmsAssetUrl(imageId);
+      image.alt = cmsLocalized(item, "title") || item.admin_label || "";
+      image.loading = "lazy";
+      card.appendChild(image);
+    }
+    if (item.metric_value) {
+      const value = document.createElement("span");
+      value.className = "cms-managed-value";
+      value.textContent = item.metric_value;
+      card.appendChild(value);
+    }
+    const title = cmsLocalized(item, "title");
+    if (title) {
+      const heading = document.createElement("h3");
+      heading.textContent = title;
+      card.appendChild(heading);
+    }
+    const summary = cmsLocalized(item, "summary");
+    if (summary) {
+      const copy = document.createElement("p");
+      copy.textContent = summary;
+      card.appendChild(copy);
+    }
+    list.appendChild(card);
+  });
+  root.appendChild(list);
+}
+
+function applyCmsSection(section, root) {
+  root.hidden = section.enabled === false;
+  root.classList.toggle("cms-managed-hidden", section.enabled === false);
+  if (section.enabled === false) return;
+
+  const layout = section.layout || "inherit";
+  root.dataset.cmsLayout = layout;
+  root.classList.toggle("cms-layout-managed", layout !== "inherit");
+
+  const eyebrow = cmsLocalized(section, "eyebrow");
+  const title = cmsLocalized(section, "title");
+  const subtitle = cmsLocalized(section, "subtitle");
+  const body = cmsLocalized(section, "body");
+  const eyebrowTarget = root.querySelector(".eyebrow");
+  const titleTarget = root.querySelector("h1, h2, h3");
+  const subtitleTarget = root.querySelector(".hero-subtitle, [data-cms-subtitle]");
+  const bodyTarget = cmsSectionBodyTarget(root);
+
+  if (eyebrow && eyebrowTarget) eyebrowTarget.textContent = eyebrow;
+  if (title && titleTarget) {
+    titleTarget.textContent = title;
+    if (titleTarget.matches("[data-split-text]")) {
+      delete titleTarget.dataset.splitLinesZh;
+      delete titleTarget.dataset.splitLinesEn;
+    }
+  }
+  if (subtitle && subtitleTarget) subtitleTarget.textContent = subtitle;
+  if (body && bodyTarget) {
+    if (bodyTarget.matches(".solution-body, [data-cms-body]")) {
+      bodyTarget.innerHTML = sanitizeCmsHtml(body);
+    } else {
+      bodyTarget.textContent = cmsPlainText(body);
+    }
+  }
+
+  const imageId = cmsFileId(section.image_file);
+  const imageTarget = root.querySelector("img");
+  if (imageId && imageTarget) {
+    imageTarget.src = cmsAssetUrl(imageId);
+    imageTarget.alt = title || section.admin_label || imageTarget.alt;
+  }
+  const buttonText = cmsLocalized(section, "button_text");
+  const button = root.querySelector(".button, .hero-actions a, [data-cms-button]");
+  if (button) {
+    if (buttonText) button.textContent = buttonText;
+    const buttonUrl = cmsSafeUrl(section.button_url);
+    if (buttonUrl) button.href = buttonUrl;
+  }
+  renderCmsItems(section, root);
+}
+
+function renderCustomCmsSection(section, mount) {
+  if (section.enabled === false) return;
+  const root = document.createElement("section");
+  root.className = "section cms-managed-section";
+  root.dataset.cmsLayout = section.layout || "inherit";
+  root.dataset.cmsSectionId = section.id;
+  const imageId = cmsFileId(section.image_file);
+  const eyebrow = cmsLocalized(section, "eyebrow");
+  const title = cmsLocalized(section, "title") || section.admin_label || "";
+  const subtitle = cmsLocalized(section, "subtitle");
+  const body = cmsLocalized(section, "body");
+  const buttonUrl = cmsSafeUrl(section.button_url);
+  root.innerHTML = `
+    <div class="cms-managed-copy">
+      ${eyebrow ? `<p class="eyebrow">${escapeHtml(eyebrow)}</p>` : ""}
+      ${title ? `<h2>${escapeHtml(title)}</h2>` : ""}
+      ${subtitle ? `<p class="cms-managed-subtitle">${escapeHtml(subtitle)}</p>` : ""}
+      ${body ? `<div data-cms-body>${sanitizeCmsHtml(body)}</div>` : ""}
+      ${buttonUrl && cmsLocalized(section, "button_text") ? `<a class="button" href="${escapeHtml(buttonUrl)}">${escapeHtml(cmsLocalized(section, "button_text"))}</a>` : ""}
+    </div>
+    ${imageId ? `<figure><img src="${cmsAssetUrl(imageId)}" alt="${escapeHtml(title)}" loading="lazy" /></figure>` : ""}
+  `;
+  renderCmsItems(section, root);
+  mount.appendChild(root);
+}
+
+function applyCmsManagedContent() {
+  applyCmsSettings();
+  const page = cmsManagedPage;
+  if (!page) {
+    renderI18n();
+    return;
+  }
+  const main = $("main");
+  if (!main) return;
+  main.hidden = page.enabled === false;
+  const seoTitle = cmsLocalized(page, "seo_title");
+  const seoDescription = cmsLocalized(page, "seo_description");
+  if (seoTitle) document.title = seoTitle;
+  if (seoDescription) {
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content = seoDescription;
+  }
+
+  const oldMount = $("[data-cms-custom-sections]");
+  oldMount?.remove();
+  const mount = document.createElement("div");
+  mount.dataset.cmsCustomSections = "true";
+  const sections = (page.sections || []).sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0));
+  sections.forEach((section) => {
+    const target = cmsSectionTarget(section);
+    if (target) applyCmsSection(section, target);
+    else renderCustomCmsSection(section, mount);
+  });
+  if (mount.childElementCount) main.appendChild(mount);
+}
+
+async function loadCmsManagedContent() {
+  const settingsEndpoint = new URL("/cms-api/items/site_settings", window.location.origin);
+  settingsEndpoint.searchParams.set("fields", [
+    "company_name_zh", "company_name_en", "short_name_zh", "short_name_en",
+    "tagline_zh", "tagline_en", "summary_zh", "summary_en", "phone", "fax",
+    "email", "contact_person", "address_zh", "address_en", "icp_number", "map_url",
+    "logo_file.id", "wechat_qr_file.id", "footer_zh", "footer_en"
+  ].join(","));
+
+  const pagesEndpoint = new URL("/cms-api/items/site_pages", window.location.origin);
+  pagesEndpoint.searchParams.set("filter[key][_eq]", currentCmsPageKey());
+  pagesEndpoint.searchParams.set("limit", "1");
+  pagesEndpoint.searchParams.set("fields", [
+    "id", "key", "enabled", "seo_title_zh", "seo_title_en", "seo_description_zh", "seo_description_en",
+    "sections.id", "sections.key", "sections.admin_label", "sections.dom_selector", "sections.module_type",
+    "sections.enabled", "sections.sort", "sections.layout", "sections.eyebrow_zh", "sections.eyebrow_en",
+    "sections.title_zh", "sections.title_en", "sections.subtitle_zh", "sections.subtitle_en",
+    "sections.body_zh", "sections.body_en", "sections.image_file.id", "sections.secondary_image_file.id",
+    "sections.button_text_zh", "sections.button_text_en", "sections.button_url",
+    "sections.items.id", "sections.items.admin_label", "sections.items.enabled", "sections.items.sort",
+    "sections.items.title_zh", "sections.items.title_en", "sections.items.subtitle_zh", "sections.items.subtitle_en",
+    "sections.items.summary_zh", "sections.items.summary_en", "sections.items.body_zh", "sections.items.body_en",
+    "sections.items.metric_value", "sections.items.image_file.id", "sections.items.link_url"
+  ].join(","));
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 4500);
+  try {
+    const [settingsResponse, pagesResponse] = await Promise.all([
+      fetch(settingsEndpoint, { headers: { Accept: "application/json" }, signal: controller.signal }),
+      fetch(pagesEndpoint, { headers: { Accept: "application/json" }, signal: controller.signal })
+    ]);
+    if (!settingsResponse.ok || !pagesResponse.ok) {
+      throw new Error(`CMS site request failed (${settingsResponse.status}/${pagesResponse.status})`);
+    }
+    const [settingsPayload, pagesPayload] = await Promise.all([settingsResponse.json(), pagesResponse.json()]);
+    cmsSiteSettings = Array.isArray(settingsPayload.data) ? settingsPayload.data[0] : settingsPayload.data;
+    cmsManagedPage = (pagesPayload.data || [])[0] || null;
+    applyCmsManagedContent();
+    renderI18n();
+    applyCmsManagedContent();
+    initSplitText();
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function hydrateCmsManagedContent() {
+  try {
+    await loadCmsManagedContent();
+  } catch (error) {
+    console.warn("Directus site content is unavailable; using bundled page content.", error);
+  }
+}
+
 function articleImage(item) {
   return assetPath(item.coverImage || item.images?.[0] || "assets/hero/factory-realistic.png");
+}
+
+function translationLanguageCode(value) {
+  if (typeof value === "string") return value;
+  return value?.code || value?.id || "";
+}
+
+function richTextParagraphs(value) {
+  if (!value) return [];
+  const documentFragment = new DOMParser().parseFromString(String(value), "text/html");
+  const blocks = Array.from(documentFragment.body.querySelectorAll("h2, h3, p, li, blockquote"))
+    .map((node) => node.textContent?.trim() || "")
+    .filter(Boolean);
+  if (blocks.length) return blocks;
+  const plainText = documentFragment.body.textContent?.trim();
+  return plainText ? [plainText] : [];
+}
+
+function cmsAssetUrl(file, options = {}) {
+  const id = typeof file === "string" ? file : file?.id;
+  if (!id) return "";
+  const assetUrl = new URL(`/cms-api/assets/${encodeURIComponent(id)}`, window.location.origin);
+  if (options.transform === false) return assetUrl.href;
+  assetUrl.searchParams.set("width", "1200");
+  assetUrl.searchParams.set("height", "720");
+  assetUrl.searchParams.set("fit", "cover");
+  assetUrl.searchParams.set("quality", "82");
+  assetUrl.searchParams.set("format", "webp");
+  return assetUrl.href;
+}
+
+function mapCmsArticle(item) {
+  const categoryType = item.category?.type;
+  if (categoryType !== "news" && categoryType !== "industry") return null;
+
+  const translations = Array.isArray(item.translations) ? item.translations : [];
+  const zh = translations.find((entry) => translationLanguageCode(entry.language_code) === "zh-CN");
+  const en = translations.find((entry) => translationLanguageCode(entry.language_code) === "en-US");
+  const primary = zh || en;
+  if (!primary?.title) return null;
+
+  const zhContent = richTextParagraphs(zh?.body || primary.body);
+  const enContent = richTextParagraphs(en?.body || zh?.body || primary.body);
+  return {
+    id: `cms-${item.id}`,
+    slug: item.slug,
+    sourceType: categoryType === "industry" ? "industry" : "company",
+    title: zh?.title || primary.title,
+    titleEn: en?.title || zh?.title || primary.title,
+    summary: zh?.summary || zhContent[0] || "",
+    summaryEn: en?.summary || enContent[0] || zh?.summary || "",
+    content: zhContent,
+    contentEn: enContent,
+    coverImage: cmsAssetUrl(item.cover_file),
+    date: item.article_date || item.published_at || "",
+    featured: Boolean(item.featured),
+    cmsManaged: true
+  };
+}
+
+async function loadCmsNews() {
+  const endpoint = new URL("/cms-api/items/articles", window.location.origin);
+  endpoint.searchParams.set("filter[status][_eq]", "published");
+  endpoint.searchParams.set("sort", "-featured,-article_date,-published_at");
+  endpoint.searchParams.set("limit", "100");
+  endpoint.searchParams.set("fields", [
+    "id",
+    "slug",
+    "article_date",
+    "published_at",
+    "featured",
+    "category.type",
+    "cover_file.id",
+    "translations.language_code",
+    "translations.title",
+    "translations.summary",
+    "translations.body",
+    "translations.translation_status"
+  ].join(","));
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 4500);
+  try {
+    const response = await fetch(endpoint, {
+      headers: { Accept: "application/json" },
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`CMS news request failed (${response.status})`);
+    const payload = await response.json();
+    return (payload.data || []).map(mapCmsArticle).filter(Boolean);
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function hydrateCmsNews() {
+  try {
+    const items = await loadCmsNews();
+    if (!items.length) return;
+    cmsNews = items;
+    renderNews();
+  } catch (error) {
+    console.warn("Directus news is unavailable; using bundled news data.", error);
+  }
 }
 
 function allNews() {
   const company = (siteData.news || []).map((item) => ({ ...item, sourceType: "company" }));
   const industry = (siteData.industryNews || []).map((item) => ({ ...item, sourceType: "industry" }));
-  return [...company, ...industry];
+  const seen = new Set();
+  return [...cmsNews, ...company, ...industry].filter((item) => {
+    const key = item.slug || item.sourceUrl || `${item.sourceType}:${item.id}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function filteredNews() {
@@ -1882,6 +2372,7 @@ function bind() {
     langToggle.addEventListener("click", () => {
       currentLang = currentLang === "zh" ? "en" : "zh";
       renderI18n();
+      applyCmsManagedContent();
       renderNews();
       initSplitText();
     });
@@ -1912,12 +2403,20 @@ function bind() {
       status.textContent = "";
       button.disabled = true;
       try {
-        const response = await fetch("api/inquiries", {
+        const formData = Object.fromEntries(new FormData(inquiryForm));
+        const query = new URLSearchParams(location.search);
+        formData.consent = inquiryForm.elements.consent.checked;
+        formData.language = currentLang === "en" ? "en-US" : "zh-CN";
+        formData.sourcePage = `${location.pathname}${location.search}`.slice(0, 300);
+        formData.utmSource = query.get("utm_source") || "";
+        formData.utmMedium = query.get("utm_medium") || "";
+        formData.utmCampaign = query.get("utm_campaign") || "";
+        const response = await fetch("/api/inquiries", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(Object.fromEntries(new FormData(inquiryForm)))
+          body: JSON.stringify(formData)
         });
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(data.error || "提交失败");
         inquiryForm.reset();
         status.textContent = data.mail?.sent ? t("form.success") : t("form.savedNoEmail");
@@ -1938,6 +2437,8 @@ async function boot() {
   renderI18n();
   syncNewsFilterFromHash();
   renderNews();
+  void hydrateCmsManagedContent();
+  void hydrateCmsNews();
   initSplitText();
   initThemeToggle();
   initSpotlightCards();
