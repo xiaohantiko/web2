@@ -31,3 +31,16 @@ python3 bootstrap_core_schema.py
 ```
 
 脚本可以重复执行；已经存在的集合和关系会显示为 `[skip]`。
+
+## 角色与权限
+
+核心数据模型验证完成后，将 `bootstrap_access.py` 上传到同一目录并执行：
+
+```bash
+cd /opt/chentai-cms
+chmod 700 bootstrap_access.py
+python3 bootstrap_access.py
+```
+
+脚本保留内置超级管理员，创建内容编辑、新闻编辑、留言客服和只读审阅
+四个角色。它不会修改 Public 策略，并会在发现匿名留言权限时主动停止。
