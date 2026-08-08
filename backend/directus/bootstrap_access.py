@@ -227,19 +227,50 @@ def ensure_role(token: str, spec: RoleSpec, policy_id: str) -> str:
         "name": spec.name,
         "icon": spec.icon,
         "description": spec.description,
-        "policies": [policy_id],
     }
     if existing:
         role_id = existing["id"]
         request("PATCH", f"/roles/{role_id}", token=token, payload=payload)
         print(f"[update] role {spec.name}")
-        return role_id
+    else:
+        payload["id"] = spec.role_id
+        _, result = request("POST", "/roles", token=token, payload=payload)
+        role_id = result.get("data", {}).get("id") or spec.role_id
+        print(f"[ok]     role {spec.name}")
 
-    payload["id"] = spec.role_id
-    _, result = request("POST", "/roles", token=token, payload=payload)
-    role_id = result.get("data", {}).get("id") or spec.role_id
-    print(f"[ok]     role {spec.name}")
+    ensure_role_policy_access(token, role_id, policy_id)
     return role_id
+
+
+def ensure_role_policy_access(token: str, role_id: str, policy_id: str) -> None:
+    """Attach a policy through Directus 11's access junction endpoint.
+
+    Sending ``policies`` as a nested field while creating ``/roles`` can be
+    rejected by Directus even for an administrator. Directus' own v11 CLI
+    creates the role first and then writes the ``directus_access`` junction;
+    mirror that sequence here and keep it idempotent.
+    """
+    _, result = request(
+        "GET",
+        "/access",
+        token=token,
+        query={
+            "filter[role][_eq]": role_id,
+            "filter[policy][_eq]": policy_id,
+            "limit": 1,
+            "fields": "id",
+        },
+    )
+    if result.get("data"):
+        return
+
+    request(
+        "POST",
+        "/access",
+        token=token,
+        payload={"role": role_id, "policy": policy_id},
+    )
+    print("[ok]     policy attached to role")
 
 
 def existing_permissions(token: str, policy_id: str) -> dict[tuple[str, str], str]:
