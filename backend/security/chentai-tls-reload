@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+CERTIFICATE="/etc/chentai-tls/hebeict.cn/fullchain.pem"
+PRIVATE_KEY="/etc/chentai-tls/hebeict.cn/privkey.pem"
+
+[[ -s "$CERTIFICATE" ]] || { echo "missing certificate: $CERTIFICATE" >&2; exit 1; }
+[[ -s "$PRIVATE_KEY" ]] || { echo "missing private key: $PRIVATE_KEY" >&2; exit 1; }
+
+openssl x509 -checkend 604800 -noout -in "$CERTIFICATE"
+
+subject_alt_names="$(openssl x509 -in "$CERTIFICATE" -noout -ext subjectAltName)"
+grep -q 'DNS:hebeict.cn' <<<"$subject_alt_names"
+grep -q 'DNS:www.hebeict.cn' <<<"$subject_alt_names"
+
+certificate_key_hash="$(openssl x509 -in "$CERTIFICATE" -pubkey -noout | openssl pkey -pubin -outform DER 2>/dev/null | sha256sum | awk '{print $1}')"
+private_key_hash="$(openssl pkey -in "$PRIVATE_KEY" -pubout -outform DER 2>/dev/null | sha256sum | awk '{print $1}')"
+[[ "$certificate_key_hash" == "$private_key_hash" ]] || { echo "certificate and private key do not match" >&2; exit 1; }
+
+/usr/sbin/nginx -t
+/usr/bin/systemctl reload nginx.service

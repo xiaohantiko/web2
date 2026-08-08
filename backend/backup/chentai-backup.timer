@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Chentai backup every day
+
+[Timer]
+OnCalendar=*-*-* 03:20:00
+RandomizedDelaySec=10m
+Persistent=true
+AccuracySec=1m
+Unit=chentai-backup.service
+
+[Install]
+WantedBy=timers.target

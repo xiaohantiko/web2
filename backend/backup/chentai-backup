@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+umask 077
+
+BACKUP_ROOT="${CHENTAI_BACKUP_ROOT:-/opt/chentai-backups}"
+DAILY_DIR="$BACKUP_ROOT/daily"
+COMPOSE_DIR="${CHENTAI_COMPOSE_DIR:-/opt/chentai-cms}"
+RETENTION_DAYS="${CHENTAI_BACKUP_RETENTION_DAYS:-14}"
+MIN_FREE_KB="${CHENTAI_BACKUP_MIN_FREE_KB:-5242880}"
+STAMP="$(date +%Y-%m-%d_%H%M%S)"
+FINAL_DIR="$DAILY_DIR/$STAMP"
+PENDING_DIR=""
+
+log() {
+  printf '[chentai-backup] %s\n' "$*"
+}
+
+cleanup() {
+  if [[ -n "$PENDING_DIR" && -d "$PENDING_DIR" ]]; then
+    case "$PENDING_DIR" in
+      "$DAILY_DIR"/.pending-*) rm -r -- "$PENDING_DIR" ;;
+    esac
+  fi
+}
+trap cleanup EXIT
+
+exec 9>/run/lock/chentai-backup.lock
+if ! flock -n 9; then
+  log "another backup is already running"
+  exit 0
+fi
+
+if [[ ! "$RETENTION_DAYS" =~ ^[0-9]+$ ]] || (( RETENTION_DAYS < 1 )); then
+  log "invalid retention: $RETENTION_DAYS"
+  exit 1
+fi
+
+install -d -o root -g root -m 0700 "$DAILY_DIR"
+
+available_kb="$(df -Pk "$BACKUP_ROOT" | awk 'NR == 2 {print $4}')"
+if [[ ! "$available_kb" =~ ^[0-9]+$ ]] || (( available_kb < MIN_FREE_KB )); then
+  log "insufficient disk space: ${available_kb:-unknown} KB available"
+  exit 1
+fi
+
+PENDING_DIR="$(mktemp -d "$DAILY_DIR/.pending-XXXXXX")"
+cd "$COMPOSE_DIR"
+
+log "exporting PostgreSQL"
+docker compose exec -T database sh -c \
+  'pg_dump -Fc -U "$POSTGRES_USER" "$POSTGRES_DB"' \
+  > "$PENDING_DIR/postgres.dump"
+docker compose exec -T database pg_restore --list \
+  < "$PENDING_DIR/postgres.dump" \
+  > /dev/null
+
+log "archiving Directus uploads and extensions"
+docker compose exec -T directus tar -C /directus -czf - uploads extensions \
+  > "$PENDING_DIR/directus-files.tar.gz"
+tar -tzf "$PENDING_DIR/directus-files.tar.gz" > /dev/null
+
+log "archiving deployment configuration"
+config_paths=(
+  opt/chentai-cms
+  etc/nginx/nginx.conf
+  etc/nginx/sites-available
+  etc/systemd/system/chentai-inquiry-api.service
+  etc/systemd/system/chentai-backup.service
+  etc/systemd/system/chentai-backup.timer
+)
+if [[ -d /etc/letsencrypt ]]; then
+  config_paths+=(etc/letsencrypt)
+fi
+tar -C / -czf "$PENDING_DIR/configuration.tar.gz" \
+  --exclude='opt/chentai-cms/backups' \
+  --exclude='opt/chentai-cms/__pycache__' \
+  "${config_paths[@]}"
+tar -tzf "$PENDING_DIR/configuration.tar.gz" > /dev/null
+
+current_release="$(readlink -f /var/www/chentai-site/current 2>/dev/null || true)"
+{
+  printf 'created_at=%s\n' "$(date --iso-8601=seconds)"
+  printf 'hostname=%s\n' "$(hostname)"
+  printf 'current_release=%s\n' "$current_release"
+  printf 'retention_days=%s\n' "$RETENTION_DAYS"
+  docker compose ps --format json
+} > "$PENDING_DIR/metadata.txt"
+
+(
+  cd "$PENDING_DIR"
+  sha256sum postgres.dump directus-files.tar.gz configuration.tar.gz metadata.txt \
+    > SHA256SUMS
+  sha256sum -c SHA256SUMS > /dev/null
+)
+
+mv -- "$PENDING_DIR" "$FINAL_DIR"
+PENDING_DIR=""
+ln -sfn "$FINAL_DIR" "$BACKUP_ROOT/latest"
+
+log "removing daily backups older than $RETENTION_DAYS days"
+while IFS= read -r expired; do
+  case "$expired" in
+    "$DAILY_DIR"/20??-??-??_??????)
+      log "expired: $expired"
+      rm -r -- "$expired"
+      ;;
+  esac
+done < <(
+  find "$DAILY_DIR" -mindepth 1 -maxdepth 1 -type d \
+    -name '20??-??-??_??????' -mtime "+$RETENTION_DAYS" -print
+)
+
+log "completed: $FINAL_DIR"
+du -sh "$FINAL_DIR"

@@ -1,0 +1,24 @@
+[Unit]
+Description=Upload latest Chentai backup to Tencent COS
+Wants=network-online.target
+After=network-online.target chentai-backup.service
+ConditionPathExists=/etc/chentai-backup-cos.env
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+EnvironmentFile=/etc/chentai-backup-cos.env
+ExecStart=/opt/chentai-backup-tools/venv/bin/python /usr/local/sbin/chentai-backup-cos
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true

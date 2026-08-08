@@ -1,0 +1,27 @@
+[Unit]
+Description=Backup Chentai CMS database, uploads, and configuration
+Requires=docker.service
+After=docker.service chentai-inquiry-api.service
+OnSuccess=chentai-backup-cos.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=CHENTAI_BACKUP_RETENTION_DAYS=14
+ExecStart=/usr/local/sbin/chentai-backup
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

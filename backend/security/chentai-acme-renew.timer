@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Chentai TLS renewal check
+
+[Timer]
+OnCalendar=*-*-* 03:20:00 Asia/Shanghai
+RandomizedDelaySec=30m
+Persistent=true
+Unit=chentai-acme-renew.service
+
+[Install]
+WantedBy=timers.target

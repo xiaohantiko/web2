@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+"""Upload the latest verified Chentai backup to a private Tencent COS bucket."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import sys
+from pathlib import Path
+
+from qcloud_cos import CosConfig, CosS3Client
+from qcloud_cos.cos_exception import CosClientError, CosServiceError
+
+
+BACKUP_ROOT = Path(os.environ.get("CHENTAI_BACKUP_ROOT", "/opt/chentai-backups"))
+SECRET_ID = os.environ.get("COS_SECRET_ID", "").strip()
+SECRET_KEY = os.environ.get("COS_SECRET_KEY", "").strip()
+REGION = os.environ.get("COS_REGION", "ap-beijing").strip()
+BUCKET = os.environ.get("COS_BUCKET", "").strip()
+PREFIX = os.environ.get("COS_PREFIX", "chentai-backups").strip("/")
+
+REQUIRED_FILES = {
+    "postgres.dump",
+    "directus-files.tar.gz",
+    "configuration.tar.gz",
+    "metadata.txt",
+    "SHA256SUMS",
+}
+
+
+def fail(message: str) -> int:
+    print(f"[chentai-backup-cos] ERROR: {message}", file=sys.stderr)
+    return 1
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def main() -> int:
+    if not SECRET_ID or not SECRET_KEY or not BUCKET:
+        return fail("COS credentials or bucket are not configured")
+    if not PREFIX:
+        return fail("COS_PREFIX cannot be empty")
+
+    latest = BACKUP_ROOT.joinpath("latest").resolve()
+    daily_root = BACKUP_ROOT.joinpath("daily").resolve()
+    if not latest.is_dir() or latest.parent != daily_root:
+        return fail("latest backup path is invalid")
+
+    missing = sorted(name for name in REQUIRED_FILES if not latest.joinpath(name).is_file())
+    if missing:
+        return fail("latest backup is incomplete: " + ", ".join(missing))
+
+    config = CosConfig(
+        Region=REGION,
+        SecretId=SECRET_ID,
+        SecretKey=SECRET_KEY,
+        Scheme="https",
+    )
+    client = CosS3Client(config)
+    remote_base = f"{PREFIX}/daily/{latest.name}"
+
+    print(f"[chentai-backup-cos] uploading {latest.name} to {BUCKET}/{remote_base}")
+    for name in sorted(REQUIRED_FILES):
+        local_path = latest.joinpath(name)
+        remote_key = f"{remote_base}/{name}"
+        local_hash = sha256(local_path)
+        with local_path.open("rb") as source:
+            client.put_object(
+                Bucket=BUCKET,
+                Key=remote_key,
+                Body=source,
+                ContentLength=local_path.stat().st_size,
+                ServerSideEncryption="AES256",
+                Metadata={"sha256": local_hash},
+            )
+        remote = client.head_object(Bucket=BUCKET, Key=remote_key)
+        remote_size = int(remote.get("Content-Length", remote.get("ContentLength", -1)))
+        if remote_size != local_path.stat().st_size:
+            return fail(f"remote size mismatch for {name}")
+        print(f"[chentai-backup-cos] verified {remote_key} ({remote_size} bytes)")
+
+    marker = json.dumps(
+        {
+            "backup": latest.name,
+            "prefix": remote_base,
+            "region": REGION,
+            "files": sorted(REQUIRED_FILES),
+        },
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    client.put_object(
+        Bucket=BUCKET,
+        Key=f"{PREFIX}/latest.json",
+        Body=marker,
+        ContentLength=len(marker),
+        ServerSideEncryption="AES256",
+    )
+
+    manifest = client.get_object(Bucket=BUCKET, Key=f"{remote_base}/SHA256SUMS")
+    remote_manifest = manifest["Body"].get_raw_stream().read()
+    if remote_manifest != latest.joinpath("SHA256SUMS").read_bytes():
+        return fail("download verification failed for SHA256SUMS")
+
+    print("[chentai-backup-cos] off-site backup upload and download verification passed")
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except (CosClientError, CosServiceError, OSError, ValueError) as exc:
+        raise SystemExit(f"[chentai-backup-cos] ERROR: {exc}") from exc

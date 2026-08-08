@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+umask 077
+
+BACKUP_ROOT="${CHENTAI_BACKUP_ROOT:-/opt/chentai-backups}"
+COMPOSE_DIR="${CHENTAI_COMPOSE_DIR:-/opt/chentai-cms}"
+LATEST="$(readlink -f "$BACKUP_ROOT/latest")"
+
+if [[ -z "$LATEST" || ! -d "$LATEST" ]]; then
+  printf '[chentai-backup-verify] no completed backup found\n' >&2
+  exit 1
+fi
+
+printf '[chentai-backup-verify] checking %s\n' "$LATEST"
+(
+  cd "$LATEST"
+  sha256sum -c SHA256SUMS
+)
+tar -tzf "$LATEST/directus-files.tar.gz" > /dev/null
+tar -tzf "$LATEST/configuration.tar.gz" > /dev/null
+
+cd "$COMPOSE_DIR"
+test_db="chentai_restore_test_$(date +%Y%m%d%H%M%S)_$$"
+
+drop_test_database() {
+  docker compose exec -T -e TEST_DB="$test_db" database sh -c \
+    'dropdb -U "$POSTGRES_USER" --if-exists "$TEST_DB"' \
+    > /dev/null 2>&1 || true
+}
+trap drop_test_database EXIT
+
+docker compose exec -T -e TEST_DB="$test_db" database sh -c \
+  'createdb -U "$POSTGRES_USER" "$TEST_DB"'
+docker compose exec -T -e TEST_DB="$test_db" database sh -c \
+  'pg_restore -U "$POSTGRES_USER" -d "$TEST_DB" --no-owner --no-privileges --exit-on-error' \
+  < "$LATEST/postgres.dump"
+
+collections="$(
+  docker compose exec -T -e TEST_DB="$test_db" database sh -c \
+    'psql -U "$POSTGRES_USER" -d "$TEST_DB" -Atc "select count(*) from directus_collections;"'
+)"
+inquiries="$(
+  docker compose exec -T -e TEST_DB="$test_db" database sh -c \
+    'psql -U "$POSTGRES_USER" -d "$TEST_DB" -Atc "select count(*) from inquiries;"'
+)"
+site_pages="$(
+  docker compose exec -T -e TEST_DB="$test_db" database sh -c \
+    'psql -U "$POSTGRES_USER" -d "$TEST_DB" -Atc "select count(*) from site_pages;"'
+)"
+
+drop_test_database
+trap - EXIT
+
+printf '[chentai-backup-verify] restored collections=%s inquiries=%s site_pages=%s\n' \
+  "$collections" "$inquiries" "$site_pages"
+printf '[chentai-backup-verify] temporary database removed: %s\n' "$test_db"
+printf '[chentai-backup-verify] backup is restorable\n'

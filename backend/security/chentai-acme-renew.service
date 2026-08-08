@@ -1,0 +1,14 @@
+[Unit]
+Description=Renew Chentai website TLS certificate with DNSPod DNS-01
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+UMask=0077
+ExecStart=/opt/chentai-acme/acme.sh --cron --home /opt/chentai-acme --config-home /etc/chentai-acme --cert-home /etc/chentai-acme/certs
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+NoNewPrivileges=true
+PrivateTmp=true

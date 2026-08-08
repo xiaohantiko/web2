@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Chentai website health checks every five minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+RandomizedDelaySec=30s
+AccuracySec=15s
+Persistent=true
+Unit=chentai-health-check.service
+
+[Install]
+WantedBy=timers.target

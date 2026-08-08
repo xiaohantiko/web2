@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+HOST_HEADER="${CHENTAI_MONITOR_HOST:-hebeict.cn}"
+COMPOSE_DIR="${CHENTAI_COMPOSE_DIR:-/opt/chentai-cms}"
+BACKUP_ROOT="${CHENTAI_BACKUP_ROOT:-/opt/chentai-backups}"
+MAX_BACKUP_AGE_SECONDS="${CHENTAI_MAX_BACKUP_AGE_SECONDS:-129600}"
+MAX_DISK_PERCENT="${CHENTAI_MAX_DISK_PERCENT:-85}"
+TLS_CERTIFICATE="${CHENTAI_TLS_CERTIFICATE:-/etc/chentai-tls/hebeict.cn/fullchain.pem}"
+TLS_MIN_VALID_SECONDS="${CHENTAI_TLS_MIN_VALID_SECONDS:-2592000}"
+
+failures=0
+
+ok() {
+  printf '[chentai-monitor] OK: %s\n' "$*"
+}
+
+fail() {
+  printf '[chentai-monitor] ERROR: %s\n' "$*" >&2
+  failures=$((failures + 1))
+}
+
+check_http() {
+  local name="$1"
+  local url="$2"
+  shift 2
+  if curl --fail --silent --show-error --max-time 10 "$@" "$url" > /dev/null; then
+    ok "$name"
+  else
+    fail "$name is unavailable"
+  fi
+}
+
+check_service() {
+  local service="$1"
+  if systemctl is-active --quiet "$service"; then
+    ok "$service is active"
+  else
+    fail "$service is not active"
+  fi
+}
+
+check_container() {
+  local name="$1"
+  local expected="$2"
+  local format="$3"
+  local actual
+
+  actual="$(docker inspect --format "$format" "$name" 2>/dev/null || true)"
+  if [[ "$actual" == "$expected" ]]; then
+    ok "$name is $expected"
+  else
+    fail "$name state is ${actual:-missing}; expected $expected"
+  fi
+}
+
+check_backup() {
+  local latest="$BACKUP_ROOT/latest"
+  local checksum_file="$latest/SHA256SUMS"
+  local backup_epoch now_epoch age
+
+  if [[ ! -L "$latest" || ! -f "$checksum_file" ]]; then
+    fail "latest local backup is missing"
+    return
+  fi
+
+  if ! (cd "$latest" && sha256sum --check --status SHA256SUMS); then
+    fail "latest local backup checksum validation failed"
+    return
+  fi
+
+  backup_epoch="$(stat --dereference --format '%Y' "$latest" 2>/dev/null || true)"
+  now_epoch="$(date +%s)"
+  if [[ ! "$backup_epoch" =~ ^[0-9]+$ ]]; then
+    fail "latest local backup timestamp is unreadable"
+    return
+  fi
+
+  age=$((now_epoch - backup_epoch))
+  if (( age > MAX_BACKUP_AGE_SECONDS )); then
+    fail "latest local backup is ${age}s old; limit is ${MAX_BACKUP_AGE_SECONDS}s"
+  else
+    ok "latest local backup is complete and recent"
+  fi
+}
+
+check_disk() {
+  local used
+  used="$(df -P / | awk 'NR == 2 {gsub(/%/, "", $5); print $5}')"
+  if [[ ! "$used" =~ ^[0-9]+$ ]]; then
+    fail "root disk usage is unreadable"
+  elif (( used >= MAX_DISK_PERCENT )); then
+    fail "root disk usage is ${used}%; limit is ${MAX_DISK_PERCENT}%"
+  else
+    ok "root disk usage is ${used}%"
+  fi
+}
+
+check_certificate() {
+  if [[ ! -r "$TLS_CERTIFICATE" ]]; then
+    fail "TLS certificate is missing: $TLS_CERTIFICATE"
+  elif openssl x509 -checkend "$TLS_MIN_VALID_SECONDS" -noout -in "$TLS_CERTIFICATE" > /dev/null; then
+    ok "TLS certificate is valid for more than ${TLS_MIN_VALID_SECONDS}s"
+  else
+    fail "TLS certificate expires within ${TLS_MIN_VALID_SECONDS}s"
+  fi
+}
+
+if [[ ! "$MAX_BACKUP_AGE_SECONDS" =~ ^[0-9]+$ ]] || (( MAX_BACKUP_AGE_SECONDS < 3600 )); then
+  fail "invalid backup age limit: $MAX_BACKUP_AGE_SECONDS"
+fi
+if [[ ! "$MAX_DISK_PERCENT" =~ ^[0-9]+$ ]] || (( MAX_DISK_PERCENT < 1 || MAX_DISK_PERCENT > 100 )); then
+  fail "invalid disk usage limit: $MAX_DISK_PERCENT"
+fi
+if [[ ! "$TLS_MIN_VALID_SECONDS" =~ ^[0-9]+$ ]] || (( TLS_MIN_VALID_SECONDS < 86400 )); then
+  fail "invalid TLS validity limit: $TLS_MIN_VALID_SECONDS"
+fi
+
+check_service nginx.service
+check_service chentai-inquiry-api.service
+check_http "website homepage" "http://127.0.0.1/index.html" -H "Host: $HOST_HEADER"
+check_http "Directus health endpoint" "http://127.0.0.1:8055/server/health"
+check_http "inquiry API health endpoint" "http://127.0.0.1:8060/health"
+
+if [[ -d "$COMPOSE_DIR" ]]; then
+  check_container chentai-postgres healthy '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}'
+  check_container chentai-directus running '{{.State.Status}}'
+else
+  fail "compose directory is missing: $COMPOSE_DIR"
+fi
+
+check_disk
+check_backup
+check_certificate
+
+if (( failures > 0 )); then
+  printf '[chentai-monitor] FAILED: %d check(s) failed\n' "$failures" >&2
+  exit 1
+fi
+
+printf '[chentai-monitor] HEALTHY: all checks passed\n'
